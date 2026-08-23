@@ -243,7 +243,7 @@
     });
   }
 
-  async function saveProduct() {
+ async function saveProduct() {
     const id = document.getElementById("editProductId").value;
     const name = document.getElementById("pName").value.trim();
     const price = parseFloat(document.getElementById("pPrice").value);
@@ -270,10 +270,11 @@
         loadCategoryInventory();
       }
     } else {
-      // INSERT NEW ITEM
+      // INSERT NEW ITEM WITH A GENERATED TEXT ID
+      const newId = Date.now().toString();
       const { error } = await supabaseClient
         .from('products')
-        .insert([{ name, price, category: activeCategory, subcategory, image, active: 'yes' }]);
+        .insert([{ id: newId, name, price, category: activeCategory, subcategory, image, active: 'yes' }]);
 
       if (error) {
         alert("Error adding: " + error.message);
@@ -284,7 +285,6 @@
       }
     }
   }
-
   function prepareEdit(index) {
     const item = currentInventoryData[index];
     if (!item) return;
