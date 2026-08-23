@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwiftPortal - Vendor Portal</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { margin: 0; background: #f8f9fa; color: #111; padding: 20px; }
+    .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+    
+    /* Login Screen */
+    #loginScreen { text-align: center; max-width: 420px; margin: 60px auto; padding: 35px; background: #fff; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+    #loginScreen h1 { color: #ff6a00; margin-bottom: 5px; }
+    
+    /* Inputs & Buttons */
+    input, select { width: 100%; padding: 14px; margin-bottom: 14px; border-radius: 14px; border: 1.5px solid #eee; font-size: 15px; outline: none; background: #fafafa; }
+    input:focus { border-color: #ff6a00; background: #fff; }
+    button { background: #ff6a00; color: white; border: none; padding: 14px 20px; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; transition: transform 0.1s ease; }
+    button:active { transform: scale(0.98); }
+    
+    /* Dashboard Elements */
+    .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; margin-bottom: 25px; }
+    .header-bar h2 { margin: 0; color: #ff6a00; }
+    .logout-btn { background: #111; width: auto; padding: 8px 16px; font-size: 13px; border-radius: 10px; }
+    
+    .section { background: #fafafa; padding: 20px; border-radius: 18px; margin-bottom: 25px; border: 1px solid #eee; }
+    .section h3 { margin-top: 0; font-size: 18px; color: #333; }
+    
+    /* Table Styling */
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+    th { background: #fff5ed; color: #ff6a00; font-weight: 700; }
+    .action-btn { padding: 6px 12px; font-size: 12px; width: auto; border-radius: 8px; margin-right: 5px; }
+    .del-btn { background: #ff3b30; }
+  </style>
+</head>
+<body>
+
+  <!-- 🔐 VENDOR LOGIN SCREEN -->
+  <div id="loginScreen">
+    <h1>⚡ SwiftPortal</h1>
+    <p style="color:#666; font-size:14px; margin-bottom:25px;">Strictly Scoped Vendor Management</p>
+    
+    <select id="loginCategory">
+      <option value="">Select Your Store / Category</option>
+      <option value="Aroma">Aroma</option>
+      <option value="Guerrero">Guerrero</option>
+      <option value="AddToCart">AddToCart</option>
+      <option value="Cosmetics">Cosmetics</option>
+      <option value="Leo Meatpies">Leo Meatpies</option>
+      <option value="TFC">TFC</option>
+      <option value="Neeyas Backyard">Neeyas Backyard</option>
+      <option value="Burger But">Burger But</option>
+      <option value="Vegetables">Vegetables</option>
+      <option value="Faye">Faye</option>
+      <option value="Maria">Maria</option>
+      <option value="Shaken">Shaken</option>
+      <option value="Sister">Sister</option>
+      <option value="Brew">Brew</option>
+      <option value="Dumpling">Dumpling</option>
+      <option value="Salsas">Salsas</option>
+      <option value="Lunch">Lunch</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Breakfast">Breakfast</option>
+      <option value="Urban">Urban</option>
+    </select>
+    
+    <input type="password" id="loginPassword" placeholder="Vendor Admin Password">
+    <button onclick="handlePortalLogin()">Secure Vendor Login</button>
+  </div>
+
+  <!-- 📊 VENDOR DASHBOARD -->
+  <div id="dashboardScreen" class="container" style="display:none;">
+    <div class="header-bar">
+      <div>
+        <h2 id="portalTitle">SwiftPortal</h2>
+        <span id="adminBadge" style="font-size:12px; font-weight:700; color:#666; background:#fff5ed; padding:4px 10px; border-radius:6px;">Isolated Vendor Access</span>
+      </div>
+      <button class="logout-btn" onclick="handlePortalLogout()">Logout</button>
+    </div>
+
+    <!-- ADD / EDIT PRODUCT -->
+    <div class="section">
+      <h3 id="formTitle">➕ Add New Inventory Item</h3>
+      <input type="hidden" id="editProductId">
+      <input type="text" id="pName" placeholder="Item Name">
+      <input type="number" id="pPrice" placeholder="Price (BZD)" step="0.01">
+      <input type="text" id="pSubcategory" placeholder="Subcategory (e.g., Burgers, Latte, Drinks)">
+      <input type="text" id="pImage" placeholder="Image URL (Imgur link)">
+      <button onclick="saveProduct()" id="saveButton">Save Product to Live Database</button>
+      <button onclick="resetForm()" id="cancelButton" style="background:#666; margin-top:8px; display:none;">Cancel Edit</button>
+    </div>
+
+    <!-- INVENTORY TABLE -->
+    <div class="section">
+      <h3>📋 Your Store Inventory</h3>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Subcategory</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody">
+            <tr><td colspan="5" style="text-align:center;">Loading inventory...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // 🔗 SUPABASE CONNECTION
+  const SUPABASE_URL = "https://sbjadbqlmkktljfpqowc.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiamFkYnFsbWtrdGxqZnBxb3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MTc2NTIsImV4cCI6MjEwMjQ5MzY1Mn0.RCgn8yNmxkQWFPu6sJdyYD3_zJ7n2QmvPQjqZC70F8s";
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // 🔑 VENDOR PASSWORDS (Customize unique passwords per vendor here)
+  const vendorPasswords = {
+    "Aroma": "aroma123",
+    "Guerrero": "guerrero123",
+    "AddToCart": "cart123",
+    "Cosmetics": "cosmetics123",
+    "Leo Meatpies": "leo123",
+    "TFC": "tfc123",
+    "Neeyas Backyard": "neeya123",
+    "Burger But": "burger123",
+    "Vegetables": "veg123",
+    "Faye": "faye123",
+    "Maria": "maria123",
+    "Shaken": "shaken123",
+    "Sister": "sister123",
+    "Brew": "brew123",
+    "Dumpling": "dumpling123",
+    "Salsas": "salsas123",
+    "Lunch": "lunch123",
+    "Electronics": "electronics123",
+    "Breakfast": "break123",
+    "Urban": "urban123"
+  };
+
+  let activeCategory = "";
+
+  function handlePortalLogin() {
+    const cat = document.getElementById("loginCategory").value;
+    const pass = document.getElementById("loginPassword").value.trim();
+
+    if (!cat || !pass) {
+      alert("Please select your store and enter your password.");
+      return;
+    }
+
+    if (vendorPasswords[cat] && vendorPasswords[cat] === pass) {
+      activeCategory = cat;
+      localStorage.setItem("portalCat", cat);
+      initDashboard();
+    } else {
+      alert("Incorrect password for this store.");
+    }
+  }
+
+  function initDashboard() {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboardScreen").style.display = "block";
+    document.getElementById("portalTitle").innerText = `SwiftPortal: ${activeCategory}`;
+    loadCategoryInventory();
+  }
+
+  function handlePortalLogout() {
+    localStorage.removeItem("portalCat");
+    location.reload();
+  }
+
+  async function loadCategoryInventory() {
+    const tbody = document.getElementById("inventoryTableBody");
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Loading your inventory...</td></tr>`;
+
+    // 🔒 STRICTLY FILTERED TO ONLY PULL THE LOGGED-IN VENDOR'S CATEGORY
+    const { data, error } = await supabaseClient
+      .from('products')
+      .select('*')
+      .ilike('category', activeCategory)
+      .order('id', { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Error loading database</td></tr>`;
+      return;
+    }
+
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">No items listed for your store yet. Add your first item above!</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = "";
+    data.forEach(item => {
+      tbody.innerHTML += `
+        <tr>
+          <td><img src="${item.image}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;"></td>
+          <td><strong>${item.name}</strong></td>
+          <td>${item.subcategory || 'General'}</td>
+          <td>$${Number(item.price).toFixed(2)} BZD</td>
+          <td>
+            <button class="action-btn" onclick="editItem(${item.id}, '${item.name.replace(/'/g, "\\'")}', ${item.price}, '${item.subcategory || ''}', '${item.image}')">Edit</button>
+            <button class="action-btn del-btn" onclick="deleteItem(${item.id})">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  async function saveProduct() {
+    const id = document.getElementById("editProductId").value;
+    const name = document.getElementById("pName").value.trim();
+    const price = parseFloat(document.getElementById("pPrice").value);
+    const subcategory = document.getElementById("pSubcategory").value.trim() || "Items";
+    const image = document.getElementById("pImage").value.trim();
+
+    if (!name || isNaN(price) || !image) {
+      alert("Please fill in Item Name, Price, and Image URL.");
+      return;
+    }
+
+    if (id) {
+      // UPDATE EXISTING ITEM
+      const { error } = await supabaseClient
+        .from('products')
+        .update({ name, price, subcategory, image })
+        .eq('id', id);
+
+      if (error) alert("Error updating: " + error.message);
+      else alert("Item updated successfully!");
+    } else {
+      // INSERT NEW ITEM FOR THIS SPECIFIC VENDOR CATEGORY ONLY
+      const { error } = await supabaseClient
+        .from('products')
+        .insert([{ name, price, category: activeCategory, subcategory, image, active: 'yes' }]);
+
+      if (error) alert("Error adding: " + error.message);
+      else alert("Item added to live database!");
+    }
+
+    resetForm();
+    loadCategoryInventory();
+  }
+
+  function editItem(id, name, price, subcategory, image) {
+    document.getElementById("editProductId").value = id;
+    document.getElementById("pName").value = name;
+    document.getElementById("pPrice").value = price;
+    document.getElementById("pSubcategory").value = subcategory;
+    document.getElementById("pImage").value = image;
+    
+    document.getElementById("formTitle").innerText = "✏️ Edit Inventory Item";
+    document.getElementById("saveButton").innerText = "Update Item";
+    document.getElementById("cancelButton").style.display = "block";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetForm() {
+    document.getElementById("editProductId").value = "";
+    document.getElementById("pName").value = "";
+    document.getElementById("pPrice").value = "";
+    document.getElementById("pSubcategory").value = "";
+    document.getElementById("pImage").value = "";
+    
+    document.getElementById("formTitle").innerText = "➕ Add New Inventory Item";
+    document.getElementById("saveButton").innerText = "Save Product to Live Database";
+    document.getElementById("cancelButton").style.display = "none";
+  }
+
+  async function deleteItem(id) {
+    if (!confirm("Are you sure you want to delete this item?")) return;
+
+    const { error } = await supabaseClient
+      .from('products')
+      .delete()
+      .eq('id', id);
+
+    if (error) alert("Error deleting: " + error.message);
+    else {
+      alert("Item deleted.");
+      loadCategoryInventory();
+    }
+  }
+
+  // Check persisted login session on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedCat = localStorage.getItem("portalCat");
+    if (savedCat && vendorPasswords[savedCat]) {
+      activeCategory = savedCat;
+      initDashboard();
+    }
+  });
+</script>
+
+</body>
+</html>
