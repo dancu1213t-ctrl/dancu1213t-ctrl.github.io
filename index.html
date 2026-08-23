@@ -155,13 +155,9 @@
               <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-lg flex items-center justify-center font-bold mb-2 shadow-xs">🥞</div>
               <span class="text-xs font-semibold text-slate-700">Breakfast</span>
             </div>
-            <div onclick="selectStoreCard('Urban', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center font-bold mb-2 shadow-xs">🏪</div>
-              <span class="text-xs font-semibold text-slate-700">Urban</span>
-            </div>
 
           </div>
-          <!-- Hidden Native Select to keep original JS logic intact -->
+          <!-- Hidden Native Select -->
           <select id="loginCategory" class="hidden">
             <option value="">Select Your Store / Category</option>
             <option value="Aroma">Aroma</option>
@@ -204,7 +200,7 @@
   <div id="dashboardScreen" class="container max-w-6xl mx-auto px-4 py-8 flex-grow" style="display:none;">
     
     <!-- Top Professional Header Bar -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div class="flex items-center gap-4">
         <div id="dashboardLogoContainer" class="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center overflow-hidden shadow-inner p-1">
           <img id="dashboardLogoImg" src="" alt="Store Logo" class="w-full h-full object-contain">
@@ -230,7 +226,19 @@
       <button class="logout-btn bg-slate-900 hover:bg-slate-800 text-white font-semibold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95" onclick="handlePortalLogout()">Logout</button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Navigation Tabs -->
+    <div class="flex gap-2 border-b border-slate-200 mb-6 overflow-x-auto pb-1">
+      <button id="tabInventory" onclick="switchPortalTab('inventory')" class="px-5 py-2.5 text-xs font-bold rounded-xl transition bg-orange-600 text-white shadow-sm flex items-center gap-2">
+        <span>📦 Inventory Manager</span>
+      </button>
+      <button id="tabOrders" onclick="switchPortalTab('orders')" class="px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2">
+        <span>🛍️ Live Orders Queue</span>
+        <span id="merchantOrderBadge" class="bg-orange-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: INVENTORY MANAGEMENT SECTION -->
+    <div id="inventoryTabContent" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
       <!-- ADD / EDIT PRODUCT PANEL (Left Column on Desktop) -->
       <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 h-fit sticky top-6">
@@ -293,6 +301,22 @@
       </div>
 
     </div>
+
+    <!-- TAB 2: ORDERS MANAGEMENT QUEUE -->
+    <div id="ordersTabContent" style="display:none;" class="space-y-4">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">🛍️ Merchant Orders Queue</h3>
+          <p class="text-xs text-slate-400 mt-0.5">Incoming customer orders for your store. Toggle to "Ready" to alert drivers.</p>
+        </div>
+        <button onclick="fetchMerchantOrders()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-xs active:scale-95">🔄 Refresh Orders</button>
+      </div>
+
+      <div id="merchantOrdersContainer" class="space-y-4">
+        <div class="text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">Loading incoming orders...</div>
+      </div>
+    </div>
+
   </div>
 
   <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-200/60 mt-12 bg-white">
@@ -332,6 +356,8 @@
   let activeCategory = "";
   let currentInventoryData = [];
   let isStoreOpen = 'yes';
+  let activePortalTab = 'inventory';
+  let merchantOrdersData = [];
 
   function selectStoreCard(catValue, element) {
     document.getElementById("loginCategory").value = catValue;
@@ -375,11 +401,34 @@
 
     await fetchStoreStatus();
     loadCategoryInventory();
+    fetchMerchantOrders();
+    setupOrdersRealtime();
   }
 
   function handlePortalLogout() {
     localStorage.removeItem("portalCat");
     location.reload();
+  }
+
+  function switchPortalTab(tab) {
+    activePortalTab = tab;
+    const tabInv = document.getElementById("tabInventory");
+    const tabOrd = document.getElementById("tabOrders");
+    const invContent = document.getElementById("inventoryTabContent");
+    const ordContent = document.getElementById("ordersTabContent");
+
+    if (tab === 'inventory') {
+      tabInv.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-orange-600 text-white shadow-sm flex items-center gap-2";
+      tabOrd.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2";
+      invContent.style.display = "grid";
+      ordContent.style.display = "none";
+    } else {
+      tabOrd.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-orange-600 text-white shadow-sm flex items-center gap-2";
+      tabInv.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2";
+      invContent.style.display = "none";
+      ordContent.style.display = "block";
+      fetchMerchantOrders();
+    }
   }
 
   async function fetchStoreStatus() {
@@ -528,10 +577,8 @@
     for (const [subcategory, items] of Object.entries(grouped)) {
       let rowsHTML = "";
       items.forEach(item => {
-        // active === 'yes' or missing means active. active === 'no' means Sold Out / Hidden
         const isActive = item.active === 'yes' || !item.active;
         
-        // Button toggles to the OPPOSITE action clearly
         const statusBadge = isActive 
           ? `<button onclick="toggleActiveStatus('${item.id}', 'no')" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-emerald-200 cursor-pointer shadow-xs" title="Click to mark Sold Out">🟢 Active (Show)</button>`
           : `<button onclick="toggleActiveStatus('${item.id}', 'yes')" class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-rose-200 cursor-pointer shadow-xs" title="Click to make Active">🔴 Sold Out (Hidden)</button>`;
@@ -681,7 +728,7 @@
     document.getElementById("formTitle").innerText = "✏️ Edit Inventory Item";
     document.getElementById("saveButton").innerText = "Update Item";
     document.getElementById("cancelButton").style.display = "block";
-    window.scrollTo({ top: top, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function resetForm() {
@@ -713,6 +760,104 @@
       alert("Item deleted.");
       loadCategoryInventory();
     }
+  }
+
+  // 🛍️ MERCHANT ORDERS MANAGEMENT SYSTEM
+  async function fetchMerchantOrders() {
+    const container = document.getElementById("merchantOrdersContainer");
+    
+    const { data, error } = await supabaseClient
+      .from('orders')
+      .select('*')
+      .order('timestamp', { ascending: false });
+
+    if (error) {
+      container.innerHTML = `<div class="text-center py-6 text-red-500 text-sm">Error fetching orders: ${error.message}</div>`;
+      return;
+    }
+
+    merchantOrdersData = data || [];
+    document.getElementById("merchantOrderBadge").innerText = merchantOrdersData.length;
+    renderMerchantOrders();
+  }
+
+  function renderMerchantOrders() {
+    const container = document.getElementById("merchantOrdersContainer");
+    
+    if (merchantOrdersData.length === 0) {
+      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">No active orders placed yet.</div>`;
+      return;
+    }
+
+    let html = "";
+    merchantOrdersData.forEach(order => {
+      let isReady = order.status === 'Ready';
+      let isDelivered = order.status === 'Delivered';
+
+      let statusBtn = "";
+      if (!isDelivered) {
+        if (!isReady) {
+          statusBtn = `<button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🔔 Set to "Ready" (Dispatch Runner)</button>`;
+        } else {
+          statusBtn = `<button onclick="setOrderStatus('${order.order_id}', 'Pending')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">⏳ Revert to Pending</button>`;
+        }
+      }
+
+      html += `
+        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <div>
+              <span class="text-xs font-black text-slate-400">Order ID: #${String(order.order_id).slice(-8)}</span>
+              <p class="text-sm font-bold text-slate-900 mt-0.5">${order.customer_name || 'Guest'}</p>
+            </div>
+            <div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                order.status === 'Ready' ? 'bg-emerald-100 text-emerald-800' :
+                order.status === 'On the Way' ? 'bg-blue-100 text-blue-800' :
+                order.status === 'Delivered' ? 'bg-slate-100 text-slate-700' : 'bg-amber-100 text-amber-800'
+              }">
+                ${order.status || 'Pending'}
+              </span>
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-600 space-y-1">
+            <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
+            <p><strong>Order Type:</strong> ${order.order_type || 'Delivery'}</p>
+            <p><strong>Assigned Driver:</strong> ${order.active_status || 'Unassigned'}</p>
+            <p><strong>Time:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}</p>
+          </div>
+
+          <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
+            ${statusBtn}
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+
+  async function setOrderStatus(orderId, newStatus) {
+    const { error } = await supabaseClient
+      .from('orders')
+      .update({ status: newStatus })
+      .eq('order_id', orderId);
+
+    if (error) {
+      alert("Error updating order status: " + error.message);
+    } else {
+      fetchMerchantOrders();
+    }
+  }
+
+  function setupOrdersRealtime() {
+    supabaseClient
+      .channel('merchant-orders-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+        fetchMerchantOrders();
+      })
+      .subscribe();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
