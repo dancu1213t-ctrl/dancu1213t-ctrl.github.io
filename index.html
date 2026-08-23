@@ -15,6 +15,45 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* 🎚️ SLIDING TOGGLE SWITCH */
+    .store-toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .store-toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .store-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 34px;
+    }
+    .store-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .store-toggle-switch input:checked + .store-slider {
+      background-color: #10b981; /* Emerald green for Open */
+    }
+    .store-toggle-switch input:checked + .store-slider:before {
+      transform: translateX(22px);
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
@@ -172,12 +211,19 @@
         </div>
         <div>
           <h2 id="portalTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">SwiftShop Portal</h2>
-          <div class="flex items-center gap-2 mt-1">
+          <div class="flex items-center gap-2 mt-1 flex-wrap">
             <span id="adminBadge" class="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
               <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span> Isolated Vendor Access
             </span>
-            <!-- Store Open/Closed Toggle Badge -->
-            <div id="storeStatusContainer"></div>
+            
+            <!-- Store Open/Closed Sliding Toggle Control -->
+            <div id="storeStatusContainer" class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3 py-1 rounded-full">
+              <span id="statusTextLabel" class="text-xs font-bold text-slate-700">Store Open</span>
+              <label class="store-toggle-switch">
+                <input type="checkbox" id="storeStatusCheckbox" onchange="toggleStoreStatus(this)">
+                <span class="store-slider"></span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -344,16 +390,15 @@
       .single();
 
     if (error || !data) {
-      // Default to open if record doesn't exist yet
       isStoreOpen = 'yes';
     } else {
       isStoreOpen = data.is_open || 'yes';
     }
-    renderStoreStatusBadge();
+    updateToggleUI();
   }
 
-  async function toggleStoreStatus() {
-    const newStatus = isStoreOpen === 'yes' ? 'no' : 'yes';
+  async function toggleStoreStatus(checkbox) {
+    const newStatus = checkbox.checked ? 'yes' : 'no';
     
     // Upsert status into stores table
     const { error } = await supabaseClient
@@ -362,26 +407,25 @@
 
     if (error) {
       alert("Error updating store status: " + error.message);
+      checkbox.checked = !checkbox.checked; // Revert checkbox if failed
     } else {
       isStoreOpen = newStatus;
-      renderStoreStatusBadge();
+      updateToggleUI();
     }
   }
 
-  function renderStoreStatusBadge() {
-    const container = document.getElementById("storeStatusContainer");
+  function updateToggleUI() {
+    const checkbox = document.getElementById("storeStatusCheckbox");
+    const label = document.getElementById("statusTextLabel");
+    
     if (isStoreOpen === 'yes') {
-      container.innerHTML = `
-        <button onclick="toggleStoreStatus()" class="inline-flex items-center gap-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full transition shadow-xs cursor-pointer" title="Click to close store">
-          🟢 Store Open (Click to Close)
-        </button>
-      `;
+      checkbox.checked = true;
+      label.innerText = "Store Open";
+      label.className = "text-xs font-bold text-emerald-700";
     } else {
-      container.innerHTML = `
-        <button onclick="toggleStoreStatus()" class="inline-flex items-center gap-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-bold px-3 py-1 rounded-full transition shadow-xs cursor-pointer" title="Click to open store">
-          🔴 Store Closed (Click to Open)
-        </button>
-      `;
+      checkbox.checked = false;
+      label.innerText = "Store Closed";
+      label.className = "text-xs font-bold text-rose-700";
     }
   }
 
