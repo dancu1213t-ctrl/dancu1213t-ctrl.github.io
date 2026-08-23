@@ -32,12 +32,10 @@
       </div>
       
       <div class="space-y-6">
-        <!-- Visual Store Grid Picker -->
         <div>
           <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">1. Select Your Store</label>
           <div class="max-h-60 overflow-y-auto custom-scrollbar pr-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
             
-            <!-- Cafe Group -->
             <div onclick="selectStoreCard('Aroma', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/i7i6bbl.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
               <span class="text-xs font-semibold text-slate-700">Aroma</span>
@@ -62,8 +60,6 @@
               <img src="https://i.imgur.com/ojrOPux.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
               <span class="text-xs font-semibold text-slate-700">Shaken&Served</span>
             </div>
-
-            <!-- Food & Others Group -->
             <div onclick="selectStoreCard('Dumpling', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/7pIzEES.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
               <span class="text-xs font-semibold text-slate-700">Dumpling King</span>
@@ -176,9 +172,13 @@
         </div>
         <div>
           <h2 id="portalTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">SwiftShop Portal</h2>
-          <span id="adminBadge" class="inline-flex items-center gap-1.5 mt-1 text-xs font-semibold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
-            <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span> Isolated Vendor Access
-          </span>
+          <div class="flex items-center gap-2 mt-1">
+            <span id="adminBadge" class="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
+              <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span> Isolated Vendor Access
+            </span>
+            <!-- Store Open/Closed Toggle Badge -->
+            <div id="storeStatusContainer"></div>
+          </div>
         </div>
       </div>
       <button class="logout-btn bg-slate-900 hover:bg-slate-800 text-white font-semibold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95" onclick="handlePortalLogout()">Logout</button>
@@ -207,7 +207,6 @@
             <select id="pSubcategorySelect" onchange="handleSubcategoryChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition mb-2">
               <option value="Items">Items (Default)</option>
             </select>
-            <!-- Hidden text input that appears when '+ Add New Subcategory' is selected -->
             <input type="text" id="pSubcategory" placeholder="Enter new subcategory name..." style="display:none;" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
           </div>
 
@@ -227,11 +226,19 @@
         </div>
       </div>
 
-      <!-- INVENTORY LISTING PANEL (Grouped by Subcategory) -->
+      <!-- INVENTORY LISTING PANEL -->
       <div class="lg:col-span-2 space-y-6">
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
-          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">📋 Your Store Inventory</h3>
-          <p class="text-xs text-slate-400 mb-6">Catalog items are automatically separated and grouped by subcategories below.</p>
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">📋 Your Store Inventory</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Manage items, stock statuses, and prices in real-time.</p>
+            </div>
+            <!-- Search Bar -->
+            <div class="w-full sm:w-auto">
+              <input type="text" id="inventorySearch" oninput="filterInventory()" placeholder="Search items..." class="w-full sm:w-64 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+            </div>
+          </div>
           
           <div id="inventoryContainer" class="space-y-6">
             <div class="text-center py-10 text-slate-400 text-sm">Loading inventory...</div>
@@ -278,8 +285,8 @@
 
   let activeCategory = "";
   let currentInventoryData = [];
+  let isStoreOpen = 'yes';
 
-  // Helper for interactive custom card selector
   function selectStoreCard(catValue, element) {
     document.getElementById("loginCategory").value = catValue;
     document.querySelectorAll('.store-card').forEach(card => {
@@ -306,12 +313,11 @@
     }
   }
 
-  function initDashboard() {
+  async function initDashboard() {
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboardScreen").style.display = "block";
     document.getElementById("portalTitle").innerText = `SwiftShop: ${activeCategory}`;
     
-    // Set corresponding logo in the dashboard header
     const storeInfo = vendorData[activeCategory];
     const logoImg = document.getElementById("dashboardLogoImg");
     if (storeInfo && storeInfo.logo) {
@@ -321,12 +327,62 @@
       logoImg.style.display = "none";
     }
 
+    await fetchStoreStatus();
     loadCategoryInventory();
   }
 
   function handlePortalLogout() {
     localStorage.removeItem("portalCat");
     location.reload();
+  }
+
+  async function fetchStoreStatus() {
+    const { data, error } = await supabaseClient
+      .from('stores')
+      .select('is_open')
+      .eq('category', activeCategory)
+      .single();
+
+    if (error || !data) {
+      // Default to open if record doesn't exist yet
+      isStoreOpen = 'yes';
+    } else {
+      isStoreOpen = data.is_open || 'yes';
+    }
+    renderStoreStatusBadge();
+  }
+
+  async function toggleStoreStatus() {
+    const newStatus = isStoreOpen === 'yes' ? 'no' : 'yes';
+    
+    // Upsert status into stores table
+    const { error } = await supabaseClient
+      .from('stores')
+      .upsert({ category: activeCategory, is_open: newStatus });
+
+    if (error) {
+      alert("Error updating store status: " + error.message);
+    } else {
+      isStoreOpen = newStatus;
+      renderStoreStatusBadge();
+    }
+  }
+
+  function renderStoreStatusBadge() {
+    const container = document.getElementById("storeStatusContainer");
+    if (isStoreOpen === 'yes') {
+      container.innerHTML = `
+        <button onclick="toggleStoreStatus()" class="inline-flex items-center gap-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full transition shadow-xs cursor-pointer" title="Click to close store">
+          🟢 Store Open (Click to Close)
+        </button>
+      `;
+    } else {
+      container.innerHTML = `
+        <button onclick="toggleStoreStatus()" class="inline-flex items-center gap-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-bold px-3 py-1 rounded-full transition shadow-xs cursor-pointer" title="Click to open store">
+          🔴 Store Closed (Click to Open)
+        </button>
+      `;
+    }
   }
 
   function handleSubcategoryChange() {
@@ -355,7 +411,6 @@
     optionsHTML += `<option value="NEW_CATEGORY_OPTION">➕ Add New Subcategory...</option>`;
     selectElem.innerHTML = optionsHTML;
 
-    // Check if the currentSub exists in options, else select new or default
     let found = Array.from(selectElem.options).some(opt => opt.value === currentSub);
     if (found) {
       selectElem.value = currentSub;
@@ -389,22 +444,35 @@
 
     currentInventoryData = data || [];
 
-    // Extract unique existing subcategories for this vendor
     const uniqueSubs = new Set(["Items"]);
     currentInventoryData.forEach(item => {
       if (item.subcategory) uniqueSubs.add(item.subcategory.trim());
     });
     updateSubcategoryDropdown(Array.from(uniqueSubs));
 
-    if (currentInventoryData.length === 0) {
-      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-2xl">No items listed for your store yet. Add your first item using the form!</div>`;
+    renderInventoryList(currentInventoryData);
+  }
+
+  function filterInventory() {
+    const query = document.getElementById("inventorySearch").value.toLowerCase().trim();
+    const filtered = currentInventoryData.filter(item => 
+      item.name.toLowerCase().includes(query) || 
+      (item.subcategory && item.subcategory.toLowerCase().includes(query))
+    );
+    renderInventoryList(filtered);
+  }
+
+  function renderInventoryList(itemsArray) {
+    const container = document.getElementById("inventoryContainer");
+
+    if (itemsArray.length === 0) {
+      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-2xl">No matching inventory items found.</div>`;
       return;
     }
 
-    // GROUP ITEMS BY SUBCATEGORY
     const grouped = {};
-    currentInventoryData.forEach((item, index) => {
-      item._originalIndex = index;
+    itemsArray.forEach((item) => {
+      item._originalIndex = currentInventoryData.findIndex(orig => orig.id === item.id);
       const sub = item.subcategory ? item.subcategory.trim() : "General";
       if (!grouped[sub]) {
         grouped[sub] = [];
@@ -414,15 +482,20 @@
 
     container.innerHTML = "";
 
-    // RENDER TABLES BY SUBCATEGORY GROUP
     for (const [subcategory, items] of Object.entries(grouped)) {
       let rowsHTML = "";
       items.forEach(item => {
+        const isActive = item.active === 'yes' || !item.active;
+        const statusBadge = isActive 
+          ? `<button onclick="toggleActiveStatus('${item.id}', 'no')" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full text-xs transition border border-emerald-200" title="Click to mark Out of Stock">🟢 Active</button>`
+          : `<button onclick="toggleActiveStatus('${item.id}', 'yes')" class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold px-2.5 py-1 rounded-full text-xs transition border border-rose-200" title="Click to mark Active">🔴 Sold Out</button>`;
+
         rowsHTML += `
           <tr class="hover:bg-slate-50/80 transition">
             <td class="p-3.5"><img src="${item.image || ''}" class="w-11 h-11 rounded-xl object-cover shadow-xs border border-slate-200" onerror="this.src='https://via.placeholder.com/44'"></td>
             <td class="p-3.5 font-bold text-slate-900">${item.name}</td>
             <td class="p-3.5 font-extrabold text-orange-600">$${Number(item.price).toFixed(2)} BZD</td>
+            <td class="p-3.5">${statusBadge}</td>
             <td class="p-3.5 text-right space-x-1.5">
               <button class="action-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs active:scale-95" onclick="prepareEdit(${item._originalIndex})">Edit</button>
               <button class="action-btn del-btn bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs active:scale-95" onclick="deleteItem('${item.id}')">Delete</button>
@@ -444,6 +517,7 @@
                   <th class="p-3">Image</th>
                   <th class="p-3">Name</th>
                   <th class="p-3">Price</th>
+                  <th class="p-3">Status</th>
                   <th class="p-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -457,12 +531,24 @@
     }
   }
 
+  async function toggleActiveStatus(id, newStatus) {
+    const { error } = await supabaseClient
+      .from('products')
+      .update({ active: newStatus })
+      .eq('id', id);
+
+    if (error) {
+      alert("Error updating status: " + error.message);
+    } else {
+      loadCategoryInventory();
+    }
+  }
+
   async function saveProduct() {
     const id = document.getElementById("editProductId").value;
     const name = document.getElementById("pName").value.trim();
     const price = parseFloat(document.getElementById("pPrice").value);
     
-    // Resolve subcategory value from dropdown or custom input
     const selectElem = document.getElementById("pSubcategorySelect");
     let subcategory = "Items";
     if (selectElem.value === "NEW_CATEGORY_OPTION") {
@@ -583,7 +669,6 @@
     }
   }
 
-  // Check persisted login session on load
   window.addEventListener('DOMContentLoaded', () => {
     const savedCat = localStorage.getItem("portalCat");
     if (savedCat && vendorData[savedCat]) {
