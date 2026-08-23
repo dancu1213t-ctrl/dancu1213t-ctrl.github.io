@@ -40,7 +40,7 @@
 <body>
 
   <!-- 🔐 VENDOR LOGIN SCREEN -->
-  <div id="loginScreen">
+  <div id="loginScreen" style="display:none;">
     <h1>⚡ SwiftPortal</h1>
     <p style="color:#666; font-size:14px; margin-bottom:25px;">Strictly Scoped Vendor Management</p>
     
@@ -122,7 +122,7 @@
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiamFkYnFsbWtrdGxqZnBxb3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MTc2NTIsImV4cCI6MjEwMjQ5MzY1Mn0.RCgn8yNmxkQWFPu6sJdyYD3_zJ7n2QmvPQjqZC70F8s";
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // 🔑 VENDOR PASSWORDS (Customize unique passwords per vendor here)
+  // 🔑 VENDOR PASSWORDS
   const vendorPasswords = {
     "Aroma": "aroma123",
     "Guerrero": "guerrero123",
@@ -182,7 +182,6 @@
     const tbody = document.getElementById("inventoryTableBody");
     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Loading your inventory...</td></tr>`;
 
-    // 🔒 STRICTLY FILTERED TO ONLY PULL THE LOGGED-IN VENDOR'S CATEGORY
     const { data, error } = await supabaseClient
       .from('products')
       .select('*')
@@ -229,7 +228,6 @@
     }
 
     if (id) {
-      // UPDATE EXISTING ITEM
       const { error } = await supabaseClient
         .from('products')
         .update({ name, price, subcategory, image })
@@ -238,7 +236,6 @@
       if (error) alert("Error updating: " + error.message);
       else alert("Item updated successfully!");
     } else {
-      // INSERT NEW ITEM FOR THIS SPECIFIC VENDOR CATEGORY ONLY
       const { error } = await supabaseClient
         .from('products')
         .insert([{ name, price, category: activeCategory, subcategory, image, active: 'yes' }]);
@@ -291,12 +288,14 @@
     }
   }
 
-  // Check persisted login session on load
+  // Check persisted login session on load (prevents screen flashing)
   window.addEventListener('DOMContentLoaded', () => {
     const savedCat = localStorage.getItem("portalCat");
     if (savedCat && vendorPasswords[savedCat]) {
       activeCategory = savedCat;
       initDashboard();
+    } else {
+      document.getElementById("loginScreen").style.display = "block";
     }
   });
 </script>
