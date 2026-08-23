@@ -58,6 +58,20 @@
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
 
+  <!-- 🚨 LOUD ALARM FLOATING ALERT BANNER FOR MERCHANT -->
+  <div id="alarmBanner" style="display:none;" class="fixed top-0 left-0 right-0 z-50 bg-amber-600 text-white px-4 py-3 shadow-2xl flex items-center justify-between animate-bounce">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl animate-pulse">🔔</span>
+      <div>
+        <p class="font-extrabold text-sm uppercase tracking-wide">NEW ORDER RECEIVED!</p>
+        <p class="text-xs text-amber-100 font-medium">Accept and set the order to "Ready" below to silence the alarm.</p>
+      </div>
+    </div>
+    <button onclick="stopMerchantAlarm()" class="bg-white text-amber-700 hover:bg-amber-50 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95">
+      🔕 Silence Alarm
+    </button>
+  </div>
+
   <!-- 🔐 VENDOR LOGIN & STORE SELECTOR SCREEN -->
   <div id="loginScreen" style="display:none;" class="flex items-center justify-center min-h-screen px-4 py-12">
     <div class="max-w-2xl w-full bg-white p-8 sm:p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
@@ -359,6 +373,63 @@
   let activePortalTab = 'inventory';
   let merchantOrdersData = [];
 
+  // 🔊 SYNTHESIZED AUDIO ALARM FOR MERCHANT
+  let audioContext = null;
+  let merchantAlarmInterval = null;
+  let knownOrderIds = new Set();
+
+  function initAudioContext() {
+    if (!audioContext) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) audioContext = new AudioContextClass();
+    }
+    if (audioContext && audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+  }
+
+  function playMerchantBeep() {
+    if (!audioContext) return;
+    try {
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5 Note
+      osc.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.2);
+
+      gain.gain.setValueAtTime(0.4, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+
+      osc.start();
+      osc.stop(audioContext.currentTime + 0.2);
+    } catch (e) {
+      console.warn("Audio playback issue:", e);
+    }
+  }
+
+  function triggerMerchantAlarm() {
+    initAudioContext();
+    document.getElementById("alarmBanner").style.display = "flex";
+    if (!merchantAlarmInterval) {
+      playMerchantBeep();
+      merchantAlarmInterval = setInterval(() => {
+        playMerchantBeep();
+      }, 600);
+    }
+  }
+
+  function stopMerchantAlarm() {
+    document.getElementById("alarmBanner").style.display = "none";
+    if (merchantAlarmInterval) {
+      clearInterval(merchantAlarmInterval);
+      merchantAlarmInterval = null;
+    }
+  }
+
   function selectStoreCard(catValue, element) {
     document.getElementById("loginCategory").value = catValue;
     document.querySelectorAll('.store-card').forEach(card => {
@@ -379,6 +450,7 @@
     if (vendorData[cat] && vendorData[cat].pass === pass) {
       activeCategory = cat;
       localStorage.setItem("portalCat", cat);
+      initAudioContext();
       initDashboard();
     } else {
       alert("Incorrect password for this store.");
@@ -401,11 +473,12 @@
 
     await fetchStoreStatus();
     loadCategoryInventory();
-    fetchMerchantOrders();
+    fetchMerchantOrders(true);
     setupOrdersRealtime();
   }
 
   function handlePortalLogout() {
+    stopMerchantAlarm();
     localStorage.removeItem("portalCat");
     location.reload();
   }
@@ -427,7 +500,7 @@
       tabInv.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2";
       invContent.style.display = "none";
       ordContent.style.display = "block";
-      fetchMerchantOrders();
+      fetchMerchantOrders(false);
     }
   }
 
@@ -762,13 +835,15 @@
     }
   }
 
-  // 🛍️ MERCHANT ORDERS MANAGEMENT SYSTEM
-  async function fetchMerchantOrders() {
+  // 🛍️ MERCHANT ORDERS MANAGEMENT SYSTEM (STORE ISOLATED + LOUD ALARM)
+  async function fetchMerchantOrders(isInitialLoad = false) {
     const container = document.getElementById("merchantOrdersContainer");
     
+    // 🔒 Filters orders strictly for THIS merchant category stored in order_type
     const { data, error } = await supabaseClient
       .from('orders')
       .select('*')
+      .ilike('order_type', `%${activeCategory}%`)
       .order('timestamp', { ascending: false });
 
     if (error) {
@@ -778,6 +853,26 @@
 
     merchantOrdersData = data || [];
     document.getElementById("merchantOrderBadge").innerText = merchantOrdersData.length;
+
+    // Check for pending/new incoming orders for this store to trigger alarm
+    const unacceptedOrders = merchantOrdersData.filter(o => !o.status || o.status === 'Pending');
+
+    let hasNewOrder = false;
+    unacceptedOrders.forEach(order => {
+      if (!knownOrderIds.has(order.order_id)) {
+        knownOrderIds.add(order.order_id);
+        if (!isInitialLoad) {
+          hasNewOrder = true;
+        }
+      }
+    });
+
+    if (hasNewOrder) {
+      triggerMerchantAlarm();
+    } else if (unacceptedOrders.length === 0) {
+      stopMerchantAlarm();
+    }
+
     renderMerchantOrders();
   }
 
@@ -785,7 +880,7 @@
     const container = document.getElementById("merchantOrdersContainer");
     
     if (merchantOrdersData.length === 0) {
-      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">No active orders placed yet.</div>`;
+      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">No active orders placed for ${activeCategory} yet.</div>`;
       return;
     }
 
@@ -839,6 +934,8 @@
   }
 
   async function setOrderStatus(orderId, newStatus) {
+    stopMerchantAlarm();
+
     const { error } = await supabaseClient
       .from('orders')
       .update({ status: newStatus })
@@ -847,7 +944,7 @@
     if (error) {
       alert("Error updating order status: " + error.message);
     } else {
-      fetchMerchantOrders();
+      fetchMerchantOrders(false);
     }
   }
 
@@ -855,10 +952,15 @@
     supabaseClient
       .channel('merchant-orders-channel')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
-        fetchMerchantOrders();
+        fetchMerchantOrders(false);
       })
       .subscribe();
   }
+
+  // Global browser audio resume on user click
+  window.addEventListener('click', () => {
+    initAudioContext();
+  }, { once: true });
 
   window.addEventListener('DOMContentLoaded', () => {
     const savedCat = localStorage.getItem("portalCat");
