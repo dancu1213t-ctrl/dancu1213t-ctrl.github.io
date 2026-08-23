@@ -147,6 +147,7 @@
   };
 
   let activeCategory = "";
+  let currentInventoryData = [];
 
   function handlePortalLogin() {
     const cat = document.getElementById("loginCategory").value;
@@ -189,26 +190,28 @@
       .order('id', { ascending: false });
 
     if (error) {
-      tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Error loading database</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Error loading database: ${error.message}</td></tr>`;
       return;
     }
 
-    if (data.length === 0) {
+    currentInventoryData = data || [];
+
+    if (currentInventoryData.length === 0) {
       tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">No items listed for your store yet. Add your first item above!</td></tr>`;
       return;
     }
 
     tbody.innerHTML = "";
-    data.forEach(item => {
+    currentInventoryData.forEach((item, index) => {
       tbody.innerHTML += `
         <tr>
-          <td><img src="${item.image}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;"></td>
+          <td><img src="${item.image || ''}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/40'"></td>
           <td><strong>${item.name}</strong></td>
           <td>${item.subcategory || 'General'}</td>
           <td>$${Number(item.price).toFixed(2)} BZD</td>
           <td>
-            <button class="action-btn" onclick="editItem(${item.id}, '${item.name.replace(/'/g, "\\'")}', ${item.price}, '${item.subcategory || ''}', '${item.image}')">Edit</button>
-            <button class="action-btn del-btn" onclick="deleteItem(${item.id})">Delete</button>
+            <button class="action-btn" onclick="prepareEdit(${index})">Edit</button>
+            <button class="action-btn del-btn" onclick="deleteItem('${item.id}')">Delete</button>
           </td>
         </tr>
       `;
@@ -228,32 +231,44 @@
     }
 
     if (id) {
+      // UPDATE EXISTING ITEM
       const { error } = await supabaseClient
         .from('products')
         .update({ name, price, subcategory, image })
         .eq('id', id);
 
-      if (error) alert("Error updating: " + error.message);
-      else alert("Item updated successfully!");
+      if (error) {
+        alert("Error updating: " + error.message);
+      } else {
+        alert("Item updated successfully!");
+        resetForm();
+        loadCategoryInventory();
+      }
     } else {
+      // INSERT NEW ITEM
       const { error } = await supabaseClient
         .from('products')
         .insert([{ name, price, category: activeCategory, subcategory, image, active: 'yes' }]);
 
-      if (error) alert("Error adding: " + error.message);
-      else alert("Item added to live database!");
+      if (error) {
+        alert("Error adding: " + error.message);
+      } else {
+        alert("Item added to live database!");
+        resetForm();
+        loadCategoryInventory();
+      }
     }
-
-    resetForm();
-    loadCategoryInventory();
   }
 
-  function editItem(id, name, price, subcategory, image) {
-    document.getElementById("editProductId").value = id;
-    document.getElementById("pName").value = name;
-    document.getElementById("pPrice").value = price;
-    document.getElementById("pSubcategory").value = subcategory;
-    document.getElementById("pImage").value = image;
+  function prepareEdit(index) {
+    const item = currentInventoryData[index];
+    if (!item) return;
+
+    document.getElementById("editProductId").value = item.id;
+    document.getElementById("pName").value = item.name || "";
+    document.getElementById("pPrice").value = item.price || "";
+    document.getElementById("pSubcategory").value = item.subcategory || "";
+    document.getElementById("pImage").value = item.image || "";
     
     document.getElementById("formTitle").innerText = "✏️ Edit Inventory Item";
     document.getElementById("saveButton").innerText = "Update Item";
@@ -281,14 +296,15 @@
       .delete()
       .eq('id', id);
 
-    if (error) alert("Error deleting: " + error.message);
-    else {
+    if (error) {
+      alert("Error deleting: " + error.message);
+    } else {
       alert("Item deleted.");
       loadCategoryInventory();
     }
   }
 
-  // Check persisted login session on load (prevents screen flashing)
+  // Check persisted login session on load
   window.addEventListener('DOMContentLoaded', () => {
     const savedCat = localStorage.getItem("portalCat");
     if (savedCat && vendorPasswords[savedCat]) {
