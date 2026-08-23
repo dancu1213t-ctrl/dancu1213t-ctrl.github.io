@@ -77,7 +77,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
       <!-- ADD / EDIT PRODUCT PANEL (Left Column on Desktop) -->
-      <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 h-fit">
+      <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 h-fit sticky top-6">
         <h3 id="formTitle" class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">➕ Add New Inventory Item</h3>
         <input type="hidden" id="editProductId">
         
@@ -112,25 +112,15 @@
         </div>
       </div>
 
-      <!-- INVENTORY TABLE PANEL (Right 2 Columns on Desktop) -->
-      <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">📋 Your Store Inventory</h3>
-        
-        <div class="overflow-x-auto rounded-xl border border-slate-100">
-          <table class="w-full border-collapse text-left">
-            <thead>
-              <tr class="bg-orange-50 text-orange-800 text-xs uppercase tracking-wider font-bold">
-                <th class="p-3.5">Image</th>
-                <th class="p-3.5">Name</th>
-                <th class="p-3.5">Subcategory</th>
-                <th class="p-3.5">Price</th>
-                <th class="p-3.5 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="inventoryTableBody" class="divide-y divide-slate-100 text-sm text-slate-700">
-              <tr><td colspan="5" class="text-center py-6 text-slate-400">Loading inventory...</td></tr>
-            </tbody>
-          </table>
+      <!-- INVENTORY LISTING PANEL (Grouped by Subcategory) -->
+      <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+          <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">📋 Your Store Inventory</h3>
+          <p class="text-xs text-slate-400 mb-4">Items are automatically separated by subcategories below.</p>
+          
+          <div id="inventoryContainer" class="space-y-6">
+            <div class="text-center py-6 text-slate-400">Loading inventory...</div>
+          </div>
         </div>
       </div>
 
@@ -205,8 +195,8 @@
   }
 
   async function loadCategoryInventory() {
-    const tbody = document.getElementById("inventoryTableBody");
-    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Loading your inventory...</td></tr>`;
+    const container = document.getElementById("inventoryContainer");
+    container.innerHTML = `<div class="text-center py-6 text-slate-400">Loading your inventory...</div>`;
 
     const { data, error } = await supabaseClient
       .from('products')
@@ -215,35 +205,75 @@
       .order('id', { ascending: false });
 
     if (error) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-red-500">Error loading database: ${error.message}</td></tr>`;
+      container.innerHTML = `<div class="text-center py-6 text-red-500">Error loading database: ${error.message}</div>`;
       return;
     }
 
     currentInventoryData = data || [];
 
     if (currentInventoryData.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-400">No items listed for your store yet. Add your first item using the form!</td></tr>`;
+      container.innerHTML = `<div class="text-center py-8 text-slate-400">No items listed for your store yet. Add your first item using the form!</div>`;
       return;
     }
 
-    tbody.innerHTML = "";
+    // GROUP ITEMS BY SUBCATEGORY
+    const grouped = {};
     currentInventoryData.forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr class="hover:bg-slate-50/80 transition">
-          <td class="p-3.5"><img src="${item.image || ''}" class="w-10 h-10 rounded-xl object-cover shadow-xs border border-slate-100" onerror="this.src='https://via.placeholder.com/40'"></td>
-          <td class="p-3.5 font-semibold text-slate-900">${item.name}</td>
-          <td class="p-3.5"><span class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-medium">${item.subcategory || 'General'}</span></td>
-          <td class="p-3.5 font-bold text-orange-600">$${Number(item.price).toFixed(2)} BZD</td>
-          <td class="p-3.5 text-right space-x-1">
-            <button class="action-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition" onclick="prepareEdit(${index})">Edit</button>
-            <button class="action-btn del-btn bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold transition" onclick="deleteItem('${item.id}')">Delete</button>
-          </td>
-        </tr>
-      `;
+      // Keep track of the original index for editing purposes
+      item._originalIndex = index;
+      const sub = item.subcategory ? item.subcategory.trim() : "General";
+      if (!grouped[sub]) {
+        grouped[sub] = [];
+      }
+      grouped[sub].push(item);
     });
+
+    container.innerHTML = "";
+
+    // RENDER TABLES BY SUBCATEGORY GROUP
+    for (const [subcategory, items] of Object.entries(grouped)) {
+      let rowsHTML = "";
+      items.forEach(item => {
+        rowsHTML += `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="p-3.5"><img src="${item.image || ''}" class="w-10 h-10 rounded-xl object-cover shadow-xs border border-slate-100" onerror="this.src='https://via.placeholder.com/40'"></td>
+            <td class="p-3.5 font-semibold text-slate-900">${item.name}</td>
+            <td class="p-3.5 font-bold text-orange-600">$${Number(item.price).toFixed(2)} BZD</td>
+            <td class="p-3.5 text-right space-x-1">
+              <button class="action-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition" onclick="prepareEdit(${item._originalIndex})">Edit</button>
+              <button class="action-btn del-btn bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold transition" onclick="deleteItem('${item.id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      container.innerHTML += `
+        <div class="border border-slate-100 rounded-2xl overflow-hidden bg-white shadow-xs mb-4">
+          <div class="bg-orange-50 px-4 py-3 border-b border-orange-100 flex justify-between items-center">
+            <h4 class="font-bold text-orange-900 text-sm uppercase tracking-wider">📁 ${subcategory}</h4>
+            <span class="text-xs bg-orange-200/60 text-orange-800 font-semibold px-2.5 py-0.5 rounded-full">${items.length} items</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-left">
+              <thead>
+                <tr class="text-slate-400 text-xs uppercase tracking-wider font-semibold border-b border-slate-100 bg-slate-50/50">
+                  <th class="p-3">Image</th>
+                  <th class="p-3">Name</th>
+                  <th class="p-3">Price</th>
+                  <th class="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                ${rowsHTML}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
   }
 
- async function saveProduct() {
+  async function saveProduct() {
     const id = document.getElementById("editProductId").value;
     const name = document.getElementById("pName").value.trim();
     const price = parseFloat(document.getElementById("pPrice").value);
@@ -285,6 +315,7 @@
       }
     }
   }
+
   function prepareEdit(index) {
     const item = currentInventoryData[index];
     if (!item) return;
