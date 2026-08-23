@@ -204,7 +204,11 @@
 
           <div>
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Subcategory</label>
-            <input type="text" id="pSubcategory" placeholder="e.g. Burgers, Drinks" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+            <select id="pSubcategorySelect" onchange="handleSubcategoryChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition mb-2">
+              <option value="Items">Items (Default)</option>
+            </select>
+            <!-- Hidden text input that appears when '+ Add New Subcategory' is selected -->
+            <input type="text" id="pSubcategory" placeholder="Enter new subcategory name..." style="display:none;" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
           </div>
 
           <div>
@@ -325,6 +329,49 @@
     location.reload();
   }
 
+  function handleSubcategoryChange() {
+    const selectElem = document.getElementById("pSubcategorySelect");
+    const inputElem = document.getElementById("pSubcategory");
+    if (selectElem.value === "NEW_CATEGORY_OPTION") {
+      inputElem.style.display = "block";
+      inputElem.value = "";
+      inputElem.focus();
+    } else {
+      inputElem.style.display = "none";
+      inputElem.value = selectElem.value;
+    }
+  }
+
+  function updateSubcategoryDropdown(existingSubcategories, currentSub = "Items") {
+    const selectElem = document.getElementById("pSubcategorySelect");
+    const inputElem = document.getElementById("pSubcategory");
+    
+    let optionsHTML = `<option value="Items">Items (Default)</option>`;
+    existingSubcategories.forEach(sub => {
+      if (sub && sub !== "Items") {
+        optionsHTML += `<option value="${sub}">${sub}</option>`;
+      }
+    });
+    optionsHTML += `<option value="NEW_CATEGORY_OPTION">➕ Add New Subcategory...</option>`;
+    selectElem.innerHTML = optionsHTML;
+
+    // Check if the currentSub exists in options, else select new or default
+    let found = Array.from(selectElem.options).some(opt => opt.value === currentSub);
+    if (found) {
+      selectElem.value = currentSub;
+      inputElem.style.display = "none";
+      inputElem.value = currentSub;
+    } else if (currentSub && currentSub !== "Items") {
+      selectElem.value = "NEW_CATEGORY_OPTION";
+      inputElem.style.display = "block";
+      inputElem.value = currentSub;
+    } else {
+      selectElem.value = "Items";
+      inputElem.style.display = "none";
+      inputElem.value = "Items";
+    }
+  }
+
   async function loadCategoryInventory() {
     const container = document.getElementById("inventoryContainer");
     container.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm">Loading your inventory...</div>`;
@@ -341,6 +388,13 @@
     }
 
     currentInventoryData = data || [];
+
+    // Extract unique existing subcategories for this vendor
+    const uniqueSubs = new Set(["Items"]);
+    currentInventoryData.forEach(item => {
+      if (item.subcategory) uniqueSubs.add(item.subcategory.trim());
+    });
+    updateSubcategoryDropdown(Array.from(uniqueSubs));
 
     if (currentInventoryData.length === 0) {
       container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-2xl">No items listed for your store yet. Add your first item using the form!</div>`;
@@ -407,7 +461,15 @@
     const id = document.getElementById("editProductId").value;
     const name = document.getElementById("pName").value.trim();
     const price = parseFloat(document.getElementById("pPrice").value);
-    const subcategory = document.getElementById("pSubcategory").value.trim() || "Items";
+    
+    // Resolve subcategory value from dropdown or custom input
+    const selectElem = document.getElementById("pSubcategorySelect");
+    let subcategory = "Items";
+    if (selectElem.value === "NEW_CATEGORY_OPTION") {
+      subcategory = document.getElementById("pSubcategory").value.trim() || "Items";
+    } else {
+      subcategory = selectElem.value;
+    }
     
     const fileInput = document.getElementById("pImageFile");
     let imageString = document.getElementById("pImageData").value;
@@ -467,7 +529,20 @@
     document.getElementById("editProductId").value = item.id;
     document.getElementById("pName").value = item.name || "";
     document.getElementById("pPrice").value = item.price || "";
-    document.getElementById("pSubcategory").value = item.subcategory || "";
+    
+    const itemSub = item.subcategory || "Items";
+    const selectElem = document.getElementById("pSubcategorySelect");
+    let found = Array.from(selectElem.options).some(opt => opt.value === itemSub);
+    if (found) {
+      selectElem.value = itemSub;
+      document.getElementById("pSubcategory").style.display = "none";
+      document.getElementById("pSubcategory").value = itemSub;
+    } else {
+      selectElem.value = "NEW_CATEGORY_OPTION";
+      document.getElementById("pSubcategory").style.display = "block";
+      document.getElementById("pSubcategory").value = itemSub;
+    }
+
     document.getElementById("pImageData").value = item.image || "";
     document.getElementById("pImageFile").value = "";
     
@@ -481,6 +556,8 @@
     document.getElementById("editProductId").value = "";
     document.getElementById("pName").value = "";
     document.getElementById("pPrice").value = "";
+    document.getElementById("pSubcategorySelect").value = "Items";
+    document.getElementById("pSubcategory").style.display = "none";
     document.getElementById("pSubcategory").value = "";
     document.getElementById("pImageFile").value = "";
     document.getElementById("pImageData").value = "";
