@@ -400,14 +400,13 @@
   async function toggleStoreStatus(checkbox) {
     const newStatus = checkbox.checked ? 'yes' : 'no';
     
-    // Upsert status into stores table
     const { error } = await supabaseClient
       .from('stores')
       .upsert({ category: activeCategory, is_open: newStatus });
 
     if (error) {
       alert("Error updating store status: " + error.message);
-      checkbox.checked = !checkbox.checked; // Revert checkbox if failed
+      checkbox.checked = !checkbox.checked;
     } else {
       isStoreOpen = newStatus;
       updateToggleUI();
@@ -529,13 +528,16 @@
     for (const [subcategory, items] of Object.entries(grouped)) {
       let rowsHTML = "";
       items.forEach(item => {
+        // active === 'yes' or missing means active. active === 'no' means Sold Out / Hidden
         const isActive = item.active === 'yes' || !item.active;
+        
+        // Button toggles to the OPPOSITE action clearly
         const statusBadge = isActive 
-          ? `<button onclick="toggleActiveStatus('${item.id}', 'no')" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full text-xs transition border border-emerald-200" title="Click to mark Out of Stock">🟢 Active</button>`
-          : `<button onclick="toggleActiveStatus('${item.id}', 'yes')" class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold px-2.5 py-1 rounded-full text-xs transition border border-rose-200" title="Click to mark Active">🔴 Sold Out</button>`;
+          ? `<button onclick="toggleActiveStatus('${item.id}', 'no')" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-emerald-200 cursor-pointer shadow-xs" title="Click to mark Sold Out">🟢 Active (Show)</button>`
+          : `<button onclick="toggleActiveStatus('${item.id}', 'yes')" class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-rose-200 cursor-pointer shadow-xs" title="Click to make Active">🔴 Sold Out (Hidden)</button>`;
 
         rowsHTML += `
-          <tr class="hover:bg-slate-50/80 transition">
+          <tr class="hover:bg-slate-50/80 transition ${!isActive ? 'opacity-60 bg-slate-50/50' : ''}">
             <td class="p-3.5"><img src="${item.image || ''}" class="w-11 h-11 rounded-xl object-cover shadow-xs border border-slate-200" onerror="this.src='https://via.placeholder.com/44'"></td>
             <td class="p-3.5 font-bold text-slate-900">${item.name}</td>
             <td class="p-3.5 font-extrabold text-orange-600">$${Number(item.price).toFixed(2)} BZD</td>
@@ -679,7 +681,7 @@
     document.getElementById("formTitle").innerText = "✏️ Edit Inventory Item";
     document.getElementById("saveButton").innerText = "Update Item";
     document.getElementById("cancelButton").style.display = "block";
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: top, behavior: 'smooth' });
   }
 
   function resetForm() {
