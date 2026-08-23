@@ -24,7 +24,9 @@
     <div class="max-w-2xl w-full bg-white p-8 sm:p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
       
       <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-600 text-white rounded-2xl text-2xl mb-4 font-bold shadow-md shadow-orange-600/30">⚡</div>
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-50 rounded-full mb-4 shadow-md shadow-orange-600/20 overflow-hidden border-2 border-orange-200">
+          <img src="https://i.imgur.com/oh9MYxE.png" alt="SwiftShop Logo" class="w-full h-full object-cover">
+        </div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">SwiftShop Portal</h1>
         <p class="text-slate-500 text-sm mt-1">Select your merchant profile and securely authenticate below</p>
       </div>
@@ -124,7 +126,7 @@
             </div>
 
           </div>
-          <!-- Hidden Native Select to keep the exact original JS logic intact -->
+          <!-- Hidden Native Select to keep original JS logic intact -->
           <select id="loginCategory" class="hidden">
             <option value="">Select Your Store / Category</option>
             <option value="Aroma">Aroma</option>
@@ -152,7 +154,7 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">2. Enter Store Password</label>
-          <input type="password" id="loginPassword" placeholder="••••••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition shadow-inner">
+          <input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="new-password" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition shadow-inner">
         </div>
 
         <button onclick="handlePortalLogin()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-orange-600/25 active:scale-[0.98] transition">
@@ -169,7 +171,9 @@
     <!-- Top Professional Header Bar -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 text-orange-600 flex items-center justify-center font-bold text-xl shadow-inner">⚡</div>
+        <div id="dashboardLogoContainer" class="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center overflow-hidden shadow-inner p-1">
+          <img id="dashboardLogoImg" src="" alt="Store Logo" class="w-full h-full object-contain">
+        </div>
         <div>
           <h2 id="portalTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">SwiftShop Portal</h2>
           <span id="adminBadge" class="inline-flex items-center gap-1.5 mt-1 text-xs font-semibold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
@@ -244,28 +248,28 @@
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiamFkYnFsbWtrdGxqZnBxb3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MTc2NTIsImV4cCI6MjEwMjQ5MzY1Mn0.RCgn8yNmxkQWFPu6sJdyYD3_zJ7n2QmvPQjqZC70F8s";
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // 🔑 VENDOR PASSWORDS
-  const vendorPasswords = {
-    "Aroma": "aroma123",
-    "Guerrero": "guerrero123",
-    "AddToCart": "cart123",
-    "Cosmetics": "cosmetics123",
-    "Leo Meatpies": "leo123",
-    "TFC": "tfc123",
-    "Neeyas Backyard": "neeya123",
-    "Burger But": "burger123",
-    "Vegetables": "veg123",
-    "Faye": "faye123",
-    "Maria": "maria123",
-    "Shaken": "shaken123",
-    "Sister": "sister123",
-    "Brew": "brew123",
-    "Dumpling": "dumpling123",
-    "Salsas": "salsas123",
-    "Lunch": "lunch123",
-    "Electronics": "electronics123",
-    "Breakfast": "break123",
-    "Urban": "urban123"
+  // 🔑 VENDOR PASSWORDS & LOGOS MAPPING
+  const vendorData = {
+    "Aroma": { pass: "aroma123", logo: "https://i.imgur.com/i7i6bbl.png" },
+    "Guerrero": { pass: "guerrero123", logo: "https://i.imgur.com/U93eRx4.jpeg" },
+    "AddToCart": { pass: "cart123", logo: "https://i.imgur.com/ijxrW5d.jpeg" },
+    "Cosmetics": { pass: "cosmetics123", logo: "https://i.imgur.com/4HuDzQg.png" },
+    "Leo Meatpies": { pass: "leo123", logo: "https://i.imgur.com/aggMVYd.jpeg" },
+    "TFC": { pass: "tfc123", logo: "https://i.imgur.com/sDzNncE.png" },
+    "Neeyas Backyard": { pass: "neeya123", logo: "https://i.imgur.com/DJb7os5.jpeg" },
+    "Burger But": { pass: "burger123", logo: "https://i.imgur.com/kEb6w8N.png" },
+    "Vegetables": { pass: "veg123", logo: "" },
+    "Faye": { pass: "faye123", logo: "https://i.imgur.com/0cSlDIx.jpeg" },
+    "Maria": { pass: "maria123", logo: "https://i.imgur.com/zKm0iej.png" },
+    "Shaken": { pass: "shaken123", logo: "https://i.imgur.com/ojrOPux.png" },
+    "Sister": { pass: "sister123", logo: "https://i.imgur.com/RQpdN14.jpeg" },
+    "Brew": { pass: "brew123", logo: "https://i.imgur.com/dxhMWyb.png" },
+    "Dumpling": { pass: "dumpling123", logo: "https://i.imgur.com/7pIzEES.png" },
+    "Salsas": { pass: "salsas123", logo: "https://i.imgur.com/g5rhQkp.png" },
+    "Lunch": { pass: "lunch123", logo: "" },
+    "Electronics": { pass: "electronics123", logo: "" },
+    "Breakfast": { pass: "break123", logo: "" },
+    "Urban": { pass: "urban123", logo: "https://i.imgur.com/sdwXPEa.png" }
   };
 
   let activeCategory = "";
@@ -289,7 +293,7 @@
       return;
     }
 
-    if (vendorPasswords[cat] && vendorPasswords[cat] === pass) {
+    if (vendorData[cat] && vendorData[cat].pass === pass) {
       activeCategory = cat;
       localStorage.setItem("portalCat", cat);
       initDashboard();
@@ -302,6 +306,17 @@
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboardScreen").style.display = "block";
     document.getElementById("portalTitle").innerText = `SwiftShop: ${activeCategory}`;
+    
+    // Set corresponding logo in the dashboard header
+    const storeInfo = vendorData[activeCategory];
+    const logoImg = document.getElementById("dashboardLogoImg");
+    if (storeInfo && storeInfo.logo) {
+      logoImg.src = storeInfo.logo;
+      logoImg.style.display = "block";
+    } else {
+      logoImg.style.display = "none";
+    }
+
     loadCategoryInventory();
   }
 
@@ -494,7 +509,7 @@
   // Check persisted login session on load
   window.addEventListener('DOMContentLoaded', () => {
     const savedCat = localStorage.getItem("portalCat");
-    if (savedCat && vendorPasswords[savedCat]) {
+    if (savedCat && vendorData[savedCat]) {
       activeCategory = savedCat;
       initDashboard();
     } else {
