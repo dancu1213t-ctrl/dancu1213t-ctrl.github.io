@@ -59,17 +59,49 @@
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
 
   <!-- 🚨 LOUD ALARM FLOATING ALERT BANNER FOR MERCHANT -->
-  <div id="alarmBanner" style="display:none;" class="fixed top-0 left-0 right-0 z-50 bg-amber-600 text-white px-4 py-3 shadow-2xl flex items-center justify-between animate-bounce">
+  <div id="alarmBanner" style="display:none;" class="fixed top-0 left-0 right-0 z-40 bg-amber-600 text-white px-4 py-3 shadow-2xl flex items-center justify-between animate-bounce">
     <div class="flex items-center gap-3">
       <span class="text-2xl animate-pulse">🔔</span>
       <div>
         <p class="font-extrabold text-sm uppercase tracking-wide">NEW ORDER RECEIVED!</p>
-        <p class="text-xs text-amber-100 font-medium">Accept and set the order to "Ready" below to silence the alarm.</p>
+        <p class="text-xs text-amber-100 font-medium">Accept order to stop alarm and send to kitchen preparation.</p>
       </div>
     </div>
     <button onclick="stopMerchantAlarm()" class="bg-white text-amber-700 hover:bg-amber-50 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95">
-      🔕 Silence Alarm
+      🔕 Mute Alarm
     </button>
+  </div>
+
+  <!-- 📋 NEW ORDER DETAILED POPUP MODAL -->
+  <div id="newOrderModal" style="display:none;" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+        <div>
+          <span id="modalOrderId" class="text-xs font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200">#ORDER-000</span>
+          <h3 id="modalCustomerName" class="text-lg font-extrabold text-slate-900 mt-2">Customer Order</h3>
+          <p id="modalCustomerPhone" class="text-xs font-semibold text-slate-500">Phone: N/A</p>
+        </div>
+        <button onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Order Items & Images</h4>
+        <div id="modalOrderItems" class="space-y-2 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+          <!-- Items injected here dynamically -->
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 text-xs text-slate-600 space-y-1">
+        <p id="modalOrderType"><strong>Type:</strong> Delivery</p>
+        <p id="modalOrderTime"><strong>Placed At:</strong> N/A</p>
+      </div>
+
+      <div id="modalActionContainer" class="pt-2 flex flex-col gap-2">
+        <!-- Action Buttons Injected Dynamically -->
+      </div>
+    </div>
   </div>
 
   <!-- 🔐 VENDOR LOGIN & STORE SELECTOR SCREEN -->
@@ -321,7 +353,7 @@
       <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex justify-between items-center">
         <div>
           <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">🛍️ Merchant Orders Queue</h3>
-          <p class="text-xs text-slate-400 mt-0.5">Incoming customer orders for your store. Toggle to "Ready" to alert drivers.</p>
+          <p class="text-xs text-slate-400 mt-0.5">Incoming customer orders. Accept orders to prepare, then toggle to "Ready" to dispatch drivers.</p>
         </div>
         <button onclick="fetchMerchantOrders()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-xs active:scale-95">🔄 Refresh Orders</button>
       </div>
@@ -472,7 +504,7 @@
     }
 
     await fetchStoreStatus();
-    loadCategoryInventory();
+    await loadCategoryInventory();
     fetchMerchantOrders(true);
     setupOrdersRealtime();
   }
@@ -835,11 +867,10 @@
     }
   }
 
-  // 🛍️ MERCHANT ORDERS MANAGEMENT SYSTEM (STORE ISOLATED + LOUD ALARM)
+  // 🛍️ MERCHANT ORDERS MANAGEMENT SYSTEM (POPUP + IMAGE MATCHING)
   async function fetchMerchantOrders(isInitialLoad = false) {
     const container = document.getElementById("merchantOrdersContainer");
     
-    // 🔒 Filters orders strictly for THIS merchant category stored in order_type
     const { data, error } = await supabaseClient
       .from('orders')
       .select('*')
@@ -854,21 +885,21 @@
     merchantOrdersData = data || [];
     document.getElementById("merchantOrderBadge").innerText = merchantOrdersData.length;
 
-    // Check for pending/new incoming orders for this store to trigger alarm
     const unacceptedOrders = merchantOrdersData.filter(o => !o.status || o.status === 'Pending');
 
-    let hasNewOrder = false;
+    let newestOrder = null;
     unacceptedOrders.forEach(order => {
       if (!knownOrderIds.has(order.order_id)) {
         knownOrderIds.add(order.order_id);
         if (!isInitialLoad) {
-          hasNewOrder = true;
+          newestOrder = order;
         }
       }
     });
 
-    if (hasNewOrder) {
+    if (newestOrder) {
       triggerMerchantAlarm();
+      openOrderModal(newestOrder);
     } else if (unacceptedOrders.length === 0) {
       stopMerchantAlarm();
     }
@@ -886,45 +917,48 @@
 
     let html = "";
     merchantOrdersData.forEach(order => {
-      let isReady = order.status === 'Ready';
-      let isDelivered = order.status === 'Delivered';
+      const status = order.status || 'Pending';
+      const isDelivered = status === 'Delivered';
 
-      let statusBtn = "";
+      let statusBadgeClass = 'bg-amber-100 text-amber-800';
+      if (status === 'Preparing') statusBadgeClass = 'bg-purple-100 text-purple-800';
+      if (status === 'Ready') statusBadgeClass = 'bg-emerald-100 text-emerald-800';
+      if (status === 'On the Way') statusBadgeClass = 'bg-blue-100 text-blue-800';
+      if (status === 'Delivered') statusBadgeClass = 'bg-slate-100 text-slate-700';
+
+      let actionButtons = "";
       if (!isDelivered) {
-        if (!isReady) {
-          statusBtn = `<button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🔔 Set to "Ready" (Dispatch Runner)</button>`;
-        } else {
-          statusBtn = `<button onclick="setOrderStatus('${order.order_id}', 'Pending')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">⏳ Revert to Pending</button>`;
+        if (status === 'Pending') {
+          actionButtons = `<button onclick="acceptOrder('${order.order_id}')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🧑‍🍳 Accept & Start Preparing</button>`;
+        } else if (status === 'Preparing') {
+          actionButtons = `<button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🔔 Set to "Ready" (Dispatch Runner)</button>`;
+        } else if (status === 'Ready') {
+          actionButtons = `<span class="text-xs font-bold text-emerald-600 flex items-center gap-1">✅ Ready for Runner Pickup</span>`;
         }
       }
 
       html += `
-        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3 hover:border-orange-200 transition">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
             <div>
-              <span class="text-xs font-black text-slate-400">Order ID: #${String(order.order_id).slice(-8)}</span>
+              <span class="text-xs font-black text-slate-400">#${String(order.order_id).slice(-8)}</span>
               <p class="text-sm font-bold text-slate-900 mt-0.5">${order.customer_name || 'Guest'}</p>
             </div>
-            <div>
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
-                order.status === 'Ready' ? 'bg-emerald-100 text-emerald-800' :
-                order.status === 'On the Way' ? 'bg-blue-100 text-blue-800' :
-                order.status === 'Delivered' ? 'bg-slate-100 text-slate-700' : 'bg-amber-100 text-amber-800'
-              }">
-                ${order.status || 'Pending'}
-              </span>
-            </div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold ${statusBadgeClass}">
+              ${status}
+            </span>
           </div>
 
           <div class="text-xs text-slate-600 space-y-1">
             <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
-            <p><strong>Order Type:</strong> ${order.order_type || 'Delivery'}</p>
-            <p><strong>Assigned Driver:</strong> ${order.active_status || 'Unassigned'}</p>
-            <p><strong>Time:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}</p>
+            <p><strong>Details:</strong> ${order.order_type || 'Delivery'}</p>
+            <p><strong>Driver:</strong> 🛵 ${order.active_status || 'Unassigned'}</p>
+            <p><strong>Placed At:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}</p>
           </div>
 
-          <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
-            ${statusBtn}
+          <div class="pt-2 flex justify-between items-center border-t border-slate-100">
+            <button onclick="viewOrderDetails('${order.order_id}')" class="text-xs font-bold text-orange-600 hover:underline">🔍 View Items</button>
+            ${actionButtons}
           </div>
         </div>
       `;
@@ -933,9 +967,84 @@
     container.innerHTML = html;
   }
 
-  async function setOrderStatus(orderId, newStatus) {
-    stopMerchantAlarm();
+  function viewOrderDetails(orderId) {
+    const order = merchantOrdersData.find(o => o.order_id === orderId);
+    if (order) openOrderModal(order);
+  }
 
+  function openOrderModal(order) {
+    document.getElementById("modalOrderId").innerText = `#${String(order.order_id).slice(-8)}`;
+    document.getElementById("modalCustomerName").innerText = order.customer_name || 'Guest Customer';
+    document.getElementById("modalCustomerPhone").innerText = `Phone: ${order.phone || 'N/A'}`;
+    document.getElementById("modalOrderType").innerHTML = `<strong>Order Details:</strong> ${order.order_type || 'N/A'}`;
+    document.getElementById("modalOrderTime").innerHTML = `<strong>Placed At:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}`;
+
+    // Render Items and Match Images from currentInventoryData
+    const itemsContainer = document.getElementById("modalOrderItems");
+    itemsContainer.innerHTML = "";
+
+    const rawDetails = order.order_type || "";
+    const lineItems = rawDetails.split("|").map(s => s.trim()).filter(s => s.startsWith("-"));
+
+    if (lineItems.length > 0) {
+      lineItems.forEach(line => {
+        const cleanName = line.replace(/^-/, '').split("(Qty:")[0].trim();
+        
+        // Find matching product image from store inventory
+        const matchedProduct = currentInventoryData.find(p => p.name.toLowerCase().trim() === cleanName.toLowerCase().trim());
+        const imgUrl = matchedProduct ? matchedProduct.image : "https://via.placeholder.com/48";
+
+        itemsContainer.innerHTML += `
+          <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-slate-100 shadow-xs">
+            <img src="${imgUrl}" class="w-12 h-12 rounded-lg object-cover border border-slate-200">
+            <div class="flex-grow text-xs">
+              <p class="font-bold text-slate-800">${line.replace(/^-/, '').trim()}</p>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      itemsContainer.innerHTML = `<p class="text-xs text-slate-600 p-2">${rawDetails}</p>`;
+    }
+
+    // Modal Action Buttons
+    const actionsContainer = document.getElementById("modalActionContainer");
+    const status = order.status || 'Pending';
+
+    if (status === 'Pending') {
+      actionsContainer.innerHTML = `
+        <button onclick="acceptOrder('${order.order_id}')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-purple-600/20 active:scale-95 transition">
+          🧑‍🍳 Accept Order & Stop Alarm
+        </button>
+      `;
+    } else if (status === 'Preparing') {
+      actionsContainer.innerHTML = `
+        <button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20 active:scale-95 transition">
+          🔔 Set to "Ready" (Dispatch Runner)
+        </button>
+      `;
+    } else {
+      actionsContainer.innerHTML = `
+        <button onclick="closeOrderModal()" class="w-full bg-slate-100 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider hover:bg-slate-200 transition">
+          Close Window
+        </button>
+      `;
+    }
+
+    document.getElementById("newOrderModal").style.display = "flex";
+  }
+
+  function closeOrderModal() {
+    document.getElementById("newOrderModal").style.display = "none";
+  }
+
+  async function acceptOrder(orderId) {
+    stopMerchantAlarm();
+    await setOrderStatus(orderId, 'Preparing');
+    closeOrderModal();
+  }
+
+  async function setOrderStatus(orderId, newStatus) {
     const { error } = await supabaseClient
       .from('orders')
       .update({ status: newStatus })
