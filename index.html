@@ -102,7 +102,7 @@
       <div>
         <h4 class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-2.5">Items in Order</h4>
         <div id="modalOrderItems" class="space-y-2 bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60">
-          <!-- Items injected here dynamically -->
+          <!-- Items injected here dynamically as single neat vertical list -->
         </div>
       </div>
 
@@ -886,6 +886,31 @@
     }
   }
 
+  // 🛠️ HELPER TO SPLIT AND PARSE RAW ORDER ITEMS INTO A CLEAN ARRAY
+  function parseOrderItemsList(rawOrderType) {
+    if (!rawOrderType) return [];
+    
+    // Split on pipe (|), newlines (\n), or commas if formatted as a single string
+    const rawTokens = rawOrderType.split(/\||\n/).map(s => s.trim()).filter(Boolean);
+    const parsedItems = [];
+
+    rawTokens.forEach(token => {
+      // Clean leading bullet points or dashes
+      const cleaned = token.replace(/^[-•*]\s*/, '').trim();
+      
+      // Filter out non-item strings like "Type: Delivery" or general tags if present
+      if (cleaned.toLowerCase().startsWith("type:") || cleaned.toLowerCase().startsWith("order:")) {
+        return;
+      }
+
+      if (cleaned) {
+        parsedItems.push(cleaned);
+      }
+    });
+
+    return parsedItems;
+  }
+
   async function fetchMerchantOrders(isInitialLoad = false) {
     const container = document.getElementById("merchantOrdersContainer");
     
@@ -953,8 +978,25 @@
         }
       }
 
+      // Parse and build neat vertical item stack for each card
+      const itemsList = parseOrderItemsList(order.order_type);
+      let itemsStackHTML = "";
+
+      if (itemsList.length > 0) {
+        itemsList.forEach((itemText, idx) => {
+          itemsStackHTML += `
+            <div class="flex items-start gap-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-xs">
+              <span class="w-5 h-5 rounded-lg bg-orange-100 text-orange-700 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+              <span class="font-bold text-slate-800 leading-tight">${itemText}</span>
+            </div>
+          `;
+        });
+      } else {
+        itemsStackHTML = `<p class="text-xs text-slate-500 italic p-2">${order.order_type || 'No item detail specified'}</p>`;
+      }
+
       html += `
-        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs space-y-3 hover:border-orange-200 transition">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs space-y-4 hover:border-orange-200 transition">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
             <div>
               <span class="text-[11px] font-black text-slate-400">#${String(order.order_id).slice(-8)}</span>
@@ -965,15 +1007,22 @@
             </span>
           </div>
 
-          <div class="text-xs text-slate-600 space-y-1">
+          <!-- Vertical Items Stack -->
+          <div class="space-y-1.5">
+            <p class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Ordered Items (${itemsList.length}):</p>
+            <div class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+              ${itemsStackHTML}
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-600 grid grid-cols-2 gap-2 bg-slate-50/50 p-3 rounded-xl border border-slate-100">
             <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
-            <p><strong>Order Info:</strong> ${order.order_type || 'Delivery'}</p>
             <p><strong>Runner:</strong> 🛵 ${order.active_status || 'Unassigned'}</p>
-            <p><strong>Placed At:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}</p>
+            <p class="col-span-2"><strong>Placed At:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}</p>
           </div>
 
           <div class="pt-2 flex justify-between items-center border-t border-slate-100">
-            <button onclick="viewOrderDetails('${order.order_id}')" class="text-xs font-bold text-orange-600 hover:underline">🔍 View Items Breakdown</button>
+            <button onclick="viewOrderDetails('${order.order_id}')" class="text-xs font-bold text-orange-600 hover:underline">🔍 View Details Modal</button>
             ${actionButtons}
           </div>
         </div>
@@ -998,26 +1047,26 @@
     const itemsContainer = document.getElementById("modalOrderItems");
     itemsContainer.innerHTML = "";
 
-    const rawDetails = order.order_type || "";
-    const lineItems = rawDetails.split("|").map(s => s.trim()).filter(s => s.startsWith("-"));
+    const itemsList = parseOrderItemsList(order.order_type);
 
-    if (lineItems.length > 0) {
-      lineItems.forEach(line => {
-        const cleanName = line.replace(/^-/, '').split("(Qty:")[0].trim();
+    if (itemsList.length > 0) {
+      itemsList.forEach((line, idx) => {
+        const cleanName = line.split("(Qty:")[0].trim();
         const matchedProduct = currentInventoryData.find(p => p.name.toLowerCase().trim() === cleanName.toLowerCase().trim());
         const imgUrl = matchedProduct ? matchedProduct.image : "https://via.placeholder.com/48";
 
         itemsContainer.innerHTML += `
-          <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-slate-100 shadow-xs">
-            <img src="${imgUrl}" class="w-10 h-10 rounded-lg object-cover border border-slate-200">
+          <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/80 shadow-xs">
+            <span class="w-6 h-6 rounded-lg bg-orange-100 text-orange-800 font-black text-xs flex items-center justify-center shrink-0">${idx + 1}</span>
+            <img src="${imgUrl}" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0">
             <div class="flex-grow text-xs">
-              <p class="font-bold text-slate-800">${line.replace(/^-/, '').trim()}</p>
+              <p class="font-bold text-slate-800 leading-snug">${line}</p>
             </div>
           </div>
         `;
       });
     } else {
-      itemsContainer.innerHTML = `<p class="text-xs text-slate-600 p-2">${rawDetails}</p>`;
+      itemsContainer.innerHTML = `<p class="text-xs text-slate-600 p-2">${order.order_type || 'No item details'}</p>`;
     }
 
     const actionsContainer = document.getElementById("modalActionContainer");
