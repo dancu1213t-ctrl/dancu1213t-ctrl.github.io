@@ -11,91 +11,104 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* 🎚️ SLIDING TOGGLE SWITCH */
+    /* Modern Background Pattern */
+    .bg-mesh {
+      background-color: #f8fafc;
+      background-image: radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.05) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(234, 88, 12, 0.05) 0px, transparent 50%);
+    }
+
+    /* Modern Toggle Control */
     .store-toggle-switch {
       position: relative;
       display: inline-block;
-      width: 48px;
-      height: 26px;
+      width: 44px;
+      height: 24px;
     }
-    .store-toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .store-toggle-switch input { opacity: 0; width: 0; height: 0; }
     .store-slider {
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #cbd5e1;
-      transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 34px;
     }
     .store-slider:before {
       position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
+      height: 18px;
+      width: 18px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
     .store-toggle-switch input:checked + .store-slider {
-      background-color: #10b981; /* Emerald green for Open */
+      background-color: #10b981;
     }
     .store-toggle-switch input:checked + .store-slider:before {
-      transform: translateX(22px);
+      transform: translateX(20px);
+    }
+
+    .store-card.active-card {
+      border-color: #ea580c !important;
+      background-color: #fff7ed !important;
+      box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.2) !important;
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
+<body class="bg-mesh text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
 
-  <!-- 🚨 LOUD ALARM FLOATING ALERT BANNER FOR MERCHANT -->
-  <div id="alarmBanner" style="display:none;" class="fixed top-0 left-0 right-0 z-40 bg-amber-600 text-white px-4 py-3 shadow-2xl flex items-center justify-between animate-bounce">
-    <div class="flex items-center gap-3">
-      <span class="text-2xl animate-pulse">🔔</span>
+  <!-- 🚨 LOUD ALARM FLOATING ALERT BANNER -->
+  <div id="alarmBanner" style="display:none;" class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3.5 shadow-xl flex items-center justify-between animate-bounce border-b border-amber-400">
+    <div class="flex items-center gap-3.5">
+      <div class="p-2 bg-white/10 rounded-xl backdrop-blur-md">
+        <span class="text-xl animate-pulse">🔔</span>
+      </div>
       <div>
-        <p class="font-extrabold text-sm uppercase tracking-wide">NEW ORDER RECEIVED!</p>
-        <p class="text-xs text-amber-100 font-medium">Accept order to stop alarm and send to kitchen preparation.</p>
+        <p class="font-black text-xs uppercase tracking-widest text-amber-200">New Incoming Order!</p>
+        <p class="text-xs font-semibold text-white">Accept order to silence alarm & send to kitchen preparation queue.</p>
       </div>
     </div>
-    <button onclick="stopMerchantAlarm()" class="bg-white text-amber-700 hover:bg-amber-50 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95">
-      🔕 Mute Alarm
+    <button onclick="stopMerchantAlarm()" class="bg-white text-amber-800 hover:bg-amber-50 font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wider shadow-md transition active:scale-95">
+      🔕 Silence Alarm
     </button>
   </div>
 
   <!-- 📋 NEW ORDER DETAILED POPUP MODAL -->
-  <div id="newOrderModal" style="display:none;" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
-      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+  <div id="newOrderModal" style="display:none;" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-5 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      
+      <div class="flex justify-between items-start border-b border-slate-100 pb-4">
         <div>
-          <span id="modalOrderId" class="text-xs font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200">#ORDER-000</span>
-          <h3 id="modalCustomerName" class="text-lg font-extrabold text-slate-900 mt-2">Customer Order</h3>
-          <p id="modalCustomerPhone" class="text-xs font-semibold text-slate-500">Phone: N/A</p>
+          <span id="modalOrderId" class="text-[11px] font-black uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">#ORDER-000</span>
+          <h3 id="modalCustomerName" class="text-xl font-black text-slate-900 mt-2">Customer Order</h3>
+          <p id="modalCustomerPhone" class="text-xs font-medium text-slate-500">Phone: N/A</p>
         </div>
-        <button onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-600 p-1">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <button onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-600 p-2 hover:bg-slate-100 rounded-xl transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
       <div>
-        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Order Items & Images</h4>
-        <div id="modalOrderItems" class="space-y-2 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+        <h4 class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-2.5">Items in Order</h4>
+        <div id="modalOrderItems" class="space-y-2 bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60">
           <!-- Items injected here dynamically -->
         </div>
       </div>
 
-      <div class="pt-2 border-t border-slate-100 text-xs text-slate-600 space-y-1">
-        <p id="modalOrderType"><strong>Type:</strong> Delivery</p>
-        <p id="modalOrderTime"><strong>Placed At:</strong> N/A</p>
+      <div class="pt-2 border-t border-slate-100 text-xs text-slate-600 space-y-1.5 bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+        <p id="modalOrderType" class="font-medium"><strong>Type:</strong> Delivery</p>
+        <p id="modalOrderTime" class="font-medium"><strong>Placed At:</strong> N/A</p>
       </div>
 
       <div id="modalActionContainer" class="pt-2 flex flex-col gap-2">
@@ -106,100 +119,106 @@
 
   <!-- 🔐 VENDOR LOGIN & STORE SELECTOR SCREEN -->
   <div id="loginScreen" style="display:none;" class="flex items-center justify-center min-h-screen px-4 py-12">
-    <div class="max-w-2xl w-full bg-white p-8 sm:p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
+    <div class="max-w-2xl w-full bg-white/90 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80">
       
       <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-50 rounded-full mb-4 shadow-md shadow-orange-600/20 overflow-hidden border-2 border-orange-200">
-          <img src="https://i.imgur.com/oh9MYxE.png" alt="SwiftShop Logo" class="w-full h-full object-cover">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-orange-500 to-amber-500 rounded-2xl mb-4 shadow-lg shadow-orange-500/25 overflow-hidden p-0.5">
+          <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center p-1">
+            <img src="https://i.imgur.com/oh9MYxE.png" alt="SwiftShop Logo" class="w-full h-full object-contain">
+          </div>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">SwiftShop Portal</h1>
-        <p class="text-slate-500 text-sm mt-1">Select your merchant profile and securely authenticate below</p>
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Vendor Portal</h1>
+        <p class="text-slate-500 text-xs sm:text-sm font-medium mt-1">Select your business profile to enter management dashboard</p>
       </div>
       
       <div class="space-y-6">
         <div>
-          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">1. Select Your Store</label>
-          <div class="max-h-60 overflow-y-auto custom-scrollbar pr-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div class="flex justify-between items-center mb-2.5">
+            <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider">1. Select Merchant Profile</label>
+            <input type="text" id="storeSearchInput" oninput="filterStoreCards()" placeholder="Quick filter..." class="text-xs px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 focus:outline-none focus:ring-1 focus:ring-orange-500 w-36">
+          </div>
+
+          <div id="storeGridContainer" class="max-h-64 overflow-y-auto custom-scrollbar pr-1 grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             
-            <div onclick="selectStoreCard('Aroma', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/i7i6bbl.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Aroma</span>
+            <div onclick="selectStoreCard('Aroma', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/i7i6bbl.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Aroma</span>
             </div>
-            <div onclick="selectStoreCard('Urban', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/sdwXPEa.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Urban Cafe</span>
+            <div onclick="selectStoreCard('Urban', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/sdwXPEa.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Urban Cafe</span>
             </div>
-            <div onclick="selectStoreCard('Brew', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/dxhMWyb.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Brew&Browse</span>
+            <div onclick="selectStoreCard('Brew', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/dxhMWyb.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Brew&Browse</span>
             </div>
-            <div onclick="selectStoreCard('Maria', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/zKm0iej.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Maria Cafe</span>
+            <div onclick="selectStoreCard('Maria', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/zKm0iej.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Maria Cafe</span>
             </div>
-            <div onclick="selectStoreCard('Leo Meatpies', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/aggMVYd.jpeg" class="w-10 h-10 object-cover mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Leo's Bakehouse</span>
+            <div onclick="selectStoreCard('Leo Meatpies', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/aggMVYd.jpeg" class="w-10 h-10 object-cover mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Leo's Bakehouse</span>
             </div>
-            <div onclick="selectStoreCard('Shaken', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/ojrOPux.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Shaken&Served</span>
+            <div onclick="selectStoreCard('Shaken', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/ojrOPux.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Shaken&Served</span>
             </div>
-            <div onclick="selectStoreCard('Dumpling', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/7pIzEES.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Dumpling King</span>
+            <div onclick="selectStoreCard('Dumpling', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/7pIzEES.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Dumpling King</span>
             </div>
-            <div onclick="selectStoreCard('Salsas', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/g5rhQkp.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Salsas y Sabores</span>
+            <div onclick="selectStoreCard('Salsas', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/g5rhQkp.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Salsas y Sabores</span>
             </div>
-            <div onclick="selectStoreCard('Burger But', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/kEb6w8N.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Burga Hut</span>
+            <div onclick="selectStoreCard('Burger But', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/kEb6w8N.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Burga Hut</span>
             </div>
-            <div onclick="selectStoreCard('TFC', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/sDzNncE.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">TFC</span>
+            <div onclick="selectStoreCard('TFC', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/sDzNncE.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">TFC</span>
             </div>
-            <div onclick="selectStoreCard('Guerrero', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/U93eRx4.jpeg" class="w-10 h-10 object-cover mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Guerrero</span>
+            <div onclick="selectStoreCard('Guerrero', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/U93eRx4.jpeg" class="w-10 h-10 object-cover mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Guerrero</span>
             </div>
-            <div onclick="selectStoreCard('Cosmetics', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/4HuDzQg.png" class="w-10 h-10 object-contain mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Bree's</span>
+            <div onclick="selectStoreCard('Cosmetics', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/4HuDzQg.png" class="w-10 h-10 object-contain mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Bree's</span>
             </div>
-            <div onclick="selectStoreCard('Faye', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/0cSlDIx.jpeg" class="w-10 h-10 object-cover mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">The Faye CO</span>
+            <div onclick="selectStoreCard('Faye', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/0cSlDIx.jpeg" class="w-10 h-10 object-cover mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">The Faye CO</span>
             </div>
-            <div onclick="selectStoreCard('Sister', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/RQpdN14.jpeg" class="w-10 h-10 object-cover mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Sister's CO</span>
+            <div onclick="selectStoreCard('Sister', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/RQpdN14.jpeg" class="w-10 h-10 object-cover mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Sister's CO</span>
             </div>
-            <div onclick="selectStoreCard('AddToCart', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/ijxrW5d.jpeg" class="w-10 h-10 object-cover mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Add to Cart</span>
+            <div onclick="selectStoreCard('AddToCart', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/ijxrW5d.jpeg" class="w-10 h-10 object-cover mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Add to Cart</span>
             </div>
-            <div onclick="selectStoreCard('Neeyas Backyard', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/DJb7os5.jpeg" class="w-10 h-10 object-cover mb-2 rounded-lg bg-white p-1 shadow-xs group-hover:scale-105 transition">
-              <span class="text-xs font-semibold text-slate-700">Neeya's Backyaad</span>
+            <div onclick="selectStoreCard('Neeyas Backyard', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <img src="https://i.imgur.com/DJb7os5.jpeg" class="w-10 h-10 object-cover mb-2 rounded-xl bg-slate-50 p-1 group-hover:scale-105 transition">
+              <span class="text-xs font-bold text-slate-800">Neeya's Backyaad</span>
             </div>
-            <div onclick="selectStoreCard('Vegetables', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center font-bold mb-2 shadow-xs">🥦</div>
-              <span class="text-xs font-semibold text-slate-700">Vegetables</span>
+            <div onclick="selectStoreCard('Vegetables', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-bold mb-2 shadow-xs">🥦</div>
+              <span class="text-xs font-bold text-slate-800">Vegetables</span>
             </div>
-            <div onclick="selectStoreCard('Lunch', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center font-bold mb-2 shadow-xs">🍱</div>
-              <span class="text-xs font-semibold text-slate-700">Lunch</span>
+            <div onclick="selectStoreCard('Lunch', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center font-bold mb-2 shadow-xs">🍱</div>
+              <span class="text-xs font-bold text-slate-800">Lunch</span>
             </div>
-            <div onclick="selectStoreCard('Electronics', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center font-bold mb-2 shadow-xs">💻</div>
-              <span class="text-xs font-semibold text-slate-700">Electronics</span>
+            <div onclick="selectStoreCard('Electronics', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-bold mb-2 shadow-xs">💻</div>
+              <span class="text-xs font-bold text-slate-800">Electronics</span>
             </div>
-            <div onclick="selectStoreCard('Breakfast', this)" class="store-card cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-orange-500 hover:bg-orange-50/50 flex flex-col items-center text-center transition group">
-              <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-lg flex items-center justify-center font-bold mb-2 shadow-xs">🥞</div>
-              <span class="text-xs font-semibold text-slate-700">Breakfast</span>
+            <div onclick="selectStoreCard('Breakfast', this)" class="store-card cursor-pointer p-3 rounded-2xl border border-slate-200/80 hover:border-orange-400 hover:bg-orange-50/40 flex flex-col items-center text-center transition group bg-white shadow-xs">
+              <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-xl flex items-center justify-center font-bold mb-2 shadow-xs">🥞</div>
+              <span class="text-xs font-bold text-slate-800">Breakfast</span>
             </div>
 
           </div>
@@ -230,12 +249,12 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">2. Enter Store Password</label>
-          <input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="new-password" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition shadow-inner">
+          <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-2">2. Enter Store Key</label>
+          <input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="new-password" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/80 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition shadow-inner">
         </div>
 
-        <button onclick="handlePortalLogin()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-orange-600/25 active:scale-[0.98] transition">
-          Access Merchant Dashboard
+        <button onclick="handlePortalLogin()" class="w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-extrabold py-3.5 px-4 rounded-2xl shadow-lg shadow-orange-600/25 active:scale-[0.98] transition uppercase text-xs tracking-wider">
+          Authenticate & Launch Dashboard
         </button>
       </div>
 
@@ -245,21 +264,21 @@
   <!-- 📊 VENDOR DASHBOARD -->
   <div id="dashboardScreen" class="container max-w-6xl mx-auto px-4 py-8 flex-grow" style="display:none;">
     
-    <!-- Top Professional Header Bar -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <!-- Header Bar -->
+    <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div class="flex items-center gap-4">
-        <div id="dashboardLogoContainer" class="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center overflow-hidden shadow-inner p-1">
+        <div id="dashboardLogoContainer" class="w-14 h-14 rounded-2xl bg-orange-50/80 border border-orange-100 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
           <img id="dashboardLogoImg" src="" alt="Store Logo" class="w-full h-full object-contain">
         </div>
         <div>
-          <h2 id="portalTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">SwiftShop Portal</h2>
-          <div class="flex items-center gap-2 mt-1 flex-wrap">
-            <span id="adminBadge" class="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span> Isolated Vendor Access
+          <h2 id="portalTitle" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">SwiftShop Portal</h2>
+          <div class="flex items-center gap-2.5 mt-1 flex-wrap">
+            <span id="adminBadge" class="inline-flex items-center gap-1.5 text-[11px] font-extrabold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+              <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span> Merchant Session
             </span>
             
-            <!-- Store Open/Closed Sliding Toggle Control -->
-            <div id="storeStatusContainer" class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3 py-1 rounded-full">
+            <!-- Store Open/Closed Toggle -->
+            <div id="storeStatusContainer" class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 px-3 py-1 rounded-full">
               <span id="statusTextLabel" class="text-xs font-bold text-slate-700">Store Open</span>
               <label class="store-toggle-switch">
                 <input type="checkbox" id="storeStatusCheckbox" onchange="toggleStoreStatus(this)">
@@ -269,15 +288,15 @@
           </div>
         </div>
       </div>
-      <button class="logout-btn bg-slate-900 hover:bg-slate-800 text-white font-semibold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95" onclick="handlePortalLogout()">Logout</button>
+      <button class="logout-btn bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95" onclick="handlePortalLogout()">Exit Session</button>
     </div>
 
-    <!-- Navigation Tabs -->
-    <div class="flex gap-2 border-b border-slate-200 mb-6 overflow-x-auto pb-1">
-      <button id="tabInventory" onclick="switchPortalTab('inventory')" class="px-5 py-2.5 text-xs font-bold rounded-xl transition bg-orange-600 text-white shadow-sm flex items-center gap-2">
-        <span>📦 Inventory Manager</span>
+    <!-- Tab Bar -->
+    <div class="flex gap-2 border-b border-slate-200/80 mb-6 overflow-x-auto pb-1">
+      <button id="tabInventory" onclick="switchPortalTab('inventory')" class="px-5 py-2.5 text-xs font-extrabold rounded-2xl transition bg-orange-600 text-white shadow-md shadow-orange-600/20 flex items-center gap-2">
+        <span>📦 Inventory Management</span>
       </button>
-      <button id="tabOrders" onclick="switchPortalTab('orders')" class="px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2">
+      <button id="tabOrders" onclick="switchPortalTab('orders')" class="px-5 py-2.5 text-xs font-extrabold rounded-2xl transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 flex items-center gap-2">
         <span>🛍️ Live Orders Queue</span>
         <span id="merchantOrderBadge" class="bg-orange-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
       </button>
@@ -286,41 +305,41 @@
     <!-- TAB 1: INVENTORY MANAGEMENT SECTION -->
     <div id="inventoryTabContent" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
-      <!-- ADD / EDIT PRODUCT PANEL (Left Column on Desktop) -->
-      <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 h-fit sticky top-6">
-        <h3 id="formTitle" class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">➕ Add New Inventory Item</h3>
+      <!-- ADD / EDIT PRODUCT PANEL -->
+      <div class="lg:col-span-1 bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 h-fit sticky top-6 space-y-4">
+        <h3 id="formTitle" class="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">➕ Add New Inventory Item</h3>
         <input type="hidden" id="editProductId">
         
         <div class="space-y-4">
           <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Item Name</label>
-            <input type="text" id="pName" placeholder="e.g. Deluxe Cheeseburger" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+            <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Item Name</label>
+            <input type="text" id="pName" placeholder="e.g. Deluxe Cheeseburger" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
           </div>
           
           <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Price (BZD)</label>
-            <input type="number" id="pPrice" placeholder="0.00" step="0.01" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+            <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Price (BZD)</label>
+            <input type="number" id="pPrice" placeholder="0.00" step="0.01" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Subcategory</label>
-            <select id="pSubcategorySelect" onchange="handleSubcategoryChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition mb-2">
+            <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Subcategory</label>
+            <select id="pSubcategorySelect" onchange="handleSubcategoryChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition mb-2">
               <option value="Items">Items (Default)</option>
             </select>
             <input type="text" id="pSubcategory" placeholder="Enter new subcategory name..." style="display:none;" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Product Image (Device Upload)</label>
-            <input type="file" id="pImageFile" accept="image/*" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+            <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Product Image Upload</label>
+            <input type="file" id="pImageFile" accept="image/*" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-extrabold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
             <input type="hidden" id="pImageData">
           </div>
 
-          <button onclick="saveProduct()" id="saveButton" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider shadow-md shadow-orange-600/20 active:scale-[0.98] transition">
-            Save Product to Live Database
+          <button onclick="saveProduct()" id="saveButton" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-extrabold py-3 px-4 rounded-xl text-xs uppercase tracking-wider shadow-md shadow-orange-600/20 active:scale-[0.98] transition">
+            Save Product To Database
           </button>
           
-          <button onclick="resetForm()" id="cancelButton" style="display:none;" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider transition">
+          <button onclick="resetForm()" id="cancelButton" style="display:none;" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider transition">
             Cancel Edit
           </button>
         </div>
@@ -328,20 +347,20 @@
 
       <!-- INVENTORY LISTING PANEL -->
       <div class="lg:col-span-2 space-y-6">
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
             <div>
-              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">📋 Your Store Inventory</h3>
-              <p class="text-xs text-slate-400 mt-0.5">Manage items, stock statuses, and prices in real-time.</p>
+              <h3 class="text-base font-black text-slate-900 flex items-center gap-2">📋 Live Store Inventory</h3>
+              <p class="text-xs font-medium text-slate-400 mt-0.5">Toggle item availability or edit prices instantly.</p>
             </div>
             <!-- Search Bar -->
             <div class="w-full sm:w-auto">
-              <input type="text" id="inventorySearch" oninput="filterInventory()" placeholder="Search items..." class="w-full sm:w-64 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="text" id="inventorySearch" oninput="filterInventory()" placeholder="Search inventory..." class="w-full sm:w-64 px-4 py-2 rounded-2xl border border-slate-200 bg-slate-50 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
             </div>
           </div>
           
           <div id="inventoryContainer" class="space-y-6">
-            <div class="text-center py-10 text-slate-400 text-sm">Loading inventory...</div>
+            <div class="text-center py-10 text-slate-400 text-sm">Loading inventory database...</div>
           </div>
         </div>
       </div>
@@ -350,23 +369,23 @@
 
     <!-- TAB 2: ORDERS MANAGEMENT QUEUE -->
     <div id="ordersTabContent" style="display:none;" class="space-y-4">
-      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex justify-between items-center">
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 flex justify-between items-center">
         <div>
-          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">🛍️ Merchant Orders Queue</h3>
-          <p class="text-xs text-slate-400 mt-0.5">Incoming customer orders. Accept orders to prepare, then toggle to "Ready" to dispatch drivers.</p>
+          <h3 class="text-base font-black text-slate-900 flex items-center gap-2">🛍️ Active Merchant Orders</h3>
+          <p class="text-xs font-medium text-slate-400 mt-0.5">Incoming orders update automatically in real-time.</p>
         </div>
-        <button onclick="fetchMerchantOrders()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-xs active:scale-95">🔄 Refresh Orders</button>
+        <button onclick="fetchMerchantOrders()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-xs active:scale-95">🔄 Sync Orders</button>
       </div>
 
       <div id="merchantOrdersContainer" class="space-y-4">
-        <div class="text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">Loading incoming orders...</div>
+        <div class="text-center py-12 text-slate-400 text-sm bg-white rounded-3xl border border-slate-200">Checking for active orders...</div>
       </div>
     </div>
 
   </div>
 
-  <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-200/60 mt-12 bg-white">
-    SwiftShop Portal &copy; 2026 — Professional Multi-Vendor Management System
+  <footer class="text-center py-6 text-xs font-semibold text-slate-400 border-t border-slate-200/60 mt-12 bg-white/50 backdrop-blur-md">
+    SwiftShop Portal &copy; 2026 — Multi-Vendor Merchant System
   </footer>
 
 <script>
@@ -405,7 +424,6 @@
   let activePortalTab = 'inventory';
   let merchantOrdersData = [];
 
-  // 🔊 SYNTHESIZED AUDIO ALARM FOR MERCHANT
   let audioContext = null;
   let merchantAlarmInterval = null;
   let knownOrderIds = new Set();
@@ -427,7 +445,7 @@
       const gain = audioContext.createGain();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5 Note
+      osc.frequency.setValueAtTime(587.33, audioContext.currentTime);
       osc.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.2);
 
       gain.gain.setValueAtTime(0.4, audioContext.currentTime);
@@ -439,7 +457,7 @@
       osc.start();
       osc.stop(audioContext.currentTime + 0.2);
     } catch (e) {
-      console.warn("Audio playback issue:", e);
+      console.warn("Audio error:", e);
     }
   }
 
@@ -462,12 +480,18 @@
     }
   }
 
+  function filterStoreCards() {
+    const query = document.getElementById("storeSearchInput").value.toLowerCase().trim();
+    document.querySelectorAll('#storeGridContainer .store-card').forEach(card => {
+      const txt = card.innerText.toLowerCase();
+      card.style.display = txt.includes(query) ? "flex" : "none";
+    });
+  }
+
   function selectStoreCard(catValue, element) {
     document.getElementById("loginCategory").value = catValue;
-    document.querySelectorAll('.store-card').forEach(card => {
-      card.classList.remove('border-orange-500', 'bg-orange-50/70', 'ring-2', 'ring-orange-500/20');
-    });
-    element.classList.add('border-orange-500', 'bg-orange-50/70', 'ring-2', 'ring-orange-500/20');
+    document.querySelectorAll('.store-card').forEach(card => card.classList.remove('active-card'));
+    element.classList.add('active-card');
   }
 
   function handlePortalLogin() {
@@ -492,7 +516,7 @@
   async function initDashboard() {
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboardScreen").style.display = "block";
-    document.getElementById("portalTitle").innerText = `SwiftShop: ${activeCategory}`;
+    document.getElementById("portalTitle").innerText = `${activeCategory}`;
     
     const storeInfo = vendorData[activeCategory];
     const logoImg = document.getElementById("dashboardLogoImg");
@@ -523,13 +547,13 @@
     const ordContent = document.getElementById("ordersTabContent");
 
     if (tab === 'inventory') {
-      tabInv.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-orange-600 text-white shadow-sm flex items-center gap-2";
-      tabOrd.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2";
+      tabInv.className = "px-5 py-2.5 text-xs font-extrabold rounded-2xl transition bg-orange-600 text-white shadow-md shadow-orange-600/20 flex items-center gap-2";
+      tabOrd.className = "px-5 py-2.5 text-xs font-extrabold rounded-2xl transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 flex items-center gap-2";
       invContent.style.display = "grid";
       ordContent.style.display = "none";
     } else {
-      tabOrd.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-orange-600 text-white shadow-sm flex items-center gap-2";
-      tabInv.className = "px-5 py-2.5 text-xs font-bold rounded-xl transition bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2";
+      tabOrd.className = "px-5 py-2.5 text-xs font-extrabold rounded-2xl transition bg-orange-600 text-white shadow-md shadow-orange-600/20 flex items-center gap-2";
+      tabInv.className = "px-5 py-2.5 text-xs font-extrabold rounded-2xl transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 flex items-center gap-2";
       invContent.style.display = "none";
       ordContent.style.display = "block";
       fetchMerchantOrders(false);
@@ -574,11 +598,11 @@
     if (isStoreOpen === 'yes') {
       checkbox.checked = true;
       label.innerText = "Store Open";
-      label.className = "text-xs font-bold text-emerald-700";
+      label.className = "text-xs font-extrabold text-emerald-600";
     } else {
       checkbox.checked = false;
       label.innerText = "Store Closed";
-      label.className = "text-xs font-bold text-rose-700";
+      label.className = "text-xs font-extrabold text-rose-600";
     }
   }
 
@@ -663,7 +687,7 @@
     const container = document.getElementById("inventoryContainer");
 
     if (itemsArray.length === 0) {
-      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-2xl">No matching inventory items found.</div>`;
+      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs font-semibold border-2 border-dashed border-slate-100 rounded-3xl">No inventory items found.</div>`;
       return;
     }
 
@@ -671,9 +695,7 @@
     itemsArray.forEach((item) => {
       item._originalIndex = currentInventoryData.findIndex(orig => orig.id === item.id);
       const sub = item.subcategory ? item.subcategory.trim() : "General";
-      if (!grouped[sub]) {
-        grouped[sub] = [];
-      }
+      if (!grouped[sub]) grouped[sub] = [];
       grouped[sub].push(item);
     });
 
@@ -685,18 +707,18 @@
         const isActive = item.active === 'yes' || !item.active;
         
         const statusBadge = isActive 
-          ? `<button onclick="toggleActiveStatus('${item.id}', 'no')" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-emerald-200 cursor-pointer shadow-xs" title="Click to mark Sold Out">🟢 Active (Show)</button>`
-          : `<button onclick="toggleActiveStatus('${item.id}', 'yes')" class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-rose-200 cursor-pointer shadow-xs" title="Click to make Active">🔴 Sold Out (Hidden)</button>`;
+          ? `<button onclick="toggleActiveStatus('${item.id}', 'no')" class="inline-flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-extrabold px-3 py-1 rounded-xl text-xs transition border border-emerald-200 cursor-pointer" title="Click to mark Sold Out"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active</button>`
+          : `<button onclick="toggleActiveStatus('${item.id}', 'yes')" class="inline-flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold px-3 py-1 rounded-xl text-xs transition border border-rose-200 cursor-pointer" title="Click to make Active"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Sold Out</button>`;
 
         rowsHTML += `
-          <tr class="hover:bg-slate-50/80 transition ${!isActive ? 'opacity-60 bg-slate-50/50' : ''}">
-            <td class="p-3.5"><img src="${item.image || ''}" class="w-11 h-11 rounded-xl object-cover shadow-xs border border-slate-200" onerror="this.src='https://via.placeholder.com/44'"></td>
+          <tr class="hover:bg-slate-50/60 transition ${!isActive ? 'opacity-50' : ''}">
+            <td class="p-3.5"><img src="${item.image || ''}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-xs" onerror="this.src='https://via.placeholder.com/40'"></td>
             <td class="p-3.5 font-bold text-slate-900">${item.name}</td>
-            <td class="p-3.5 font-extrabold text-orange-600">$${Number(item.price).toFixed(2)} BZD</td>
+            <td class="p-3.5 font-black text-orange-600">$${Number(item.price).toFixed(2)} BZD</td>
             <td class="p-3.5">${statusBadge}</td>
-            <td class="p-3.5 text-right space-x-1.5">
-              <button class="action-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs active:scale-95" onclick="prepareEdit(${item._originalIndex})">Edit</button>
-              <button class="action-btn del-btn bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs active:scale-95" onclick="deleteItem('${item.id}')">Delete</button>
+            <td class="p-3.5 text-right space-x-1">
+              <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition active:scale-95" onclick="prepareEdit(${item._originalIndex})">Edit</button>
+              <button class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-bold transition active:scale-95" onclick="deleteItem('${item.id}')">Delete</button>
             </td>
           </tr>
         `;
@@ -704,22 +726,22 @@
 
       container.innerHTML += `
         <div class="border border-slate-200/80 rounded-2xl overflow-hidden bg-white shadow-xs mb-4">
-          <div class="bg-slate-50 px-4 py-3 border-b border-slate-200/60 flex justify-between items-center">
-            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">📁 ${subcategory}</h4>
-            <span class="text-xs bg-orange-100 text-orange-800 font-bold px-2.5 py-0.5 rounded-full">${items.length} items</span>
+          <div class="bg-slate-50/80 px-4 py-2.5 border-b border-slate-100 flex justify-between items-center">
+            <h4 class="font-extrabold text-slate-800 text-[11px] uppercase tracking-wider flex items-center gap-1.5">📁 ${subcategory}</h4>
+            <span class="text-[10px] bg-slate-200/70 text-slate-700 font-black px-2 py-0.5 rounded-full">${items.length} items</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full border-collapse text-left">
               <thead>
-                <tr class="text-slate-400 text-xs uppercase tracking-wider font-bold border-b border-slate-100 bg-slate-50/30">
-                  <th class="p-3">Image</th>
+                <tr class="text-slate-400 text-[10px] uppercase tracking-wider font-black border-b border-slate-100 bg-slate-50/30">
+                  <th class="p-3">Item</th>
                   <th class="p-3">Name</th>
                   <th class="p-3">Price</th>
-                  <th class="p-3">Status</th>
+                  <th class="p-3">Availability</th>
                   <th class="p-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+              <tbody class="divide-y divide-slate-100 text-xs text-slate-700">
                 ${rowsHTML}
               </tbody>
             </table>
@@ -773,7 +795,7 @@
     }
 
     if (!imageString) {
-      alert("Please select a product image file from your device.");
+      alert("Please upload an image file.");
       return;
     }
 
@@ -786,7 +808,6 @@
       if (error) {
         alert("Error updating: " + error.message);
       } else {
-        alert("Item updated successfully!");
         resetForm();
         loadCategoryInventory();
       }
@@ -799,7 +820,6 @@
       if (error) {
         alert("Error adding: " + error.message);
       } else {
-        alert("Item added to live database!");
         resetForm();
         loadCategoryInventory();
       }
@@ -847,7 +867,7 @@
     document.getElementById("pImageData").value = "";
     
     document.getElementById("formTitle").innerText = "➕ Add New Inventory Item";
-    document.getElementById("saveButton").innerText = "Save Product to Live Database";
+    document.getElementById("saveButton").innerText = "Save Product To Database";
     document.getElementById("cancelButton").style.display = "none";
   }
 
@@ -862,12 +882,10 @@
     if (error) {
       alert("Error deleting: " + error.message);
     } else {
-      alert("Item deleted.");
       loadCategoryInventory();
     }
   }
 
-  // 🛍️ MERCHANT ORDERS MANAGEMENT SYSTEM (POPUP + IMAGE MATCHING)
   async function fetchMerchantOrders(isInitialLoad = false) {
     const container = document.getElementById("merchantOrdersContainer");
     
@@ -878,7 +896,7 @@
       .order('timestamp', { ascending: false });
 
     if (error) {
-      container.innerHTML = `<div class="text-center py-6 text-red-500 text-sm">Error fetching orders: ${error.message}</div>`;
+      container.innerHTML = `<div class="text-center py-6 text-rose-500 text-xs">Error fetching orders: ${error.message}</div>`;
       return;
     }
 
@@ -891,9 +909,7 @@
     unacceptedOrders.forEach(order => {
       if (!knownOrderIds.has(order.order_id)) {
         knownOrderIds.add(order.order_id);
-        if (!isInitialLoad) {
-          newestOrder = order;
-        }
+        if (!isInitialLoad) newestOrder = order;
       }
     });
 
@@ -911,7 +927,7 @@
     const container = document.getElementById("merchantOrdersContainer");
     
     if (merchantOrdersData.length === 0) {
-      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">No active orders placed for ${activeCategory} yet.</div>`;
+      container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs font-semibold bg-white rounded-3xl border border-slate-200/80">No orders recorded for ${activeCategory}.</div>`;
       return;
     }
 
@@ -920,44 +936,44 @@
       const status = order.status || 'Pending';
       const isDelivered = status === 'Delivered';
 
-      let statusBadgeClass = 'bg-amber-100 text-amber-800';
-      if (status === 'Preparing') statusBadgeClass = 'bg-purple-100 text-purple-800';
-      if (status === 'Ready') statusBadgeClass = 'bg-emerald-100 text-emerald-800';
-      if (status === 'On the Way') statusBadgeClass = 'bg-blue-100 text-blue-800';
-      if (status === 'Delivered') statusBadgeClass = 'bg-slate-100 text-slate-700';
+      let statusBadgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
+      if (status === 'Preparing') statusBadgeClass = 'bg-purple-50 text-purple-700 border-purple-200';
+      if (status === 'Ready') statusBadgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      if (status === 'On the Way') statusBadgeClass = 'bg-blue-50 text-blue-700 border-blue-200';
+      if (status === 'Delivered') statusBadgeClass = 'bg-slate-100 text-slate-600 border-slate-200';
 
       let actionButtons = "";
       if (!isDelivered) {
         if (status === 'Pending') {
-          actionButtons = `<button onclick="acceptOrder('${order.order_id}')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🧑‍🍳 Accept & Start Preparing</button>`;
+          actionButtons = `<button onclick="acceptOrder('${order.order_id}')" class="bg-purple-600 hover:bg-purple-700 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🧑‍🍳 Accept & Prepare</button>`;
         } else if (status === 'Preparing') {
-          actionButtons = `<button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🔔 Set to "Ready" (Dispatch Runner)</button>`;
+          actionButtons = `<button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs uppercase tracking-wider transition shadow-sm active:scale-95">🔔 Set Ready</button>`;
         } else if (status === 'Ready') {
           actionButtons = `<span class="text-xs font-bold text-emerald-600 flex items-center gap-1">✅ Ready for Runner Pickup</span>`;
         }
       }
 
       html += `
-        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3 hover:border-orange-200 transition">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs space-y-3 hover:border-orange-200 transition">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
             <div>
-              <span class="text-xs font-black text-slate-400">#${String(order.order_id).slice(-8)}</span>
-              <p class="text-sm font-bold text-slate-900 mt-0.5">${order.customer_name || 'Guest'}</p>
+              <span class="text-[11px] font-black text-slate-400">#${String(order.order_id).slice(-8)}</span>
+              <p class="text-sm font-extrabold text-slate-900 mt-0.5">${order.customer_name || 'Guest Customer'}</p>
             </div>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold ${statusBadgeClass}">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-black border ${statusBadgeClass}">
               ${status}
             </span>
           </div>
 
           <div class="text-xs text-slate-600 space-y-1">
             <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
-            <p><strong>Details:</strong> ${order.order_type || 'Delivery'}</p>
-            <p><strong>Driver:</strong> 🛵 ${order.active_status || 'Unassigned'}</p>
+            <p><strong>Order Info:</strong> ${order.order_type || 'Delivery'}</p>
+            <p><strong>Runner:</strong> 🛵 ${order.active_status || 'Unassigned'}</p>
             <p><strong>Placed At:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}</p>
           </div>
 
           <div class="pt-2 flex justify-between items-center border-t border-slate-100">
-            <button onclick="viewOrderDetails('${order.order_id}')" class="text-xs font-bold text-orange-600 hover:underline">🔍 View Items</button>
+            <button onclick="viewOrderDetails('${order.order_id}')" class="text-xs font-bold text-orange-600 hover:underline">🔍 View Items Breakdown</button>
             ${actionButtons}
           </div>
         </div>
@@ -979,7 +995,6 @@
     document.getElementById("modalOrderType").innerHTML = `<strong>Order Details:</strong> ${order.order_type || 'N/A'}`;
     document.getElementById("modalOrderTime").innerHTML = `<strong>Placed At:</strong> ${new Date(order.timestamp || Date.now()).toLocaleString()}`;
 
-    // Render Items and Match Images from currentInventoryData
     const itemsContainer = document.getElementById("modalOrderItems");
     itemsContainer.innerHTML = "";
 
@@ -989,14 +1004,12 @@
     if (lineItems.length > 0) {
       lineItems.forEach(line => {
         const cleanName = line.replace(/^-/, '').split("(Qty:")[0].trim();
-        
-        // Find matching product image from store inventory
         const matchedProduct = currentInventoryData.find(p => p.name.toLowerCase().trim() === cleanName.toLowerCase().trim());
         const imgUrl = matchedProduct ? matchedProduct.image : "https://via.placeholder.com/48";
 
         itemsContainer.innerHTML += `
           <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-slate-100 shadow-xs">
-            <img src="${imgUrl}" class="w-12 h-12 rounded-lg object-cover border border-slate-200">
+            <img src="${imgUrl}" class="w-10 h-10 rounded-lg object-cover border border-slate-200">
             <div class="flex-grow text-xs">
               <p class="font-bold text-slate-800">${line.replace(/^-/, '').trim()}</p>
             </div>
@@ -1007,25 +1020,24 @@
       itemsContainer.innerHTML = `<p class="text-xs text-slate-600 p-2">${rawDetails}</p>`;
     }
 
-    // Modal Action Buttons
     const actionsContainer = document.getElementById("modalActionContainer");
     const status = order.status || 'Pending';
 
     if (status === 'Pending') {
       actionsContainer.innerHTML = `
-        <button onclick="acceptOrder('${order.order_id}')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-purple-600/20 active:scale-95 transition">
+        <button onclick="acceptOrder('${order.order_id}')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider shadow-md shadow-purple-600/20 active:scale-95 transition">
           🧑‍🍳 Accept Order & Stop Alarm
         </button>
       `;
     } else if (status === 'Preparing') {
       actionsContainer.innerHTML = `
-        <button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20 active:scale-95 transition">
+        <button onclick="setOrderStatus('${order.order_id}', 'Ready')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 active:scale-95 transition">
           🔔 Set to "Ready" (Dispatch Runner)
         </button>
       `;
     } else {
       actionsContainer.innerHTML = `
-        <button onclick="closeOrderModal()" class="w-full bg-slate-100 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider hover:bg-slate-200 transition">
+        <button onclick="closeOrderModal()" class="w-full bg-slate-100 text-slate-700 font-bold py-2.5 px-4 rounded-2xl text-xs uppercase tracking-wider hover:bg-slate-200 transition">
           Close Window
         </button>
       `;
@@ -1066,7 +1078,6 @@
       .subscribe();
   }
 
-  // Global browser audio resume on user click
   window.addEventListener('click', () => {
     initAudioContext();
   }, { once: true });
