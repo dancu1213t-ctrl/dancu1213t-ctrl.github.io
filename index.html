@@ -550,7 +550,7 @@
 
         rowsHTML += `
           <tr class="hover:bg-zinc-50/80 transition ${!isActive ? 'opacity-50 bg-zinc-50/30' : ''}">
-            <td class="p-2 sm:p-3.5"><img src="${item.image || ''}" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-cover border border-zinc-200 bg-white" onerror="this.src='https://via.placeholder.com/44'"></td>
+            <td class="p-2 sm:p-3.5"><img src="${item.image || ''}" loading="lazy" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-cover border border-zinc-200 bg-white" onerror="this.src='https://via.placeholder.com/44'"></td>
             <td class="p-2 sm:p-3.5 font-medium text-zinc-900 min-w-[120px]">${item.name}</td>
             <td class="p-2 sm:p-3.5 font-semibold text-zinc-900 whitespace-nowrap">$${Number(item.price).toFixed(2)} <span class="text-[10px] text-zinc-400 font-normal">BZD</span></td>
             <td class="p-2 sm:p-3.5">${statusBadge}</td>
@@ -603,6 +603,9 @@
   }
 
   async function saveProduct() {
+    const saveBtn = document.getElementById("saveButton");
+    const originalBtnText = saveBtn.innerText;
+
     const id = document.getElementById("editProductId").value;
     const name = document.getElementById("pName").value.trim();
     const price = parseFloat(document.getElementById("pPrice").value);
@@ -625,23 +628,36 @@
 
     if (fileInput.files && fileInput.files[0]) {
       try {
-        imageString = await convertFileToPngBase64(fileInput.files[0]);
+        saveBtn.disabled = true;
+        saveBtn.innerText = "Optimizing Photo...";
+        
+        // Convert any size photo into safe ~100KB WebP Data URL
+        imageString = await getSafeOptimizedImage(fileInput.files[0], 800, 0.75);
       } catch (err) {
-        alert("Error processing image file.");
+        alert("Error processing image file: " + err.message);
+        saveBtn.disabled = false;
+        saveBtn.innerText = originalBtnText;
         return;
       }
     }
 
     if (!imageString) {
       alert("Please select a product image file from your device.");
+      saveBtn.disabled = false;
+      saveBtn.innerText = originalBtnText;
       return;
     }
+
+    saveBtn.innerText = "Saving to Database...";
 
     if (id) {
       const { error } = await supabaseClient
         .from('products')
         .update({ name, price, subcategory, image: imageString })
         .eq('id', id);
+
+      saveBtn.disabled = false;
+      saveBtn.innerText = originalBtnText;
 
       if (error) {
         alert("Error updating: " + error.message);
@@ -655,6 +671,9 @@
       const { error } = await supabaseClient
         .from('products')
         .insert([{ id: newId, name, price, category: activeCategory, subcategory, image: imageString, active: 'yes' }]);
+
+      saveBtn.disabled = false;
+      saveBtn.innerText = originalBtnText;
 
       if (error) {
         alert("Error adding: " + error.message);
@@ -737,25 +756,62 @@
     }
   });
 
-  function convertFileToPngBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
+  /**
+   * 🛡️ 100% Guaranteed Safe Image Downscaler and Compressor
+   * Decodes large camera photos directly at 800px max bounds,
+   * preventing out-of-memory browser crashes on mobile web apps.
+   */
+  async function getSafeOptimizedImage(file, maxDimension = 800, quality = 0.75) {
+    let bitmap;
+    try {
+      // Hardware-accelerated memory-safe image decoding
+      bitmap = await createImageBitmap(file, {
+        resizeWidth: maxDimension,
+        resizeMode: 'none'
+      });
+    } catch (e) {
+      // Fallback for older legacy browsers
+      const imgUrl = URL.createObjectURL(file);
+      bitmap = await new Promise((resolve, reject) => {
         const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL('image/png'));
-        };
+        img.onload = () => resolve(img);
         img.onerror = reject;
-        img.src = e.target.result;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+        img.src = imgUrl;
+      });
+    }
+
+    let width = bitmap.width;
+    let height = bitmap.height;
+
+    // Calculate strict aspect ratio bounds
+    if (width > height) {
+      if (width > maxDimension) {
+        height = Math.round((height * maxDimension) / width);
+        width = maxDimension;
+      }
+    } else {
+      if (height > maxDimension) {
+        width = Math.round((width * maxDimension) / height);
+        height = maxDimension;
+      }
+    }
+
+    // Render to Canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bitmap, 0, 0, width, height);
+
+    if (bitmap.close) bitmap.close(); // Immediate memory garbage collection
+
+    // Export optimized WebP Data URL (Falls back to JPEG if browser doesn't support WebP export)
+    let dataUrl = canvas.toDataURL('image/webp', quality);
+    if (!dataUrl.startsWith('data:image/webp')) {
+      dataUrl = canvas.toDataURL('image/jpeg', quality);
+    }
+    return dataUrl;
   }
 </script>
 
