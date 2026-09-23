@@ -59,7 +59,9 @@
       transform: translateX(18px);
     }
   </style>
-</head>
+<style>.mt-shell{color:#202624;margin-bottom:24px}.mt-shell [hidden]{display:none!important}.mt-shell button{border:0;border-radius:10px;padding:11px 16px;background:#202624;color:white;font-size:14px;font-weight:600;cursor:pointer}.mt-shell button:disabled{opacity:.5;cursor:wait}.mt-shell button:focus-visible,.mt-shell input:focus-visible,.mt-shell select:focus-visible{outline:3px solid #78b5a5;outline-offset:2px}.mt-tabs{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e5e7e6;padding-bottom:14px}.mt-tabs button{background:#eef1f0;color:#34443f}.mt-tabs button[aria-selected=true]{background:#203c33;color:white}.mt-shell p{font-size:14px;line-height:1.6;color:#64716b;margin:8px 0 16px}.mt-shell h2{font-size:28px;font-weight:700;margin:8px 0}.mt-shell h3{font-size:18px;font-weight:700;margin-bottom:16px}.mt-intro{padding:22px 0}.mt-intro>small{color:#30795d;font-weight:700;letter-spacing:.13em}.mt-columns{display:grid;grid-template-columns:minmax(280px, .85fr) minmax(0,1.15fr);gap:20px}.mt-box{padding:24px;border:1px solid #e1e6e3;border-radius:18px;background:white}.mt-shell label{display:block;font-size:13px;font-weight:600;margin-bottom:14px;min-width:0}.mt-shell input,.mt-shell select{display:block;width:100%;min-width:0;font:inherit;font-size:16px;margin-top:6px;padding:11px;border:1px solid #d8dfdb;border-radius:9px;background:white}.mt-shell small{font-size:12px;color:#67726c}.mt-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.mt-actions{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.mt-actions label{margin:0}.mt-shell .mt-secondary{background:#eef1f0;color:#23372e}.mt-row{display:flex;align-items:center;gap:14px;border-bottom:1px solid #ebefed;padding:16px 0;overflow-wrap:anywhere}.mt-row>div:first-of-type{flex:1;min-width:0}.mt-row img{width:64px;height:64px;object-fit:cover;border-radius:12px}.mt-row p{margin:4px 0;font-size:12px}.mt-row button{padding:8px 11px;font-size:12px}.mt-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}.mt-metrics article{padding:20px;background:#f0f6f3;border:1px solid #e2ebe5;border-radius:16px}.mt-metrics strong{display:block;font-size:24px;margin-top:7px}.mt-check{display:flex!important;align-items:center;gap:8px;font-weight:400!important}.mt-check input{width:18px;margin:0}.mt-shell .error{color:#a52132}#merchantLoginMessage{color:#a52132;font-size:13px;margin:10px 0}@media(max-width:700px){.mt-columns{grid-template-columns:1fr}.mt-box{padding:17px}.mt-metrics{grid-template-columns:1fr 1fr}.mt-metrics strong{font-size:20px}.mt-row{flex-wrap:wrap}.mt-pair{grid-template-columns:1fr}.mt-shell h2{font-size:24px}}
+[data-merchant-panel][hidden]{display:none!important}
+</style></head>
 <body class="bg-[#F8F9FA] text-zinc-900 min-h-screen flex flex-col justify-between antialiased selection:bg-zinc-900 selection:text-white">
 
   <!-- 🔐 VENDOR LOGIN & STORE SELECTOR SCREEN -->
@@ -196,7 +198,7 @@
 
         <div>
           <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2">2. Enter Password</label>
-          <input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="new-password" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 bg-white text-zinc-900 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
+          <label class="block text-sm mb-2">Merchant email<input type="email" id="merchantEmail" autocomplete="username" required class="w-full px-3 py-2 rounded-xl border border-zinc-300"></label><p id="merchantLoginMessage" role="alert"></p><input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="current-password" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 bg-white text-zinc-900 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
         </div>
 
         <button onclick="handlePortalLogin()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition active:scale-[0.99]">
@@ -244,7 +246,33 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+    <section class="mt-shell" aria-label="Merchant tools">
+ <nav class="mt-tabs" aria-label="Dashboard sections"><button type="button" data-merchant-tab="inventory">Inventory</button><button type="button" data-merchant-tab="campaigns">Promos & banners</button><button type="button" data-merchant-tab="revenue">Revenue</button><button type="button" id="refreshMerchant">Refresh</button></nav>
+ <p id="merchantMessage" role="status"></p>
+ <section data-merchant-panel="campaigns" hidden>
+  <div class="mt-intro"><small>REACH YOUR CUSTOMERS</small><h2>Make your next offer stand out.</h2><p>Publish to Live Promos or the home banner slider. Times use your device’s timezone.</p></div>
+  <div class="mt-columns"><form id="campaignForm" class="mt-box">
+   <h3 id="campaignHeading">Create a campaign</h3>
+   <label>Placement<select id="campaignKind"><option value="promo">Live Promos — shoppable offer</option><option value="slide">Home slider — promotional banner</option></select></label>
+   <div id="campaignProductFields"><label>Inventory item<select id="campaignProduct" required></select></label><div class="mt-pair"><label>Offer price (BZD)<input id="campaignPrice" type="number" min="0.01" max="1000000" step="0.01" required></label><label>Old price (optional)<input id="campaignWas" type="number" min="0.01" max="1000000" step="0.01"></label></div></div>
+   <label>Title<input id="campaignTitle" maxlength="100" required></label><label>Short description<input id="campaignSubtitle" maxlength="180"></label>
+   <label>Image<input id="campaignImage" type="file" accept="image/*"></label><small>Offers use the product image when no new image is chosen. Banners need an image. Landscape images work best.</small>
+   <div class="mt-pair"><label>Starts<input id="campaignStarts" type="datetime-local" required></label><label>Ends (optional)<input id="campaignEnds" type="datetime-local"></label></div>
+   <label>Status<select id="campaignStatus"><option value="draft">Draft — hidden from customers</option><option value="published">Published — visible during schedule</option><option value="paused">Paused — hidden from customers</option></select></label>
+   <div class="mt-actions"><button id="saveCampaign" type="submit">Save campaign</button><button id="resetCampaign" type="button" class="mt-secondary">New / clear</button></div>
+  </form><div class="mt-box"><h3>Your campaigns</h3><div id="campaignList"></div></div></div>
+ </section>
+ <section data-merchant-panel="revenue" hidden>
+  <div class="mt-intro"><small>YOUR SALES, IN ONE PLACE</small><h2>Revenue overview</h2><p>Merchant-reported completed item sales in BZD. WhatsApp requests are not counted automatically. These are sales figures, not profit or payouts.</p></div>
+  <div class="mt-box mt-actions"><label>From<input id="salesFrom" type="date"></label><label>To<input id="salesTo" type="date"></label><button id="filterSales" type="button">Apply dates</button><button id="exportSales" type="button" class="mt-secondary">Export CSV</button></div>
+  <div class="mt-metrics"><article><small>Item sales</small><strong id="salesGross">—</strong></article><article><small>Refunds</small><strong id="salesRefunds">—</strong></article><article><small>Net sales</small><strong id="salesNet">—</strong></article><article><small>Recorded sales</small><strong id="salesCount">—</strong></article></div>
+  <div class="mt-columns"><form id="saleForm" class="mt-box"><h3>Record a completed sale</h3><p>Exclude delivery, platform fees, and tips. Use the same receipt/reference each time to prevent duplicates.</p>
+   <label>Unique receipt / order reference<input id="saleReference" maxlength="100" required></label><label>Date completed<input id="saleDate" type="date" required></label><label>Item sales total (BZD)<input id="saleAmount" type="number" min="0.01" max="1000000" step="0.01" required></label><label>Note (no customer personal details)<input id="saleNote" maxlength="300"></label>
+   <label class="mt-check"><input type="checkbox" required> I confirm this sale was completed and paid.</label><button id="saveSale" type="submit">Record completed sale</button>
+  </form><div class="mt-box"><h3>Sales ledger</h3><p>To reverse an entry, record its full amount as a refund. Original sales remain in the ledger.</p><div id="salesList"></div></div></div>
+ </section>
+</section>
+<div data-merchant-panel="inventory" class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
       
       <!-- ADD / EDIT PRODUCT PANEL (Left Column on Desktop) -->
       <div class="lg:col-span-4 bg-white rounded-2xl p-4 sm:p-6 border border-zinc-200/80 shadow-sm h-fit lg:sticky lg:top-6">
@@ -323,27 +351,27 @@
 
   // 🔑 VENDOR PASSWORDS & LOGOS MAPPING
   const vendorData = {
-    "Aroma": { pass: "aroma123", logo: "https://i.imgur.com/i7i6bbl.png" },
-    "Guerrero": { pass: "guerrero123", logo: "https://i.imgur.com/U93eRx4.jpeg" },
-    "AddToCart": { pass: "cart123", logo: "https://i.imgur.com/ijxrW5d.jpeg" },
-    "Pocket Mobile": { pass: "pocket123", logo: "https://i.imgur.com/mJT39kx.png" },
-    "Cosmetics": { pass: "cosmetics123", logo: "https://i.imgur.com/4HuDzQg.png" },
-    "Leo Meatpies": { pass: "leo123", logo: "https://i.imgur.com/aggMVYd.jpeg" },
-    "TFC": { pass: "thefoodcourt", logo: "https://i.imgur.com/sDzNncE.png" },
-    "Neeyas Backyard": { pass: "neeya123", logo: "https://i.imgur.com/DJb7os5.jpeg" },
-    "Burger But": { pass: "burger123", logo: "https://i.imgur.com/kEb6w8N.png" },
-    "Vegetables": { pass: "veg123", logo: "" },
-    "Faye": { pass: "faye123", logo: "https://i.imgur.com/0cSlDIx.jpeg" },
-    "Maria": { pass: "maria123", logo: "https://i.imgur.com/zKm0iej.png" },
-    "Shaken": { pass: "shaken123", logo: "https://i.imgur.com/ojrOPux.png" },
-    "Sister": { pass: "sister123", logo: "https://i.imgur.com/RQpdN14.jpeg" },
-    "Brew": { pass: "brew123", logo: "https://i.imgur.com/dxhMWyb.png" },
-    "Dumpling": { pass: "dumpling123", logo: "https://i.imgur.com/7pIzEES.png" },
-    "Salsas": { pass: "salsas123", logo: "https://i.imgur.com/g5rhQkp.png" },
-    "Lunch": { pass: "lunch123", logo: "" },
-    "Electronics": { pass: "electronics123", logo: "" },
-    "Breakfast": { pass: "break123", logo: "" },
-    "Urban": { pass: "urban123", logo: "https://i.imgur.com/sdwXPEa.png" }
+    "Aroma": {  logo: "https://i.imgur.com/i7i6bbl.png" },
+    "Guerrero": {  logo: "https://i.imgur.com/U93eRx4.jpeg" },
+    "AddToCart": {  logo: "https://i.imgur.com/ijxrW5d.jpeg" },
+    "Pocket Mobile": {  logo: "https://i.imgur.com/mJT39kx.png" },
+    "Cosmetics": {  logo: "https://i.imgur.com/4HuDzQg.png" },
+    "Leo Meatpies": {  logo: "https://i.imgur.com/aggMVYd.jpeg" },
+    "TFC": {  logo: "https://i.imgur.com/sDzNncE.png" },
+    "Neeyas Backyard": {  logo: "https://i.imgur.com/DJb7os5.jpeg" },
+    "Burger But": {  logo: "https://i.imgur.com/kEb6w8N.png" },
+    "Vegetables": {  logo: "" },
+    "Faye": {  logo: "https://i.imgur.com/0cSlDIx.jpeg" },
+    "Maria": {  logo: "https://i.imgur.com/zKm0iej.png" },
+    "Shaken": {  logo: "https://i.imgur.com/ojrOPux.png" },
+    "Sister": {  logo: "https://i.imgur.com/RQpdN14.jpeg" },
+    "Brew": {  logo: "https://i.imgur.com/dxhMWyb.png" },
+    "Dumpling": {  logo: "https://i.imgur.com/7pIzEES.png" },
+    "Salsas": {  logo: "https://i.imgur.com/g5rhQkp.png" },
+    "Lunch": {  logo: "" },
+    "Electronics": {  logo: "" },
+    "Breakfast": {  logo: "" },
+    "Urban": {  logo: "https://i.imgur.com/sdwXPEa.png" }
   };
 
   let activeCategory = "";
@@ -356,24 +384,6 @@
       card.classList.remove('border-zinc-900', 'bg-zinc-50', 'ring-1', 'ring-zinc-900');
     });
     element.classList.add('border-zinc-900', 'bg-zinc-50', 'ring-1', 'ring-zinc-900');
-  }
-
-  function handlePortalLogin() {
-    const cat = document.getElementById("loginCategory").value;
-    const pass = document.getElementById("loginPassword").value.trim();
-
-    if (!cat || !pass) {
-      alert("Please select your store and enter your password.");
-      return;
-    }
-
-    if (vendorData[cat] && vendorData[cat].pass === pass) {
-      activeCategory = cat;
-      localStorage.setItem("portalCat", cat);
-      initDashboard();
-    } else {
-      alert("Incorrect password for this store.");
-    }
   }
 
   async function initDashboard() {
@@ -749,15 +759,7 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedCat = localStorage.getItem("portalCat");
-    if (savedCat && vendorData[savedCat]) {
-      activeCategory = savedCat;
-      initDashboard();
-    } else {
-      document.getElementById("loginScreen").style.display = "flex";
-    }
-  });
+
 
   /**
    * 🛡️ 100% Guaranteed Safe Image Downscaler and Compressor
@@ -818,5 +820,126 @@
   }
 </script>
 
-</body>
+<script>/* Shared campaigns and a merchant-reported completed-sales ledger. */
+const merchantTools = (() => {
+  const $=id=>document.getElementById(id);
+  const node=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
+  const money=v=>new Intl.NumberFormat('en-BZ',{style:'currency',currency:'BZD'}).format(Number(v));
+  const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+  const message=(text,error=false)=>{const m=$('merchantMessage');m.textContent=text;m.classList.toggle('error',error);};
+  const check=r=>{if(r.error)throw new Error(r.error.message);return r.data;};
+  const act=(title,fn)=>{const b=node('button',title);b.type='button';b.onclick=async()=>{b.disabled=true;try{await fn();}catch(e){message(e.message,true);}finally{b.disabled=false;}};return b;};
+  let campaigns=[],sales=[],products=[],editId=null,saveId=null,loadedCategory=null;
+  async function sessionCategory(preferred){
+    const {data,error}=await supabaseClient.auth.getUser();
+    if(error||!data.user)throw new Error('Please sign in with your merchant email and password.');
+    const rows=check(await supabaseClient.from('merchant_members').select('category').eq('user_id',data.user.id));
+    const selected=rows?.find(r=>r.category===preferred)?.category || (!preferred?rows?.[0]?.category:null);
+    if(!selected)throw new Error('This account has not been assigned to that store. Ask SwiftShop to set up merchant access.');
+    activeCategory=selected;localStorage.setItem('portalCat',selected);return selected;
+  }
+  async function login(){
+    const b=document.querySelector('[onclick="handlePortalLogin()"]');b.disabled=true;
+    try{
+      const preferred=$('loginCategory').value;
+      if(!preferred)throw new Error('Select your store first.');
+      check(await supabaseClient.auth.signInWithPassword({email:$('merchantEmail').value.trim(),password:$('loginPassword').value}));
+      await sessionCategory(preferred);$('loginPassword').value='';await initDashboard();await load();
+    }catch(e){$('merchantLoginMessage').textContent=e.message;await supabaseClient.auth.signOut();}
+    finally{b.disabled=false;}
+  }
+  async function restore(){
+    try{await sessionCategory(localStorage.getItem('portalCat'));await initDashboard();await load();}
+    catch{$('loginScreen').style.display='flex';$('dashboardScreen').style.display='none';}
+  }
+  function tab(name){
+    document.querySelectorAll('[data-merchant-panel]').forEach(p=>p.hidden=p.dataset.merchantPanel!==name);
+    document.querySelectorAll('[data-merchant-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.merchantTab===name)));
+  }
+  async function load(){
+    loadedCategory=activeCategory;
+    message('Loading merchant tools…');
+    try{
+      products=check(await supabaseClient.from('products').select('*').eq('category',activeCategory))||[];
+      $('campaignProduct').replaceChildren(new Option('Choose an inventory item',''),...products.map(p=>new Option(p.name,String(p.id))));
+      await Promise.all([loadCampaigns(),loadSales()]);message('Connected. Published offers and banners appear in the customer app.');
+    }catch(e){message('Merchant tools could not load: '+e.message+' — Check the database setup guide.',true);}
+  }
+  async function loadCampaigns(){campaigns=check(await supabaseClient.from('merchant_campaigns').select('*').eq('category',activeCategory).order('created_at',{ascending:false}))||[];renderCampaigns();}
+  function renderCampaigns(){
+    const list=$('campaignList');list.replaceChildren();
+    if(!campaigns.length)list.append(node('p','No campaigns yet. Create an offer or a home banner.'));
+    for(const c of campaigns){
+      const card=node('article',undefined,'mt-row');const img=node('img');img.src=c.image;img.alt=c.title;
+      const info=node('div');info.append(node('strong',c.title),node('p',`${c.kind==='slide'?'Home banner':'Live Promo'} · ${c.status} · ${new Date(c.starts_at).toLocaleString()}${c.ends_at?' — '+new Date(c.ends_at).toLocaleString():''}`));
+      const actions=node('div',undefined,'mt-actions');actions.append(act('Edit',()=>editCampaign(c)),act(c.status==='published'?'Pause':'Publish',async()=>{check(await supabaseClient.from('merchant_campaigns').update({status:c.status==='published'?'paused':'published'}).eq('id',c.id).eq('category',activeCategory));await loadCampaigns();message('Campaign updated.');}));
+      card.append(img,info,actions);list.append(card);
+    }
+  }
+  function localTime(value){if(!value)return '';const d=new Date(value);return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,16);}
+  function resetCampaign(){editId=null;saveId=null;$('campaignForm').reset();$('campaignStarts').value=localTime(new Date());$('campaignImage').dataset.saved='';$('campaignHeading').textContent='Create a campaign';toggleKind();}
+  function editCampaign(c){
+    editId=c.id;saveId=null;tab('campaigns');$('campaignHeading').textContent='Edit campaign';
+    for(const [key,id] of Object.entries({kind:'campaignKind',title:'campaignTitle',subtitle:'campaignSubtitle',product_id:'campaignProduct',price:'campaignPrice',was:'campaignWas',status:'campaignStatus'}))$(id).value=c[key]??'';
+    $('campaignStarts').value=localTime(c.starts_at);$('campaignEnds').value=localTime(c.ends_at);$('campaignImage').value='';$('campaignImage').dataset.saved=c.image;toggleKind();$('campaignForm').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function toggleKind(){const promo=$('campaignKind').value==='promo';$('campaignProductFields').hidden=!promo;$('campaignProduct').required=promo;$('campaignPrice').required=promo;}
+  async function saveCampaign(e){
+    e.preventDefault();const b=$('saveCampaign');b.disabled=true;message('Saving campaign…');
+    try{
+      const kind=$('campaignKind').value,p=products.find(p=>String(p.id)===$('campaignProduct').value);
+      let img=$('campaignImage').dataset.saved||p?.image;
+      if($('campaignImage').files[0])img=await getSafeOptimizedImage($('campaignImage').files[0],1200,.8);
+      if(!img)throw new Error('Choose an image, or select a product with an image.');
+      const start=new Date($('campaignStarts').value),end=$('campaignEnds').value?new Date($('campaignEnds').value):null;
+      if(!Number.isFinite(+start)||end&&+end<=+start)throw new Error('End time must be later than start time.');
+      const price=kind==='promo'?Number($('campaignPrice').value):null,was=kind==='promo'&&$('campaignWas').value?Number($('campaignWas').value):null;
+      if(kind==='promo'&&(!p||!Number.isFinite(price)||price<=0||was!==null&&was<=price))throw new Error('Choose an item and a positive offer price. The old price must be higher.');
+      const payload={category:activeCategory,kind,title:$('campaignTitle').value.trim(),subtitle:$('campaignSubtitle').value.trim(),image:img,product_id:kind==='promo'?String(p.id):null,price,was,status:$('campaignStatus').value,starts_at:start.toISOString(),ends_at:end?.toISOString()||null};
+      if(!payload.title)throw new Error('Enter a title.');
+      // Reuse a UUID on retry so a lost response cannot create duplicate campaigns.
+      saveId ||= crypto.randomUUID();
+      check(await supabaseClient.from('merchant_campaigns').upsert({...payload,id:editId||saveId}));
+      resetCampaign();await loadCampaigns();message('Saved. Published campaigns appear during their scheduled dates.');
+    }catch(e){message(e.message,true);}finally{b.disabled=false;}
+  }
+  async function loadSales(){
+    // Paginate explicitly: Supabase's default row cap must not undercount revenue.
+    const rows=[];let offset=0;
+    for(;;){const batch=check(await supabaseClient.from('merchant_sales').select('*').eq('category',activeCategory).gte('sold_on',$('salesFrom').value).lte('sold_on',$('salesTo').value).order('sold_on',{ascending:false}).order('id').range(offset,offset+499))||[];rows.push(...batch);if(batch.length<500)break;offset+=500;}
+    sales=rows;renderSales();$('exportSales').disabled=false;
+  }
+  function renderSales(){
+    const gross=sales.reduce((s,r)=>s+Math.round(Number(r.amount)*100),0),refunds=sales.reduce((s,r)=>s+Math.round(Number(r.refund)*100),0);
+    $('salesGross').textContent=money(gross/100);$('salesRefunds').textContent=money(refunds/100);$('salesNet').textContent=money((gross-refunds)/100);$('salesCount').textContent=String(sales.length);
+    const list=$('salesList');list.replaceChildren();if(!sales.length)list.append(node('p','No completed sales recorded in this date range.'));
+    for(const s of sales){const row=node('article',undefined,'mt-row');const info=node('div');info.append(node('strong',s.reference+' · '+money(Number(s.amount)-Number(s.refund))),node('p',`${s.sold_on} · Sales ${money(s.amount)} · Refunds ${money(s.refund)}`),node('small',s.note));
+      row.append(info,act('Record refund',async()=>{const raw=prompt('Total refunded for this sale in BZD (0–'+s.amount+'). Enter the cumulative refund, not an extra refund.',s.refund);if(raw===null)return;const amount=Number(raw);if(!raw.trim()||!Number.isFinite(amount)||amount<0||amount>Number(s.amount))throw new Error('Enter a valid refund amount.');check(await supabaseClient.rpc('set_merchant_refund',{sale_id:s.id,refund_amount:amount}));await loadSales();message('Refund updated.');}));list.append(row);}
+  }
+  async function saveSale(e){e.preventDefault();const b=$('saveSale');b.disabled=true;try{
+    const amount=Number($('saleAmount').value),day=$('saleDate').value,reference=$('saleReference').value.trim();
+    if(!reference||!Number.isFinite(amount)||amount<=0||day>today())throw new Error('Enter a reference, a positive item-sales amount, and a date no later than today.');
+    check(await supabaseClient.from('merchant_sales').insert({category:activeCategory,reference,amount,sold_on:day,note:$('saleNote').value.trim()}));
+    $('saleForm').reset();$('saleDate').value=today();await loadSales();message('Completed sale recorded. Each reference can be used only once per store.');
+  }catch(e){message(e.message.includes('duplicate')?'This sale reference already exists. Check the ledger before recording it again.':e.message,true);}finally{b.disabled=false;}}
+  function exportCSV(){
+    const quote=v=>{let s=String(v??'');if(/^\s*[=+@\-]/.test(s)||/^[\t\r\n]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
+    const rows=[['Date','Reference','Item sales BZD','Refunds BZD','Net sales BZD','Note'],...sales.map(s=>[s.sold_on,s.reference,s.amount,s.refund,(s.amount-s.refund).toFixed(2),s.note])];
+    const a=node('a');const url=URL.createObjectURL(new Blob(['\uFEFF'+rows.map(r=>r.map(quote).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='swiftshop-sales.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  function setup(){
+    document.querySelectorAll('[data-merchant-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.merchantTab));
+    $('campaignForm').onsubmit=saveCampaign;$('campaignKind').onchange=toggleKind;$('resetCampaign').onclick=resetCampaign;
+    $('campaignProduct').onchange=()=>{const p=products.find(p=>String(p.id)===$('campaignProduct').value);if(p){$('campaignTitle').value=p.name;$('campaignPrice').value=p.price;$('campaignWas').value='';}};
+    $('saleForm').onsubmit=saveSale;$('saleDate').value=today();$('saleDate').max=today();$('salesFrom').value=today().slice(0,8)+'01';$('salesTo').value=today();
+    $('filterSales').onclick=async()=>{try{if(!$('salesFrom').value||!$('salesTo').value||$('salesFrom').value>$('salesTo').value)throw new Error('Choose a valid date range.');await loadSales();message('Revenue refreshed.');}catch(e){sales=[];for(const id of ['salesGross','salesRefunds','salesNet','salesCount'])$(id).textContent='—';$('salesList').replaceChildren(node('p','Sales unavailable. Please retry.'));$('exportSales').disabled=true;message(e.message,true);}};
+    $('exportSales').onclick=exportCSV;$('refreshMerchant').onclick=load;resetCampaign();tab('inventory');restore();
+    supabaseClient.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){$('dashboardScreen').style.display='none';$('loginScreen').style.display='flex';sales=[];campaigns=[];loadedCategory=null;}});
+  }
+  document.addEventListener('DOMContentLoaded',setup);
+  return {login,restore};
+})();
+window.handlePortalLogin=merchantTools.login;
+window.handlePortalLogout=async()=>{await supabaseClient.auth.signOut();localStorage.removeItem('portalCat');location.reload();};
+</script></body>
 </html>
