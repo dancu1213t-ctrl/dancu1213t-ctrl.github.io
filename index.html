@@ -61,11 +61,29 @@
   </style>
 <style>.mt-shell{color:#202624;margin-bottom:24px}.mt-shell [hidden]{display:none!important}.mt-shell button{border:0;border-radius:10px;padding:11px 16px;background:#202624;color:white;font-size:14px;font-weight:600;cursor:pointer}.mt-shell button:disabled{opacity:.5;cursor:wait}.mt-shell button:focus-visible,.mt-shell input:focus-visible,.mt-shell select:focus-visible{outline:3px solid #78b5a5;outline-offset:2px}.mt-tabs{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e5e7e6;padding-bottom:14px}.mt-tabs button{background:#eef1f0;color:#34443f}.mt-tabs button[aria-selected=true]{background:#203c33;color:white}.mt-shell p{font-size:14px;line-height:1.6;color:#64716b;margin:8px 0 16px}.mt-shell h2{font-size:28px;font-weight:700;margin:8px 0}.mt-shell h3{font-size:18px;font-weight:700;margin-bottom:16px}.mt-intro{padding:22px 0}.mt-intro>small{color:#30795d;font-weight:700;letter-spacing:.13em}.mt-columns{display:grid;grid-template-columns:minmax(280px, .85fr) minmax(0,1.15fr);gap:20px}.mt-box{padding:24px;border:1px solid #e1e6e3;border-radius:18px;background:white}.mt-shell label{display:block;font-size:13px;font-weight:600;margin-bottom:14px;min-width:0}.mt-shell input,.mt-shell select{display:block;width:100%;min-width:0;font:inherit;font-size:16px;margin-top:6px;padding:11px;border:1px solid #d8dfdb;border-radius:9px;background:white}.mt-shell small{font-size:12px;color:#67726c}.mt-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.mt-actions{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.mt-actions label{margin:0}.mt-shell .mt-secondary{background:#eef1f0;color:#23372e}.mt-row{display:flex;align-items:center;gap:14px;border-bottom:1px solid #ebefed;padding:16px 0;overflow-wrap:anywhere}.mt-row>div:first-of-type{flex:1;min-width:0}.mt-row img{width:64px;height:64px;object-fit:cover;border-radius:12px}.mt-row p{margin:4px 0;font-size:12px}.mt-row button{padding:8px 11px;font-size:12px}.mt-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}.mt-metrics article{padding:20px;background:#f0f6f3;border:1px solid #e2ebe5;border-radius:16px}.mt-metrics strong{display:block;font-size:24px;margin-top:7px}.mt-check{display:flex!important;align-items:center;gap:8px;font-weight:400!important}.mt-check input{width:18px;margin:0}.mt-shell .error{color:#a52132}#merchantLoginMessage{color:#a52132;font-size:13px;margin:10px 0}@media(max-width:700px){.mt-columns{grid-template-columns:1fr}.mt-box{padding:17px}.mt-metrics{grid-template-columns:1fr 1fr}.mt-metrics strong{font-size:20px}.mt-row{flex-wrap:wrap}.mt-pair{grid-template-columns:1fr}.mt-shell h2{font-size:24px}}
 [data-merchant-panel][hidden]{display:none!important}
+</style><style id="vendor-layout-polish">/* Presentation only: existing handlers, data fields and business logic are unchanged. */
+:root{--vp-ink:#20352d;--vp-muted:#6f7c75;--vp-line:#e2e8e3;--vp-green:#284f3e;--vp-paper:#f5f7f5}
+body{background:var(--vp-paper)!important;color:var(--vp-ink);font-family:Inter,system-ui,sans-serif}
+button,input,select{touch-action:manipulation}button{transition:background .15s ease,box-shadow .15s ease!important}button:focus-visible,a:focus-visible{outline:3px solid #89b9a1!important;outline-offset:3px}button:disabled{cursor:wait;opacity:.55}input:not([type=checkbox]):not([type=hidden]),select{font-size:16px!important;min-height:46px;color:#263a30!important;border-color:#dce4de!important;border-radius:12px!important;background:#fff!important;box-shadow:none!important}input:focus,select:focus{outline:2px solid #9cbfa9!important;outline-offset:1px}input::placeholder{color:#919b95!important}input[type=file]{padding:12px!important;background:#f7faf7!important;border:1px dashed #b7c9bd!important;white-space:normal}input[type=file]::file-selector-button{padding:8px 12px;border:0;border-radius:7px;background:#e4eee7;color:#294d39;font:inherit;font-size:12px;margin-right:10px}input[type=checkbox]{accent-color:var(--vp-green)}[hidden]{display:none!important}
+.vp-masthead{width:100%;border-bottom:1px solid var(--vp-line);background:#fff;padding:18px max(22px,calc((100vw - 1260px)/2));display:flex;align-items:center;gap:12px}.vp-brandmark{width:34px;height:34px;border-radius:11px;background:var(--vp-green);color:white;display:grid;place-items:center;font-size:19px;font-weight:750}.vp-masthead strong{font-size:16px;letter-spacing:-.5px}.vp-masthead small{margin-left:auto;font-size:11px;color:var(--vp-muted);letter-spacing:.09em;text-transform:uppercase}
+#loginScreen{background:var(--vp-paper)!important;min-height:calc(100dvh - 72px)!important;padding:36px 24px!important;gap:60px;align-items:center!important}
+.vp-welcome{max-width:340px;flex:1}.vp-welcome>small{color:#59866a;font-size:11px;letter-spacing:.14em;font-weight:700}.vp-welcome h2{font-size:44px;line-height:1.12;font-weight:750;letter-spacing:-1.8px;margin:18px 0;color:#244333}.vp-welcome>p{font-size:15px;line-height:1.7;color:var(--vp-muted)}.vp-welcome ul{padding:0;list-style:none;display:grid;gap:18px;margin:34px 0}.vp-welcome li{display:flex;gap:13px;align-items:center;font-size:14px;font-weight:600}.vp-welcome li span{display:grid;place-items:center;width:32px;height:32px;border:1px solid #dce7df;background:#eaf1eb;border-radius:10px;font-size:13px;color:#53745e}.vp-welcome>small:last-child{letter-spacing:0;font-weight:400;font-size:12px;color:#8a958e}
+#loginScreen>div:not(.vp-welcome){max-width:620px!important;border:1px solid var(--vp-line)!important;border-radius:24px!important;padding:28px!important;box-shadow:0 16px 55px #233b2c07!important;margin:0!important}#loginScreen h1{font-size:24px!important;letter-spacing:-.7px}#loginScreen h1+p{font-size:13px!important;line-height:1.6;max-width:400px;margin:6px auto 0}#loginScreen .store-card{min-height:89px;border-radius:12px!important;border-color:#e4e9e5!important;padding:10px 6px!important;font:inherit;appearance:none}#loginScreen .store-card img{width:38px!important;height:38px!important;border-radius:50%!important;background:#fff!important;padding:2px!important}#loginScreen .store-card span{font-size:11px!important;white-space:normal!important;line-height:1.35;overflow:visible!important}#loginScreen .store-card:hover{background:#f1f6f2!important;border-color:#94b49d!important}#loginScreen .store-card.ring-1{background:#e9f2eb!important;border-color:#567b62!important;box-shadow:0 0 0 1px #567b62!important}#loginScreen .custom-scrollbar{grid-template-columns:repeat(4,minmax(0,1fr))!important;max-height:244px!important;padding:2px 7px 4px 2px;gap:8px!important}#loginScreen label{font-size:12px!important;text-transform:none!important;letter-spacing:0!important;font-weight:600!important}#loginScreen>div>div.text-center{margin-bottom:22px}#loginScreen button[onclick="handlePortalLogin()"]{min-height:48px;background:var(--vp-green)!important;font-size:14px!important;text-transform:none!important;letter-spacing:0!important;box-shadow:0 4px 12px #244b3915}
+#dashboardScreen{max-width:1304px!important;padding:28px 22px 44px!important}#dashboardScreen>div:first-child{border-radius:18px!important;border-color:var(--vp-line)!important;box-shadow:none!important;padding:20px 24px!important;margin-bottom:22px!important}#dashboardLogoContainer{width:56px!important;height:56px!important;border-radius:50%!important;background:#fff!important}#portalTitle{font-size:23px!important;font-weight:700!important;letter-spacing:-.7px}#adminBadge{font-size:11px;background:#f0f5f1!important;color:#56715e!important;border-color:#e0e8e2!important}#storeStatusContainer{padding:8px 12px!important;border-radius:10px!important;background:#f7faf7!important}.logout-btn{font-size:12px!important;text-transform:none!important;letter-spacing:0!important;min-height:40px!important;border-color:#e0e5e1!important}.store-toggle-switch input:focus-visible+.store-slider{outline:3px solid #91b99f;outline-offset:3px}
+.mt-shell{margin-bottom:20px}.mt-tabs{padding:6px!important;border:1px solid var(--vp-line)!important;border-radius:15px;background:white;gap:6px!important;flex-wrap:nowrap!important}.mt-tabs button{padding:12px 20px!important;font-size:13px!important;white-space:nowrap;border-radius:10px!important;background:transparent!important;color:#708076!important;min-height:44px}.mt-tabs button[aria-selected=true]{background:#e9f1eb!important;color:#244b35!important;box-shadow:0 1px 3px #1c40290a}.mt-tabs #refreshMerchant{margin-left:auto;border-left:1px solid #edf0ed;border-radius:0!important;font-weight:500;font-size:12px!important}#merchantMessage{font-size:12px!important;color:#718478!important;padding:0 6px;margin:12px 0 0!important;line-height:1.6}#merchantMessage.error{color:#af3447!important}.mt-intro{padding:28px 0 18px}.mt-intro>small{font-size:10px;letter-spacing:.12em}.mt-intro h2{font-size:29px;letter-spacing:-1px;font-weight:700;margin:8px 0}.mt-intro p{max-width:710px;font-size:13px}.mt-box{border-radius:18px!important;border-color:var(--vp-line)!important;padding:24px!important;box-shadow:0 3px 10px #253b2c03}.mt-box h3{font-size:17px;letter-spacing:-.4px;color:#263c2e;padding-bottom:16px;border-bottom:1px solid #edf1ed;margin-bottom:20px}.mt-box p{font-size:12px}.mt-shell label{font-size:12px;line-height:1.5;margin-bottom:16px;color:#4c5e52}.mt-shell small{font-size:11px;line-height:1.6}.mt-shell button{min-height:42px;background:var(--vp-green)}.mt-shell .mt-secondary{background:#f0f4f0;color:#536558}.mt-pair{gap:14px}.mt-columns{grid-template-columns:minmax(280px, .82fr) minmax(0,1.18fr);align-items:start;gap:22px}.mt-actions{gap:10px}.mt-actions label{min-width:150px;flex:1}.mt-row{padding:18px 0;align-items:center}.mt-row img{width:68px;height:68px;border:1px solid #e5ebe6;border-radius:13px;object-fit:contain;background:#fff}.mt-row strong{font-size:14px;line-height:1.5}.mt-row .mt-actions{align-items:center}.mt-row button{font-size:12px;min-height:38px;background:#f1f5f1;color:#365341;border:1px solid #dfe8e1}.mt-row p{line-height:1.7;color:#7a877e}.mt-metrics{gap:14px;margin:20px 0 24px}.mt-metrics article{background:#fff;border-color:var(--vp-line);padding:22px;border-radius:16px}.mt-metrics article:nth-child(3){background:#284f3e;color:#fff;border-color:#284f3e}.mt-metrics article:nth-child(3) small{color:#c7ddcd}.mt-metrics strong{font-size:27px;letter-spacing:-1px;margin-top:12px}.mt-check{align-items:flex-start;line-height:1.6;color:#66786c!important}.mt-check input{flex:0 0 18px;margin-top:2px}#saveCampaign,#saveSale{min-height:46px}#saveSale{width:100%}
+[data-merchant-panel="inventory"]{grid-template-columns:minmax(280px,.82fr) minmax(0,1.55fr)!important;gap:22px!important;align-items:start}[data-merchant-panel="inventory"]>div{grid-column:auto!important;border:1px solid var(--vp-line)!important;border-radius:18px!important;box-shadow:none!important;padding:24px!important}[data-merchant-panel="inventory"]>div:first-child{position:static!important}[data-merchant-panel="inventory"] h3{font-size:17px!important;text-transform:none!important;letter-spacing:-.3px!important}[data-merchant-panel="inventory"] label{font-size:12px!important;text-transform:none!important;letter-spacing:0!important;font-weight:600!important;color:#526759!important}#saveButton,#cancelButton{text-transform:none!important;letter-spacing:0!important;font-size:13px!important;min-height:46px}#saveButton{background:var(--vp-green)!important}#inventorySearch{width:100%!important;font-size:14px!important}#inventoryContainer>div{border-radius:12px!important;box-shadow:none!important;border-color:#e5eae6!important}#inventoryContainer h4{font-size:11px!important;letter-spacing:.06em!important}#inventoryContainer table{font-size:13px}#inventoryContainer td{padding:14px 10px!important}#inventoryContainer th{font-size:10px;letter-spacing:.05em;padding:11px 10px!important;color:#8a968e}#inventoryContainer td img{width:44px!important;height:44px!important;border-radius:10px;object-fit:contain}#inventoryContainer td button{min-height:34px;padding:7px 9px;font-size:11px!important;border-radius:8px}.vp-section-note{font-size:12px;color:#849187;margin:-4px 0 22px;line-height:1.6}footer{color:#94a096!important;font-size:11px!important;padding:22px!important;border-top:1px solid #e7ece8;background:#fff}
+@media(min-width:1100px){[data-merchant-panel="inventory"]>div:last-child>div:first-child{align-items:flex-start!important;flex-direction:column!important;gap:14px!important}[data-merchant-panel="inventory"]>div:last-child>div:first-child>div{width:100%}}
+@media(max-width:950px){.vp-welcome{display:none}#loginScreen{padding:24px 16px!important;min-height:auto!important}.mt-columns,[data-merchant-panel="inventory"]{grid-template-columns:1fr!important}.mt-metrics strong{font-size:23px}.mt-tabs button{padding:11px 13px!important}}
+@media(max-width:600px){.vp-masthead{padding:14px 18px}.vp-masthead small{font-size:9px;letter-spacing:.04em}.vp-brandmark{width:30px;height:30px}.vp-masthead strong{font-size:15px}#dashboardScreen{padding:16px 14px 30px!important}#dashboardScreen>div:first-child{padding:16px!important;border-radius:16px!important;margin-bottom:16px!important}#portalTitle{font-size:19px!important}#dashboardLogoContainer{width:44px!important;height:44px!important}#loginScreen>div:not(.vp-welcome){padding:22px 17px!important;border-radius:18px!important}#loginScreen .custom-scrollbar{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-height:230px!important}#loginScreen .store-card{min-height:82px}.mt-tabs{display:grid!important;grid-template-columns:1fr 1.45fr 1fr;gap:3px!important}.mt-tabs button{font-size:11px!important;padding:9px 5px!important;min-height:42px}.mt-tabs #refreshMerchant{grid-column:1/-1;border-left:0;border-top:1px solid #edf0ed;margin:0;padding:6px!important;min-height:32px;justify-self:stretch}.mt-intro h2{font-size:25px}.mt-intro{padding:22px 0 12px}.mt-box,[data-merchant-panel="inventory"]>div{padding:18px!important}.mt-metrics{grid-template-columns:1fr 1fr;gap:10px}.mt-metrics article{padding:16px}.mt-metrics strong{font-size:23px;margin-top:8px}.mt-columns{gap:16px}.mt-pair{grid-template-columns:1fr}.mt-row{flex-wrap:wrap;gap:12px}.mt-row .mt-actions{width:100%;margin-left:80px}.mt-row .mt-actions button{flex:1}.mt-actions>button{flex:1}.mt-actions label{min-width:120px}.mt-check input{width:18px;min-height:18px}#inventoryContainer table,#inventoryContainer tbody{display:block}#inventoryContainer thead{display:none}#inventoryContainer tr{display:grid;grid-template-columns:54px 1fr;gap:6px 12px;padding:16px;border-bottom:1px solid #edf1ee}#inventoryContainer tr:last-child{border-bottom:0}#inventoryContainer td{display:block;padding:0!important;min-width:0!important}#inventoryContainer td:nth-child(1){grid-column:1;grid-row:1/4}#inventoryContainer td img{width:54px!important;height:54px!important}#inventoryContainer td:nth-child(2){grid-column:2;font-size:14px;white-space:normal;overflow-wrap:anywhere}#inventoryContainer td:nth-child(3),#inventoryContainer td:nth-child(4){grid-column:2}#inventoryContainer td:nth-child(5){grid-column:1/-1;text-align:left;margin-top:8px;display:flex;gap:8px}#inventoryContainer td:nth-child(5) button{flex:1;min-height:40px;font-size:12px!important}#inventoryContainer td:nth-child(4) button{min-height:32px}#inventoryContainer .overflow-x-auto{overflow:visible}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+[data-merchant-panel="inventory"]>div:last-child{padding:0!important;border:0!important;background:transparent!important}[data-merchant-panel="inventory"]>div:last-child>div{border-color:var(--vp-line)!important;box-shadow:none!important;border-radius:18px!important}#inventoryContainer tr.opacity-50{opacity:1!important}#inventoryContainer tr.opacity-50 td:nth-child(2){color:#748176!important}
 </style></head>
 <body class="bg-[#F8F9FA] text-zinc-900 min-h-screen flex flex-col justify-between antialiased selection:bg-zinc-900 selection:text-white">
+<header class="vp-masthead"><span class="vp-brandmark" aria-hidden="true">S</span><strong>SwiftShop OW</strong><small>Merchant workspace</small></header>
 
   <!-- 🔐 VENDOR LOGIN & STORE SELECTOR SCREEN -->
   <div id="loginScreen" style="display:none;" class="flex items-center justify-center min-h-screen px-3 py-6 sm:px-6 sm:py-12 bg-[#F4F5F6]">
+<aside class="vp-welcome"><small>YOUR SHOP. YOUR SPACE.</small><h2>A little easier<br>to run your day.</h2><p>Everything you need to keep your store up to date, share your offers, and follow your sales.</p><ul><li><span>01</span>Keep your inventory fresh</li><li><span>02</span>Put your offers in the spotlight</li><li><span>03</span>Keep track of completed sales</li></ul><small>Made for the businesses of Orange Walk.</small></aside>
     <div class="max-w-2xl w-full bg-white p-5 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm my-auto">
       
       <div class="text-center mb-6">
@@ -73,7 +91,7 @@
           <img src="https://i.imgur.com/oh9MYxE.png" alt="SwiftShop Logo" class="w-full h-full object-contain">
         </div>
         <h1 class="text-lg sm:text-xl font-bold text-zinc-900 tracking-tight">SwiftShop Portal</h1>
-        <p class="text-zinc-500 text-xs mt-0.5">Select your merchant profile to manage inventory</p>
+        <p class="text-zinc-500 text-xs mt-0.5">Choose your store, then sign in to your merchant account.</p>
       </div>
       
       <div class="space-y-5">
@@ -81,92 +99,92 @@
           <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2.5">1. Select Store</label>
           <div class="max-h-[45vh] sm:max-h-64 overflow-y-auto custom-scrollbar pr-1 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
             
-            <div onclick="selectStoreCard('Aroma', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            <button type="button" onclick="selectStoreCard('Aroma', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/i7i6bbl.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Aroma</span>
-            </div>
-            <div onclick="selectStoreCard('Urban', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Urban', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/sdwXPEa.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Urban Cafe</span>
-            </div>
-            <div onclick="selectStoreCard('Brew', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Brew', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/dxhMWyb.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Brew&Browse</span>
-            </div>
-            <div onclick="selectStoreCard('Maria', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Maria', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/zKm0iej.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Maria Cafe</span>
-            </div>
-            <div onclick="selectStoreCard('Leo Meatpies', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Leo Meatpies', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/aggMVYd.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Leo's Bakehouse</span>
-            </div>
-            <div onclick="selectStoreCard('Shaken', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Shaken', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/ojrOPux.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Shaken&Served</span>
-            </div>
-            <div onclick="selectStoreCard('Dumpling', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Dumpling', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/7pIzEES.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Dumpling King</span>
-            </div>
+            </button>
 
-              <div onclick="selectStoreCard('Pocket Mobile', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+              <button type="button" onclick="selectStoreCard('Pocket Mobile', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/mJT39kx.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Pocket Mobile</span>
-            </div>
+            </button>
       
-            <div onclick="selectStoreCard('Salsas', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            <button type="button" onclick="selectStoreCard('Salsas', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/g5rhQkp.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Salsas y Sabores</span>
-            </div>
-            <div onclick="selectStoreCard('Burger But', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Burger But', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/kEb6w8N.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Burga Hut</span>
-            </div>
-            <div onclick="selectStoreCard('TFC', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('TFC', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/sDzNncE.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">TFC</span>
-            </div>
-            <div onclick="selectStoreCard('Guerrero', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Guerrero', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/U93eRx4.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Guerrero</span>
-            </div>
-            <div onclick="selectStoreCard('Cosmetics', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Cosmetics', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/4HuDzQg.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Bree's</span>
-            </div>
-            <div onclick="selectStoreCard('Faye', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Faye', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/0cSlDIx.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">The Faye CO</span>
-            </div>
-            <div onclick="selectStoreCard('Sister', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Sister', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/RQpdN14.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Sister's CO</span>
-            </div>
-            <div onclick="selectStoreCard('AddToCart', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('AddToCart', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/ijxrW5d.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Add to Cart</span>
-            </div>
-            <div onclick="selectStoreCard('Neeyas Backyard', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Neeyas Backyard', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/DJb7os5.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Neeya's Backyaad</span>
-            </div>
-            <div onclick="selectStoreCard('Vegetables', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Vegetables', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">🥦</div>
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Vegetables</span>
-            </div>
-            <div onclick="selectStoreCard('Lunch', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Lunch', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">🍱</div>
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Lunch</span>
-            </div>
-            <div onclick="selectStoreCard('Electronics', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Electronics', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">💻</div>
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Electronics</span>
-            </div>
-            <div onclick="selectStoreCard('Breakfast', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+            </button>
+            <button type="button" onclick="selectStoreCard('Breakfast', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">🥞</div>
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Breakfast</span>
-            </div>
+            </button>
 
           </div>
           <!-- Hidden Native Select to keep original JS logic intact -->
@@ -197,8 +215,8 @@
         </div>
 
         <div>
-          <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2">2. Enter Password</label>
-          <label class="block text-sm mb-2">Merchant email<input type="email" id="merchantEmail" autocomplete="username" required class="w-full px-3 py-2 rounded-xl border border-zinc-300"></label><p id="merchantLoginMessage" role="alert"></p><input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="current-password" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 bg-white text-zinc-900 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
+          <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2">2. Sign in</label>
+          <label class="block text-sm mb-2">Merchant email<input type="email" id="merchantEmail" autocomplete="username" required class="w-full px-3 py-2 rounded-xl border border-zinc-300"></label><p id="merchantLoginMessage" role="alert"></p><label for="loginPassword" class="block mb-2">Password</label><input type="password" id="loginPassword" placeholder="••••••••••••" autocomplete="current-password" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 bg-white text-zinc-900 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
         </div>
 
         <button onclick="handlePortalLogin()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition active:scale-[0.99]">
@@ -237,7 +255,7 @@
         <div id="storeStatusContainer" class="flex items-center gap-2.5 bg-zinc-50 border border-zinc-200 px-3 py-1 rounded-full">
           <span id="statusTextLabel" class="text-xs font-semibold text-zinc-700">Store Open</span>
           <label class="store-toggle-switch">
-            <input type="checkbox" id="storeStatusCheckbox" onchange="toggleStoreStatus(this)">
+            <input type="checkbox" aria-label="Store open for orders" id="storeStatusCheckbox" onchange="toggleStoreStatus(this)">
             <span class="store-slider"></span>
           </label>
         </div>
@@ -283,17 +301,17 @@
         
         <div class="space-y-4">
           <div>
-            <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Item Name</label>
+            <label for="pName" class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Item Name</label>
             <input type="text" id="pName" placeholder="e.g. Deluxe Cheeseburger" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50/50 text-zinc-900 text-sm focus:outline-none focus:border-zinc-900 focus:bg-white transition">
           </div>
           
           <div>
-            <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Price (BZD)</label>
+            <label for="pPrice" class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Price (BZD)</label>
             <input type="number" id="pPrice" placeholder="0.00" step="0.01" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50/50 text-zinc-900 text-sm focus:outline-none focus:border-zinc-900 focus:bg-white transition">
           </div>
 
           <div>
-            <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Subcategory</label>
+            <label for="pSubcategorySelect" class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Subcategory</label>
             <select id="pSubcategorySelect" onchange="handleSubcategoryChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50/50 text-zinc-800 text-sm focus:outline-none focus:border-zinc-900 focus:bg-white transition mb-2">
               <option value="Items">Items (Default)</option>
             </select>
@@ -301,7 +319,7 @@
           </div>
 
           <div>
-            <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Product Image (Device Upload)</label>
+            <label for="pImageFile" class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-1.5">Product Image (Device Upload)</label>
             <input type="file" id="pImageFile" accept="image/*" class="w-full px-3 py-2 rounded-xl border border-zinc-200 bg-zinc-50/50 text-xs text-zinc-600 focus:outline-none file:mr-3 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-zinc-200 file:text-zinc-800 hover:file:bg-zinc-300 cursor-pointer">
             <input type="hidden" id="pImageData">
           </div>
@@ -326,7 +344,7 @@
             </div>
             <!-- Search Bar -->
             <div class="w-full sm:w-auto">
-              <input type="text" id="inventorySearch" oninput="filterInventory()" placeholder="Search items..." class="w-full sm:w-60 px-3.5 py-2 rounded-xl border border-zinc-200 bg-zinc-50/50 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 focus:bg-white transition">
+              <input type="text" aria-label="Search your inventory" id="inventorySearch" oninput="filterInventory()" placeholder="Search items..." class="w-full sm:w-60 px-3.5 py-2 rounded-xl border border-zinc-200 bg-zinc-50/50 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 focus:bg-white transition">
             </div>
           </div>
           
