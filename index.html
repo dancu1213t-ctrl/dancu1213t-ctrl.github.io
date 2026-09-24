@@ -77,6 +77,13 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
 @media(max-width:600px){.vp-masthead{padding:14px 18px}.vp-masthead small{font-size:9px;letter-spacing:.04em}.vp-brandmark{width:30px;height:30px}.vp-masthead strong{font-size:15px}#dashboardScreen{padding:16px 14px 30px!important}#dashboardScreen>div:first-child{padding:16px!important;border-radius:16px!important;margin-bottom:16px!important}#portalTitle{font-size:19px!important}#dashboardLogoContainer{width:44px!important;height:44px!important}#loginScreen>div:not(.vp-welcome){padding:22px 17px!important;border-radius:18px!important}#loginScreen .custom-scrollbar{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-height:230px!important}#loginScreen .store-card{min-height:82px}.mt-tabs{display:grid!important;grid-template-columns:1fr 1.45fr 1fr;gap:3px!important}.mt-tabs button{font-size:11px!important;padding:9px 5px!important;min-height:42px}.mt-tabs #refreshMerchant{grid-column:1/-1;border-left:0;border-top:1px solid #edf0ed;margin:0;padding:6px!important;min-height:32px;justify-self:stretch}.mt-intro h2{font-size:25px}.mt-intro{padding:22px 0 12px}.mt-box,[data-merchant-panel="inventory"]>div{padding:18px!important}.mt-metrics{grid-template-columns:1fr 1fr;gap:10px}.mt-metrics article{padding:16px}.mt-metrics strong{font-size:23px;margin-top:8px}.mt-columns{gap:16px}.mt-pair{grid-template-columns:1fr}.mt-row{flex-wrap:wrap;gap:12px}.mt-row .mt-actions{width:100%;margin-left:80px}.mt-row .mt-actions button{flex:1}.mt-actions>button{flex:1}.mt-actions label{min-width:120px}.mt-check input{width:18px;min-height:18px}#inventoryContainer table,#inventoryContainer tbody{display:block}#inventoryContainer thead{display:none}#inventoryContainer tr{display:grid;grid-template-columns:54px 1fr;gap:6px 12px;padding:16px;border-bottom:1px solid #edf1ee}#inventoryContainer tr:last-child{border-bottom:0}#inventoryContainer td{display:block;padding:0!important;min-width:0!important}#inventoryContainer td:nth-child(1){grid-column:1;grid-row:1/4}#inventoryContainer td img{width:54px!important;height:54px!important}#inventoryContainer td:nth-child(2){grid-column:2;font-size:14px;white-space:normal;overflow-wrap:anywhere}#inventoryContainer td:nth-child(3),#inventoryContainer td:nth-child(4){grid-column:2}#inventoryContainer td:nth-child(5){grid-column:1/-1;text-align:left;margin-top:8px;display:flex;gap:8px}#inventoryContainer td:nth-child(5) button{flex:1;min-height:40px;font-size:12px!important}#inventoryContainer td:nth-child(4) button{min-height:32px}#inventoryContainer .overflow-x-auto{overflow:visible}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 [data-merchant-panel="inventory"]>div:last-child{padding:0!important;border:0!important;background:transparent!important}[data-merchant-panel="inventory"]>div:last-child>div{border-color:var(--vp-line)!important;box-shadow:none!important;border-radius:18px!important}#inventoryContainer tr.opacity-50{opacity:1!important}#inventoryContainer tr.opacity-50 td:nth-child(2){color:#748176!important}
+/* Scroll only the inventory list; keep its search and product form outside. */
+#inventoryContainer{max-height:620px;max-height:clamp(280px,65dvh,720px);overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;padding-right:8px;scrollbar-width:thin;scrollbar-color:#9bb6a5 #edf2ee;-webkit-overflow-scrolling:touch}
+#inventoryContainer::-webkit-scrollbar{width:8px}
+#inventoryContainer::-webkit-scrollbar-track{background:#edf2ee;border-radius:8px}
+#inventoryContainer::-webkit-scrollbar-thumb{background:#9bb6a5;border-radius:8px;border:2px solid #edf2ee}
+#inventoryContainer:focus-visible{outline:2px solid #7da58a;outline-offset:4px}
+@media(max-width:600px){#inventoryContainer{max-height:480px;max-height:60dvh;padding-right:5px}}
 </style></head>
 <body class="bg-[#F8F9FA] text-zinc-900 min-h-screen flex flex-col justify-between antialiased selection:bg-zinc-900 selection:text-white">
 <header class="vp-masthead"><span class="vp-brandmark" aria-hidden="true">S</span><strong>SwiftShop OW</strong><small>Merchant workspace</small></header>
@@ -274,6 +281,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
    <label>Placement<select id="campaignKind"><option value="promo">Live Promos — shoppable offer</option><option value="slide">Home slider — promotional banner</option></select></label>
    <div id="campaignProductFields"><label>Inventory item<select id="campaignProduct" required></select></label><div class="mt-pair"><label>Offer price (BZD)<input id="campaignPrice" type="number" min="0.01" max="1000000" step="0.01" required></label><label>Old price (optional)<input id="campaignWas" type="number" min="0.01" max="1000000" step="0.01"></label></div></div>
    <label>Title<input id="campaignTitle" maxlength="100" required></label><label>Short description<input id="campaignSubtitle" maxlength="180"></label>
+   <div id="bannerAppearance" hidden><div class="mt-pair"><label>Banner colour<select id="bannerTheme"><option value="mint">Fresh mint</option><option value="peach">Warm peach</option><option value="lavender">Soft lavender</option><option value="sky">Sky blue</option></select></label><label>Image movement<select id="bannerMotion"><option value="yes">Gentle floating</option><option value="no">Still image</option></select></label></div><small>Colour, decorative accents, and image movement appear on the customer home banner. Customers who prefer reduced motion see a still image.</small></div>
    <label>Image<input id="campaignImage" type="file" accept="image/*"></label><small>Offers use the product image when no new image is chosen. Banners need an image. Landscape images work best.</small>
    <div class="mt-pair"><label>Starts<input id="campaignStarts" type="datetime-local" required></label><label>Ends (optional)<input id="campaignEnds" type="datetime-local"></label></div>
    <label>Status<select id="campaignStatus"><option value="draft">Draft — hidden from customers</option><option value="published">Published — visible during schedule</option><option value="paused">Paused — hidden from customers</option></select></label>
@@ -348,7 +356,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
             </div>
           </div>
           
-          <div id="inventoryContainer" class="space-y-6">
+          <div id="inventoryContainer" tabindex="0" role="region" aria-label="Scrollable product inventory" class="space-y-6">
             <div class="text-center py-10 text-zinc-400 text-xs uppercase tracking-wider">Loading inventory...</div>
           </div>
         </div>
@@ -898,10 +906,11 @@ const merchantTools = (() => {
   function resetCampaign(){editId=null;saveId=null;$('campaignForm').reset();$('campaignStarts').value=localTime(new Date());$('campaignImage').dataset.saved='';$('campaignHeading').textContent='Create a campaign';toggleKind();}
   function editCampaign(c){
     editId=c.id;saveId=null;tab('campaigns');$('campaignHeading').textContent='Edit campaign';
+    $('bannerTheme').value=c.banner_theme||'mint';$('bannerMotion').value=c.banner_motion===false?'no':'yes';
     for(const [key,id] of Object.entries({kind:'campaignKind',title:'campaignTitle',subtitle:'campaignSubtitle',product_id:'campaignProduct',price:'campaignPrice',was:'campaignWas',status:'campaignStatus'}))$(id).value=c[key]??'';
     $('campaignStarts').value=localTime(c.starts_at);$('campaignEnds').value=localTime(c.ends_at);$('campaignImage').value='';$('campaignImage').dataset.saved=c.image;toggleKind();$('campaignForm').scrollIntoView({behavior:'smooth',block:'start'});
   }
-  function toggleKind(){const promo=$('campaignKind').value==='promo';$('campaignProductFields').hidden=!promo;$('campaignProduct').required=promo;$('campaignPrice').required=promo;}
+  function toggleKind(){const promo=$('campaignKind').value==='promo';$('campaignProductFields').hidden=!promo;$('bannerAppearance').hidden=promo;$('campaignProduct').required=promo;$('campaignPrice').required=promo;}
   async function saveCampaign(e){
     e.preventDefault();const b=$('saveCampaign');b.disabled=true;message('Saving campaign…');
     try{
@@ -915,6 +924,7 @@ const merchantTools = (() => {
       if(kind==='promo'&&(!p||!Number.isFinite(price)||price<=0||was!==null&&was<=price))throw new Error('Choose an item and a positive offer price. The old price must be higher.');
       const payload={category:activeCategory,kind,title:$('campaignTitle').value.trim(),subtitle:$('campaignSubtitle').value.trim(),image:img,product_id:kind==='promo'?String(p.id):null,price,was,status:$('campaignStatus').value,starts_at:start.toISOString(),ends_at:end?.toISOString()||null};
       if(!payload.title)throw new Error('Enter a title.');
+      if(kind==='slide'){payload.banner_theme=$('bannerTheme').value;payload.banner_motion=$('bannerMotion').value==='yes';}
       // Reuse a UUID on retry so a lost response cannot create duplicate campaigns.
       saveId ||= crypto.randomUUID();
       check(await supabaseClient.from('merchant_campaigns').upsert({...payload,id:editId||saveId}));
