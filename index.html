@@ -974,6 +974,7 @@ const merchantTools = (() => {
     const list=$('salesList');list.replaceChildren();if(!sales.length)list.append(node('p','No completed sales recorded in this date range.'));
     for(const s of sales){const row=node('article',undefined,'mt-row');const info=node('div');info.append(node('strong',s.reference+' · '+money(Number(s.amount)-Number(s.refund))),node('p',`${s.sold_on} · Sales ${money(s.amount)} · Refunds ${money(s.refund)}`),node('small',s.note));
       row.append(info,act('Record refund',async()=>{const raw=prompt('Total refunded for this sale in BZD (0–'+s.amount+'). Enter the cumulative refund, not an extra refund.',s.refund);if(raw===null)return;const amount=Number(raw);if(!raw.trim()||!Number.isFinite(amount)||amount<0||amount>Number(s.amount))throw new Error('Enter a valid refund amount.');check(await supabaseClient.rpc('set_merchant_refund',{sale_id:s.id,refund_amount:amount}));await loadSales();message('Refund updated.');}));list.append(row);}
+    window.merchantManagement?.syncAccess();
   }
   async function saveSale(e){e.preventDefault();if(!window.weeklyPlans.access.revenue){message('Pro approval is required to edit.',true);return;}const b=$('saveSale');b.disabled=true;try{
     const amount=Number($('saleAmount').value),day=$('saleDate').value,reference=$('saleReference').value.trim();
