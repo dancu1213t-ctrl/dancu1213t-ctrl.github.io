@@ -908,7 +908,7 @@ const merchantTools = (() => {
     catch{$('loginScreen').style.display='flex';$('dashboardScreen').style.display='none';}
   }
   function tab(name){
-    if((name==='campaigns'||name==='revenue')&&!window.weeklyPlans?.access?.[name]){const required=name==='campaigns'?'Premium':'Pro';name='plans';$('spNotice').textContent='';}
+    
 
     document.querySelectorAll('[data-merchant-panel]').forEach(p=>p.hidden=p.dataset.merchantPanel!==name);
     document.querySelectorAll('[data-merchant-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.merchantTab===name)));
