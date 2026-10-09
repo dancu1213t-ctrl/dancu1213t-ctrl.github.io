@@ -122,6 +122,10 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
               <img src="https://i.imgur.com/sdwXPEa.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Urban Cafe</span>
             </button>
+<button type="button" onclick="selectStoreCard('Better Life Pharmacy', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
+              <img src="https://i.imgur.com/ADJUoBf.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
+              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Better Life Pharmacy</span>
+            </button>
             <button type="button" onclick="selectStoreCard('Brew', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
               <img src="https://i.imgur.com/dxhMWyb.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
               <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Brew&Browse</span>
@@ -234,6 +238,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
   <option value="Electronics">Electronics</option>
   <option value="Breakfast">Breakfast</option>
   <option value="Urban">Urban</option>
+<option value="Better Life Pharmacy">Better Life Pharmacy</option>
 </select>
         </div>
 
@@ -395,6 +400,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
 
   // 🔑 VENDOR PASSWORDS & LOGOS MAPPING
   const vendorData = {
+    "Better Life Pharmacy": {logo:"https://i.imgur.com/ADJUoBf.jpeg"},
     "Aroma": {  logo: "https://i.imgur.com/i7i6bbl.png" },
     "Guerrero": {  logo: "https://i.imgur.com/U93eRx4.jpeg" },
     "AddToCart": {  logo: "https://i.imgur.com/ijxrW5d.jpeg" },
