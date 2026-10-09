@@ -1,0 +1,1 @@
+create policy "Verified administrators manage store appearance" on public.merchant_storefronts for all to authenticated using(public.swift_worker_kind()='admin') with check(public.swift_worker_kind()='admin' and exists(select 1 from public.stores where category=merchant_storefronts.category));
