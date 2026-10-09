@@ -996,7 +996,7 @@ const merchantTools = (() => {
     supabaseClient.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){$('dashboardScreen').style.display='none';$('loginScreen').style.display='flex';sales=[];campaigns=[];loadedCategory=null;}});
   }
   document.addEventListener('DOMContentLoaded',setup);
-  return {login,restore,switchStore:async preferred=>{await sessionCategory(preferred);await initDashboard();await load();}};
+  return {refreshAccess:()=>{renderCampaigns();renderSales();window.merchantManagement?.syncAccess();},login,restore,switchStore:async preferred=>{await sessionCategory(preferred);await initDashboard();await load();}};
 })();
 window.handlePortalLogin=merchantTools.login;
 window.handlePortalLogout=async()=>{await supabaseClient.auth.signOut();localStorage.removeItem('portalCat');location.reload();};
@@ -1025,7 +1025,7 @@ function validateStoreHours(opensAt,closesAt){
 </script><script id="swiftshop-plan-controller">(()=>{'use strict';const $=id=>document.getElementById(id);let rows=[]; const prices={free:0,basic:6.5,pro:7.5,premium:8.5};
 window.weeklyPlans={access:{campaigns:false,revenue:false},async load(){
 const category=activeCategory;const {data,error}=await supabaseClient.rpc('swift_merchant_plan',{p_category:category});if(error)throw error;if(category!==activeCategory)return;
-this.access=data;window.merchantManagement?.syncAccess();$('weeklyCurrent').textContent='Current: '+data.plan[0].toUpperCase()+data.plan.slice(1)+(data.plan==='free'?'':' · BZ$'+prices[data.plan].toFixed(2)+'/week');
+const accessChanged=this.access.campaigns!==data.campaigns||this.access.revenue!==data.revenue;this.access=data;if(accessChanged)merchantTools.refreshAccess();window.merchantManagement?.syncAccess();$('weeklyCurrent').textContent='Current: '+data.plan[0].toUpperCase()+data.plan.slice(1)+(data.plan==='free'?'':' · BZ$'+prices[data.plan].toFixed(2)+'/week');
 document.querySelectorAll('[data-weekly-plan]').forEach(el=>{const current=el.dataset.weeklyPlan===data.plan;el.classList.toggle('is-current',current);el.querySelector('.plan-current').hidden=!current;});
 document.querySelectorAll('[data-merchant-tab]').forEach(b=>{const feature=b.dataset.merchantTab;const locked=['campaigns','revenue'].includes(feature)&&!data[feature];b.dataset.locked='false';b.title=locked?'View only · editing unlocks after plan approval':'';});
 $('weeklyAdmin').hidden=!data.admin;if(data.admin)await loadAdmin();
