@@ -879,6 +879,9 @@ const merchantTools = (() => {
   async function sessionCategory(preferred){
     const {data,error}=await supabaseClient.auth.getUser();
     if(error||!data.user)throw new Error('Please sign in with your merchant email and password.');
+    const {data:workerKind,error:workerError}=await supabaseClient.rpc('swift_worker_kind');
+    if(workerError)throw workerError;
+    if(workerKind==='admin'&&preferred){const store=check(await supabaseClient.from('stores').select('category').eq('category',preferred).limit(1));if(!store?.length)throw new Error('Store not found.');activeCategory=preferred;localStorage.setItem('portalCat',preferred);return preferred;}
     const rows=check(await supabaseClient.from('merchant_members').select('category').eq('user_id',data.user.id));
     const selected=rows?.find(r=>r.category===preferred)?.category || (!preferred?rows?.[0]?.category:null);
     if(!selected)throw new Error('This account has not been assigned to that store. Ask SwiftShop to set up merchant access.');
