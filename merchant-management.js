@@ -35,6 +35,7 @@ notice.querySelector('strong').textContent=allowed?'Editing enabled':'View-only 
 notice.querySelector('span').textContent=allowed?'Your approved plan lets you manage this section.':'Browse your store’s data. Editing unlocks after SwiftShop approves '+tier+(tier==='Pro'?' or Premium.':'.');
 notice.querySelector('button').hidden=!!allowed;notice.classList.toggle('mv-approved',!!allowed);
 panel.querySelectorAll('form input,form select,form textarea,form button').forEach(el=>{el.disabled=!allowed;});
+panel.querySelectorAll(name==='revenue'?'#mmEntryLedger button':'#campaignList button').forEach(el=>{el.disabled=!allowed;});
 if(name==='revenue')panel.querySelectorAll('.mm-legacy button').forEach(el=>{if(!['filterSales','exportSales'].includes(el.id))el.disabled=!allowed;});
 }
 }
