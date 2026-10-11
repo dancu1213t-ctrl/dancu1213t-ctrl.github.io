@@ -13,7 +13,7 @@ window.SwiftOfferOrdering.mount($('moForm'));window.SwiftOfferOrdering.write();
 $('moClear').onclick=reset;
 $('moForm').elements.photo.onchange=()=>{const file=$('moForm').elements.photo.files[0];if(file){const url=URL.createObjectURL(file);$('moPreview').src=url;$('moPreview').hidden=false;$('moPreview').onload=()=>URL.revokeObjectURL(url);}};
 $('moForm').onsubmit=save;
-supabaseClient.auth.onAuthStateChange(()=>{ticket++;store='';reset();$('moList').replaceChildren();});
+supabaseClient.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){ticket++;store='';reset();$('moList').replaceChildren();}});
 async function load(){
 const id=++ticket;store=activeCategory;reset();$('moStore').textContent='Posting for '+store+'. Your merchant login can only manage stores assigned to you.';$('moStatus').textContent='Loading your offers…';
 try{const {data,error}=await supabaseClient.from('swift_store_offers').select('*').eq('category',store).order('created_at',{ascending:false});if(error)throw error;if(id!==ticket)return;paint(data||[]);$('moStatus').textContent='';}catch(e){if(id===ticket)$('moStatus').textContent='Could not load offers: '+e.message;}
