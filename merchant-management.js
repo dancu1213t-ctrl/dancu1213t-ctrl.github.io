@@ -29,7 +29,7 @@ $('merchantOrderStatus').textContent='Last synced '+new Date().toLocaleTimeStrin
 }
 function syncAccess(){
 const access=window.weeklyPlans?.access||{};
-for(const [name,allowed,tier] of [['revenue',access.revenue,'Pro'],['campaigns',access.campaigns,'Premium']]){
+for(const [name,allowed,tier] of [['revenue',access.revenue,'Pro'],['campaigns',access.campaigns,'Pro or Premium with sponsored ads']]){
 const panel=document.querySelector('[data-merchant-panel="'+name+'"]');if(!panel)continue;
 let notice=panel.querySelector('.mv-access');if(!notice){notice=node('div',undefined,'mv-access');const text=node('div'),title=node('strong'),help=node('span'),button=node('button','Choose a plan');button.type='button';button.onclick=()=>document.querySelector('[data-merchant-tab="plans"]').click();text.append(title,help);notice.append(text,button);panel.querySelector('.mt-intro').after(notice);}
 notice.querySelector('strong').textContent=allowed?'Editing enabled':'View-only workspace';
