@@ -1027,7 +1027,18 @@ function validateStoreHours(opensAt,closesAt){
 window.weeklyPlans={access:{campaigns:false,revenue:false},async load(){
 const category=activeCategory;const {data,error}=await supabaseClient.rpc('swift_merchant_plan',{p_category:category});if(error)throw error;if(category!==activeCategory)return;
 const accessChanged=this.access.campaigns!==data.campaigns||this.access.revenue!==data.revenue;this.access=data;if(accessChanged)merchantTools.refreshAccess();window.merchantManagement?.syncAccess();$('weeklyCurrent').textContent='Current: '+data.plan[0].toUpperCase()+data.plan.slice(1)+(data.plan==='free'?'':' · BZ$'+Number(data.weekly_price).toFixed(2)+'/week');
-document.querySelectorAll('[data-weekly-plan]').forEach(el=>{const current=el.dataset.weeklyPlan===data.plan;el.classList.toggle('is-current',current);el.querySelector('.plan-current').hidden=!current;});
+document.querySelectorAll('[data-weekly-plan]').forEach(el=>{const current=el.dataset.weeklyPlan===data.plan;el.classList.toggle('is-current',current);el.querySelector('.plan-current').hidden=!current;const ads=el.querySelector('[data-plan-ads]');if(ads){ads.checked=current&&!!data.ads_enabled;el.querySelector('.sp-price').innerHTML='BZ});
+document.querySelectorAll('[data-merchant-tab]').forEach(b=>{const feature=b.dataset.merchantTab;const locked=['campaigns','revenue'].includes(feature)&&!data[feature];b.dataset.locked='false';b.title=locked?'View only · editing unlocks after plan approval':'';});
+$('weeklyAdmin').hidden=!data.admin;if(data.admin)await loadAdmin();
+}};
+async function loadAdmin(){const {data,error}=await supabaseClient.rpc('swift_merchant_plan_admin');if(error)throw error;rows=data;const previous=$('weeklyAdminStore').value;$('weeklyAdminStore').replaceChildren(...rows.map(r=>new Option(r.category,r.category)));if(rows.some(r=>r.category===previous))$('weeklyAdminStore').value=previous;sync();}
+function sync(){$('weeklyAdminPlan').value=rows.find(r=>r.category===$('weeklyAdminStore').value)?.plan||'free';}
+$('weeklyAdminStore').onchange=sync;
+$('weeklyAdminForm').onsubmit=async e=>{e.preventDefault();const b=e.currentTarget.querySelector('button');b.disabled=true;try{const {error}=await supabaseClient.rpc('swift_merchant_plan_admin',{p_category:$('weeklyAdminStore').value,p_plan:$('weeklyAdminPlan').value});if(error)throw error;await window.weeklyPlans.load();$('spNotice').textContent='Store plan updated.';}catch(err){$('spNotice').textContent='Could not save plan: '+err.message;}finally{b.disabled=false;}};
+document.querySelector('[data-merchant-tab="plans"]').addEventListener('click',()=>window.weeklyPlans.load().catch(e=>$('spNotice').textContent='Could not load plan: '+e.message));
+})();</script><link rel="stylesheet" href="portal-refresh.css?v=weekly20261008">
+<link rel="stylesheet" href="merchant-management.css?v=viewonly20261009"><script src="merchant-management.js?v=optionalads20261010"></script><script src="merchant-admin-requests.js?v=optionalads20261010"></script><link rel="stylesheet" href="merchant-order-alerts.css?v=20261009decline"><script src="merchant-order-alerts.js?v=20261009decline"></script></body>
+</html>+(prices[el.dataset.weeklyPlan]+(ads.checked?0.5:0)).toFixed(2)+' <small>/ week</small>';}});
 document.querySelectorAll('[data-merchant-tab]').forEach(b=>{const feature=b.dataset.merchantTab;const locked=['campaigns','revenue'].includes(feature)&&!data[feature];b.dataset.locked='false';b.title=locked?'View only · editing unlocks after plan approval':'';});
 $('weeklyAdmin').hidden=!data.admin;if(data.admin)await loadAdmin();
 }};
