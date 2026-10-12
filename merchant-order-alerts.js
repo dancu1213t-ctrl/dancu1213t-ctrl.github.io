@@ -3,7 +3,7 @@ const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefine
 let category='',generation=0,rows=[],busy=false,accepting=false,dialog,current='',signature='',ctx,alarmTimer,enabled=false,notified=new Set(),acknowledged=new Set();
 const soundKey=()=> 'swift.merchant.sound.'+category;
 const eligible=r=>!acknowledged.has(r.tracking_id)&&!r.merchant_ack_at&&r.decision!=='rejected'&&!['delivered','cancelled'].includes(r.phase);
-const merchant=()=>typeof activeCategory!=='undefined'&&activeCategory&&window.weeklyPlans?.access&&window.weeklyPlans.access.admin===false&&document.getElementById('dashboardScreen')?.style.display!=='none';
+const merchant=()=>typeof activeCategory!=='undefined'&&activeCategory&&window.weeklyPlans?.access&&window.weeklyPlans.access.admin!==true&&document.getElementById('dashboardScreen')?.style.display!=='none';
 function stop(){clearInterval(alarmTimer);alarmTimer=null;}
 function tone(){if(!enabled||!ctx||ctx.state!=='running')return;for(const [i,f]of [740,980,740].entries()){const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.2;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.22,t+.025);g.gain.exponentialRampToValueAtTime(.001,t+.17);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.18);}}
 function sounding(){stop();if(current&&enabled&&ctx?.state==='running'){tone();alarmTimer=setInterval(tone,2800);}paintSound();}
