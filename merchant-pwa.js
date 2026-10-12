@@ -15,7 +15,7 @@ disable.onclick=async()=>{try{const sub=await reg?.pushManager.getSubscription()
 install.onclick=async()=>{if(installPrompt){await installPrompt.prompt();installPrompt=null;}else instructions();};
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
 window.addEventListener('appinstalled',instructions);
-async function start(){document.querySelector('[data-merchant-panel="orders"]')?.prepend(block);instructions();try{if('serviceWorker'in navigator){reg=await navigator.serviceWorker.register('/merchant-sw.js');await navigator.serviceWorker.ready;await sync();}}catch(e){message('Notification setup failed: '+e.message);}let opened=false;setInterval(()=>{sync();if(!opened&&category()&&new URL(location.href).searchParams.get('open')==='orders'){opened=true;document.querySelector('[data-merchant-tab="orders"]')?.click();}},10000);
+async function start(){document.querySelector('[data-merchant-panel="orders"]')?.prepend(block);instructions();try{if('serviceWorker'in navigator){reg=await navigator.serviceWorker.register('/merchant-sw.js');await navigator.serviceWorker.ready;await sync();}}catch(e){message('Notification setup failed: '+e.message);}setInterval(sync,10000);let opened=false;setInterval(()=>{if(!opened&&category()&&new URL(location.href).searchParams.get('open')==='orders'){opened=true;document.querySelector('[data-merchant-tab="orders"]')?.click();}},1000);
 supabaseClient.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){linked='';reg?.pushManager.getSubscription().then(sub=>sub?.unsubscribe()).catch(()=>{});}else setTimeout(sync,0);});
 navigator.serviceWorker?.addEventListener('message',e=>{if(e.data?.type==='merchant-order-push')document.getElementById('refreshMerchant')?.click();});
 }
