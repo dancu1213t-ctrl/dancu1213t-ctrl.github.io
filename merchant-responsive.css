@@ -63,3 +63,6 @@ html{overflow-x:clip}body{min-width:0}
 @media(max-width:360px){.mm-metrics,.mt-metrics{grid-template-columns:1fr!important}#loginScreen .custom-scrollbar{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 
 @media(max-width:600px){body #dashboardScreen .mt-shell>.mt-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important}body #dashboardScreen .mt-tabs button{min-width:0!important;width:100%!important;white-space:normal!important}}
+
+/* Phone-only swipeable merchant navigation. */
+@media(max-width:600px){body #dashboardScreen .mt-shell>.mt-tabs{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;max-width:100%!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;gap:6px!important;padding:6px!important}body #dashboardScreen .mt-shell>.mt-tabs::-webkit-scrollbar{display:none!important}body #dashboardScreen .mt-shell>.mt-tabs button{flex:0 0 auto!important;width:auto!important;min-width:max-content!important;white-space:nowrap!important;padding:12px 16px!important;min-height:46px!important}body #dashboardScreen .mt-shell>.mt-tabs #refreshMerchant{margin:0!important;grid-column:auto!important;border-top:0!important;}}
