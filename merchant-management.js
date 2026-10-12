@@ -26,6 +26,14 @@ buttons.append(slider('Slide to accept',false,()=>rpc('swift_merchant_ack_order'
 const details=node('details',undefined,'ma-decline-panel'),reason=node('textarea');reason.placeholder='Reason for declining (for example: sold out)';reason.maxLength=300;reason.rows=2;
 details.append(node('summary','Cannot fulfil this order?'),reason,slider('Slide to decline',true,()=>{if(reason.value.trim().length<3)throw Error('Add a reason before declining.');return rpc('swift_merchant_orders',{p_category:activeCategory,p_id:r.tracking_id,p_action:'reject',p_reason:reason.value.trim()});}));
 buttons.append(details);card.append(buttons);}
+if(r.decision==='accepted'&&r.merchant_ack_at&&!['delivered','cancelled'].includes(r.phase)){
+if(r.merchant_ready_at)card.append(node('p','✓ Your store is ready for pickup','mo-ready'));
+else if(['sent','accepted','preparing','finding_runner'].includes(r.phase)){
+const box=node('div',undefined,'ma-slide-box'),wrap=node('div',undefined,'ma-slide'),label=node('span','Slide to Ready','ma-slide-label'),input=node('input');
+input.type='range';input.min='0';input.max='100';input.step='1';input.value='0';input.setAttribute('aria-label','Slide to Ready');
+input.oninput=()=>label.style.opacity=String(1-Number(input.value)/140);
+input.onchange=async()=>{if(Number(input.value)<95){input.value='0';label.style.opacity='1';return;}input.disabled=true;label.textContent='Saving…';label.style.opacity='1';try{await rpc('swift_merchant_ready_order',{p_category:activeCategory,p_id:r.tracking_id});await orders();}catch(e){$('moFeedback').textContent=e.message;input.value='0';input.disabled=false;label.textContent='Slide to Ready';}};
+wrap.append(label,input);box.append(wrap,node('small','Mark ready when all your items are packed for pickup.','ma-slide-hint'));card.append(box);}}
 list.append(card);}
 if(!rows.length){const empty=node('div',undefined,'mo-empty');empty.innerHTML='<div class="mo-empty-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M10 17h28l3 23H7l3-23Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M17 19v-7a7 7 0 0 1 14 0v7M17 28c2 6 12 6 14 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><span class="mo-ready"><i></i> Ready for incoming orders</span><h3>Your next order starts here.</h3><p>When a customer orders from your store, you’ll see their items, your total, and the option to accept or reject.</p><div class="mo-steps"><span><b>1</b>Order arrives</span><span><b>2</b>You respond</span><span><b>3</b>Dispatch delivers</span></div>';list.append(empty);}
 $('merchantOrderStatus').textContent='Last synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
