@@ -14,3 +14,50 @@ body{background:var(--vp-paper)!important;color:var(--vp-ink)!important;line-hei
 @media(prefers-reduced-motion:reduce){button{transition:none!important}}
 .mm-metrics article small,.mt-metrics article small{color:#64705f!important;opacity:1!important;font-size:12px!important;line-height:1.5!important}.mm-metrics article strong,.mt-metrics article strong{color:#263522!important}
 
+
+/* Fluid merchant workspace across phone, tablet and desktop sizes. */
+html{overflow-x:clip}body{min-width:0}
+#dashboardScreen{max-width:1600px!important;padding:28px clamp(16px,3vw,48px) 56px!important}
+#dashboardScreen>div:first-child{gap:16px!important;flex-wrap:wrap!important}
+.mt-shell,[data-merchant-panel],.mt-columns>*{min-width:0!important}
+.mt-tabs{flex-wrap:wrap!important;overflow:visible!important;gap:6px!important;position:relative!important}
+.mt-tabs button{flex:0 1 auto!important;max-width:100%;white-space:normal!important;line-height:1.35}
+.mt-tabs #refreshMerchant{margin-left:auto!important}
+.mt-intro{max-width:100%!important}.mt-intro p{max-width:850px}
+.mt-box{min-width:0!important}
+.mm-metrics,.mt-metrics{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important}
+.mm-metrics strong,.mt-metrics strong{font-size:clamp(23px,2vw,30px)!important;overflow-wrap:anywhere}
+.sp-plans{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.sp-plan{display:flex!important;flex-direction:column!important;gap:0;min-width:0!important}
+.sp-plan ul{flex:1}
+.mt-actions{gap:12px!important;flex-wrap:wrap!important}.mt-actions>button{white-space:normal;min-height:44px}
+.mm-table-wrap{max-width:100%;-webkit-overflow-scrolling:touch}
+.mo-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))!important}
+#moForm{width:100%!important;max-width:1100px!important}
+.oo-edit-row{flex-wrap:wrap}.oo-edit-row input:first-child{flex:1 1 170px!important;min-width:0}
+.oo-edit-row input[type=number]{flex:0 1 120px!important}.oo-edit-row button{min-height:44px}
+.merchant-device-settings p,.merchant-device-settings small{line-height:1.6}
+@media(min-width:1100px){[data-merchant-panel="inventory"]{grid-template-columns:minmax(280px,.72fr) minmax(0,1.65fr)!important;gap:26px!important}#inventoryContainer td{font-size:14px!important}#inventoryContainer th{font-size:11px!important}}
+@media(max-width:1000px){.sp-plans{grid-template-columns:1fr!important}.sp-plan{padding:24px!important}[data-merchant-panel="inventory"]{grid-template-columns:1fr!important}.mt-columns{grid-template-columns:1fr!important}}
+@media(max-width:600px){
+#dashboardScreen{padding:16px 12px calc(36px + env(safe-area-inset-bottom,0px))!important}
+.vp-masthead{padding:14px 16px!important}
+#portalTitle{font-size:20px!important;overflow-wrap:anywhere}
+.mt-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:6px!important;gap:5px!important}
+.mt-tabs button{width:100%!important;padding:11px 8px!important;font-size:12px!important;min-height:46px!important}
+.mt-tabs #refreshMerchant{margin:0!important;grid-column:1/-1!important}
+.mt-box,[data-merchant-panel="inventory"]>div{padding:18px!important;border-radius:16px!important}
+.mt-intro h2{font-size:26px!important;letter-spacing:-.7px!important}.mt-intro p{font-size:14px!important}
+.mt-pair{grid-template-columns:1fr!important}.mm-metrics,.mt-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+.mm-metrics article,.mt-metrics article{padding:14px!important}.mm-metrics article strong,.mt-metrics article strong{font-size:22px!important}
+.mt-row .mt-actions{margin-left:0!important;width:100%}.mt-row .mt-actions button{flex:1 1 110px}
+#inventoryContainer{max-height:65dvh!important;padding-right:3px!important}
+#moForm .oo-edit-row input:first-child{flex-basis:100%!important}
+#moForm .oo-edit-row input[type=number]{flex:1 1 100px!important}
+#moForm .po-form-actions>button,.merchant-device-settings .mt-actions>button{flex:1 1 100%!important;width:100%!important}
+#loginScreen{padding:20px 12px!important;min-height:calc(100dvh - 60px)!important}
+#loginScreen>div:not(.vp-welcome){width:100%!important;padding:20px 16px!important}
+#loginScreen .custom-scrollbar{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#storeCoverPreview{min-height:160px!important;padding:18px!important}
+}
+@media(max-width:360px){.mm-metrics,.mt-metrics{grid-template-columns:1fr!important}#loginScreen .custom-scrollbar{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
