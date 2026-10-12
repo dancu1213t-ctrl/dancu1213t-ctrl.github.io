@@ -61,3 +61,5 @@ html{overflow-x:clip}body{min-width:0}
 #storeCoverPreview{min-height:160px!important;padding:18px!important}
 }
 @media(max-width:360px){.mm-metrics,.mt-metrics{grid-template-columns:1fr!important}#loginScreen .custom-scrollbar{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+@media(max-width:600px){body #dashboardScreen .mt-shell>.mt-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important}body #dashboardScreen .mt-tabs button{min-width:0!important;width:100%!important;white-space:normal!important}}
