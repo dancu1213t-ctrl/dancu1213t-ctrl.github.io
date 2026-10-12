@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "SwiftShop Merchant",
+  "short_name": "SwiftShop Merchant",
+  "description": "Manage your SwiftShop store and receive order alerts.",
+  "start_url": "/?source=homescreen",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f6f2",
+  "theme_color": "#ff7900",
+  "icons": [
+    {
+      "src": "merchant-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
