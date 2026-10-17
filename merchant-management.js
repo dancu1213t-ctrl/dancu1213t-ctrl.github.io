@@ -4,7 +4,7 @@ async function rpc(name,args){const cat=activeCategory;const {data,error}=await 
 const action=(text,fn)=>{const b=node('button',text);b.type='button';b.onclick=async()=>{b.disabled=true;try{await fn();}catch(e){$('mmStatus').textContent=e.message;}finally{b.disabled=false;}};return b;};
 function table(headers,rows){const wrap=node('div',undefined,'mm-table-wrap'),t=node('table'),head=node('thead'),tr=node('tr'),body=node('tbody');headers.forEach(h=>tr.append(node('th',h)));head.append(tr);rows.forEach(row=>{const r=node('tr');row.forEach(v=>{const c=node('td');if(v instanceof Node)c.append(v);else c.textContent=v;r.append(c);});body.append(r);});if(!rows.length){const r=node('tr'),c=node('td','No records in this date range.');c.colSpan=headers.length;r.append(c);body.append(r);}t.append(head,body);wrap.append(t);return wrap;}
 function reset(){edit=null;draft=null;$('mmForm').reset();$('mmDate').value=day();$('mmSave').textContent='Add entry';}
-async function requests(){const rows=await rpc('swift_merchant_request',{p_category:activeCategory});$('merchantRequestHistory').replaceChildren(...rows.map(r=>node('p',({free:'No paid plan',basic:'Basic',pro:'Plus',premium:'Premium'}[r.plan]||r.plan)+' · '+r.status+' · '+new Date(r.created_at).toLocaleDateString())));if(!rows.length)$('merchantRequestHistory').textContent='No pending requests.';}
+async function requests(){const rows=await rpc('swift_merchant_request',{p_category:activeCategory});$('merchantRequestHistory').replaceChildren(...rows.map(r=>node('p',({free:'No paid plan',basic:'Basic',pro:'Pro',premium:'Premium'}[r.plan]||r.plan)+' · '+r.status+' · '+new Date(r.created_at).toLocaleDateString())));if(!rows.length)$('merchantRequestHistory').textContent='No pending requests.';}
 async function orders(){
 const rows=await rpc('swift_merchant_orders',{p_category:activeCategory}),list=$('merchantOrderList'),panel=list.closest('section');
 window.SwiftMerchantOrderAlerts?.receive(rows,activeCategory);
@@ -40,7 +40,7 @@ $('merchantOrderStatus').textContent='Last synced '+new Date().toLocaleTimeStrin
 }
 function syncAccess(){
 const access=window.weeklyPlans?.access||{};const f=$('mmForm');if(f)f.querySelectorAll('input,select,textarea,button').forEach(x=>x.disabled=!access.revenue);
-for(const [name,allowed,tier] of [['campaigns',access.campaigns,'Plus or Premium']]){
+for(const [name,allowed,tier] of [['campaigns',access.campaigns,'Pro or Premium']]){
 const panel=document.querySelector('[data-merchant-panel="'+name+'"]');if(!panel)continue;
 let notice=panel.querySelector('.mv-access');if(!notice){notice=node('div',undefined,'mv-access');const text=node('div'),title=node('strong'),help=node('span'),button=node('button','Choose a plan');button.type='button';button.onclick=()=>document.querySelector('[data-merchant-tab="plans"]').click();text.append(title,help);notice.append(text,button);panel.querySelector('.mt-intro').after(notice);}
 notice.querySelector('strong').textContent=allowed?'Editing enabled':'View only';
