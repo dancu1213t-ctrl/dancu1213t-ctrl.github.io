@@ -1,0 +1,16 @@
+(()=>{'use strict';document.addEventListener('DOMContentLoaded',()=>{
+ const host=document.querySelector('[data-merchant-panel="revenue"]');if(!host)return;
+ const section=document.createElement('details');section.className='mt-box';section.style.marginTop='20px';
+ section.innerHTML='<summary style="font-weight:650;cursor:pointer;min-height:44px">SwiftPay in-store payments</summary><p>Customers scan your code and pay from their SwiftCredit. Store payments are recorded separately for settlement.</p><button type="button" data-provider-open>Show my store QR</button><p data-provider-status role="status"></p><div data-provider-content hidden><h3 data-provider-name></h3><canvas aria-label="Store SwiftPay QR code" style="display:block;max-width:100%;margin:16px auto"></canvas><button type="button" data-provider-save>Download QR</button><p data-provider-due></p><div data-provider-receipts></div></div>';
+ host.append(section);let data=null,category='';const status=section.querySelector('[data-provider-status]'),content=section.querySelector('[data-provider-content]');
+ section.querySelector('[data-provider-open]').onclick=async()=>{const b=section.querySelector('[data-provider-open]');if(b.disabled)return;b.disabled=true;content.hidden=true;status.textContent='Loading store code…';const selected=activeCategory;try{
+  if(!selected)throw Error('Choose your store first.');const result=await supabaseClient.rpc('swiftpay_store_provider',{p_category:selected});if(result.error)throw result.error;if(activeCategory!==selected)return;data=result.data;category=selected;
+  if(!window.SwiftQRCode)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://swiftshopow.com/completion-libs.js?v=qr1';s.onload=resolve;s.onerror=()=>reject(Error('QR library could not load.'));document.head.append(s);});
+  if(activeCategory!==selected)return;const name=typeof vendorData!=='undefined'?vendorData[selected]?.name:selected;section.querySelector('[data-provider-name]').textContent=name||selected;
+  await window.SwiftQRCode.toCanvas(section.querySelector('canvas'),data.payload,{width:280,margin:4,errorCorrectionLevel:'M'});
+  section.querySelector('[data-provider-due]').textContent='Awaiting settlement: BZ$'+(data.dueCents/100).toFixed(2);
+  const rows=section.querySelector('[data-provider-receipts]');rows.replaceChildren();for(const receipt of data.receipts){const p=document.createElement('p');p.textContent=new Date(receipt.created_at).toLocaleString()+' · BZ$'+(receipt.amount_cents/100).toFixed(2)+' · '+(receipt.settled_at?'Settled':'Awaiting settlement')+' · '+receipt.request_id.slice(0,8).toUpperCase();rows.append(p);}
+  content.hidden=false;status.textContent='Use this SwiftPay code at your counter.';}catch(e){status.textContent=e.message;}finally{b.disabled=false;}};
+ section.querySelector('[data-provider-save]').onclick=()=>{if(!data||category!==activeCategory)return;const a=document.createElement('a');a.download='SwiftPay-'+category+'.png';a.href=section.querySelector('canvas').toDataURL('image/png');a.click();};
+ const clear=()=>{if(category&&category!==activeCategory){data=null;content.hidden=true;status.textContent='';}};new MutationObserver(clear).observe(document.getElementById('portalTitle'),{childList:true,subtree:true});
+});})();
