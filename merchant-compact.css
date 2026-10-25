@@ -72,3 +72,16 @@ body.merchant-compact{background:#f5f6f4!important}
 .merchant-compact .mo-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 .merchant-compact .mo-stat{padding:10px!important}.merchant-compact .mo-stat strong{font-size:22px!important}
 }
+
+.merchant-compact .merchant-device-settings:not([open]){padding:10px 14px!important;margin-bottom:12px!important}
+.merchant-compact .merchant-device-settings .ma-toolbar{padding:10px!important;margin:10px 0 0!important;gap:10px!important}
+.merchant-compact .mo-empty{padding:22px!important;min-height:0!important}
+@media(max-width:850px){
+.merchant-compact #dashboardLogoContainer{display:none!important}
+.merchant-compact #portalTitle{font-size:18px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 130px)}
+.merchant-compact #adminBadge{display:none!important}
+.merchant-compact #dashboardScreen>div:first-child{padding:10px 12px!important;gap:6px!important}
+.merchant-compact #dashboardScreen>div:first-child>div{gap:8px!important;padding-top:0!important;border:0!important}
+.merchant-compact .logout-btn{white-space:nowrap!important;min-width:62px!important;min-height:36px!important;padding:8px!important}
+.merchant-compact #storeStatusContainer{padding:5px 8px!important}
+}
