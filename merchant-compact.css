@@ -85,3 +85,98 @@ body.merchant-compact{background:#f5f6f4!important}
 .merchant-compact .logout-btn{white-space:nowrap!important;min-width:62px!important;min-height:36px!important;padding:8px!important}
 .merchant-compact #storeStatusContainer{padding:5px 8px!important}
 }
+
+/* Clear visual hierarchy: one workspace surface, quiet navigation, spacious content. */
+.merchant-compact{--pc-line:#e8ebe7;--pc-muted:#7a847d;--pc-text:#202b24}
+.merchant-compact .vp-masthead{background:#fff!important;padding:14px 32px!important;border-bottom:1px solid var(--pc-line)!important}
+.merchant-compact #dashboardScreen{max-width:1440px!important;padding:24px 32px 32px!important}
+.merchant-compact #dashboardScreen>div:first-child{background:transparent!important;border:0!important;border-radius:0!important;padding:0 0 22px!important;margin-bottom:0!important;box-shadow:none!important}
+.merchant-compact #portalTitle{font-size:23px!important;font-weight:700!important;letter-spacing:-.6px}
+.merchant-compact #dashboardLogoContainer{display:none!important}
+.merchant-compact #adminBadge{background:transparent!important;padding:0!important;font-size:11px!important;color:#808a82!important}
+.merchant-compact #storeStatusContainer{background:#fff!important;border:1px solid var(--pc-line)!important;border-radius:24px!important;padding:7px 12px!important}
+.merchant-compact .mt-shell{grid-template-columns:186px minmax(0,1fr);gap:0 30px}
+.merchant-compact .mt-tabs{border:0!important;background:transparent!important;border-radius:0!important;padding:4px 0!important;gap:6px!important;box-shadow:none!important}
+.merchant-compact .mt-tabs::before{content:'WORKSPACE';font:650 10px/1.5 system-ui;letter-spacing:1.7px;color:#919a93;padding:4px 16px 14px}
+.merchant-compact .mt-tabs button{padding:13px 16px!important;border-radius:9px!important;font-size:14px!important;color:#6c786f!important;font-weight:550!important;text-align:left}
+.merchant-compact .mt-tabs button[aria-selected=true]{background:#ffede1!important;color:#aa4c15!important;border:0!important;font-weight:700!important}
+.merchant-compact .mt-tabs #refreshMerchant{background:transparent!important;color:#8a938c!important;border-top:1px solid #e3e7e1!important;border-radius:0!important;margin-top:18px!important;padding-top:18px!important}
+.merchant-compact .mt-shell>[data-merchant-panel]{background:#fff;border:1px solid var(--pc-line);border-radius:18px;padding:28px!important;max-height:calc(100dvh - 220px);min-height:390px;overflow:auto}
+.merchant-compact .mt-intro{padding:0 0 24px!important}
+.merchant-compact .mt-intro h2{font-size:27px!important;line-height:1.2!important;letter-spacing:-.8px!important;margin:0 0 8px!important}
+.merchant-compact .mt-intro p{font-size:13px!important;color:#859087!important;margin:0!important}
+.merchant-compact .mo-summary{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:0!important;border:1px solid var(--pc-line);border-radius:12px;background:#fff;margin:0 0 24px!important;overflow:hidden}
+.merchant-compact .mo-stat{background:transparent!important;border:0!important;border-right:1px solid var(--pc-line)!important;border-radius:0!important;padding:18px 22px!important;box-shadow:none!important}
+.merchant-compact .mo-stat:last-child{border-right:0!important}
+.merchant-compact .mo-stat span{font-size:11px!important;color:#818b83!important}
+.merchant-compact .mo-stat strong{font-size:27px!important;line-height:1.2!important;color:#26362c!important;margin-top:6px!important}
+.merchant-compact .pc-order-filters{gap:18px;margin:0 0 22px;padding:0;border-bottom:1px solid var(--pc-line);scrollbar-width:none;min-height:46px;align-items:center}
+.merchant-compact .pc-order-filters button{background:transparent!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;color:#8a948c!important;font-size:12px!important;min-height:45px!important;padding:10px 0!important}
+.merchant-compact .pc-order-filters button[aria-pressed=true]{background:transparent!important;color:#25372b!important;border-color:#25372b!important}
+.merchant-compact .pc-order-select{display:none!important}
+.merchant-compact .mo-empty{border:0!important;border-radius:0!important;background:#fafbf9!important;padding:48px 20px!important;margin:0!important;box-shadow:none!important}
+.merchant-compact .mo-empty h3{font-size:20px!important;font-weight:650!important}
+.merchant-compact .pc-order-bottom{margin-top:26px;padding-top:18px;border-top:1px solid var(--pc-line)}
+.merchant-compact .pc-order-bottom #merchantOrderStatus{font-size:10px!important;color:#9aa29c!important;margin:0 0 10px!important}
+.merchant-compact .pc-order-bottom .merchant-device-settings{border:0!important;background:transparent!important;padding:0!important;margin:0!important;border-radius:0!important}
+.merchant-compact .merchant-device-settings summary{font-size:12px!important;color:#748178!important;min-height:44px;display:list-item;align-content:center}
+.merchant-compact .pc-fold{border:1px solid var(--pc-line);border-radius:11px;margin-bottom:18px}
+.merchant-compact .pc-fold>summary{font-size:13px!important;padding:15px 18px!important;color:#55655a!important;font-weight:600!important}
+.merchant-compact .mt-box{border-color:var(--pc-line)!important;border-radius:12px!important;box-shadow:none!important;padding:20px!important}
+.merchant-compact .pc-setting-body{gap:18px 22px}
+.merchant-compact .mt-shell label{font-size:12px!important;line-height:1.5!important;margin-bottom:14px!important;color:#66766b!important}
+.merchant-compact .mt-shell input:not([type=checkbox]):not([type=range]),.merchant-compact .mt-shell select,.merchant-compact .mt-shell textarea{border-radius:9px!important;border-color:#e0e5dd!important;background:#fdfefd!important}
+.merchant-compact .mt-metrics,.merchant-compact .mm-metrics{gap:0!important;border:1px solid var(--pc-line);border-radius:12px;overflow:hidden;margin:6px 0 20px!important;background:#fff}
+.merchant-compact .mt-metrics article,.merchant-compact .mm-metrics article{padding:20px!important;border:0!important;border-radius:0!important;border-right:1px solid var(--pc-line)!important;margin:0!important}
+.merchant-compact .mt-metrics article:last-child,.merchant-compact .mm-metrics article:last-child{border-right:0!important}
+.merchant-compact .mm-subnav{gap:6px!important;padding:0 0 18px!important;margin:0 0 18px!important;border-bottom:1px solid var(--pc-line)}
+.merchant-compact .mm-subnav button{background:transparent!important;color:#8a938c!important;border:0!important;padding:9px 12px!important;font-size:12px!important;font-weight:550!important}
+.merchant-compact .mm-subnav button[aria-selected=true]{background:#f0f3ee!important;color:#25372b!important}
+.merchant-compact .pc-workspace-bar{display:none}
+.merchant-compact footer{background:transparent!important;border:0!important;color:#a0a79f!important;font-size:10px!important;padding:14px!important}
+@media(min-width:851px){.merchant-compact #merchantMessage:not(:empty){padding:10px 0!important}}
+@media(max-width:850px){
+.merchant-compact .vp-masthead{padding:12px 18px!important}
+.merchant-compact #dashboardScreen{padding:18px 16px 20px!important}
+.merchant-compact #dashboardScreen>div:first-child{padding:0 2px 18px!important;gap:10px!important;flex-direction:row!important;align-items:center!important;flex-wrap:wrap!important}
+.merchant-compact #dashboardScreen>div:first-child>div:first-child{flex:1 1 auto;width:100%!important}
+.merchant-compact #portalTitle{font-size:20px!important;max-width:calc(100vw - 112px);letter-spacing:-.5px}
+.merchant-compact #dashboardScreen>div:first-child>div:last-child{width:auto!important;padding:0!important}
+.merchant-compact #storeStatusContainer{background:transparent!important;border:0!important;padding:0!important}
+.merchant-compact #storeStatusContainer>span{font-size:11px!important;color:#819087!important}
+.merchant-compact .logout-btn{border:1px solid #e3e7e0!important;background:#fff!important;border-radius:9px!important;min-height:36px!important;font-size:10px!important}
+.merchant-compact .pc-workspace-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 16px}
+.merchant-compact .pc-workspace-bar>span{font:650 10px/1.4 system-ui;letter-spacing:1.6px;color:#98a199}
+.merchant-compact .pc-workspace-switch{background:#fff!important;border:1px solid #e0e5dd!important;border-radius:10px!important;color:#34473a!important;padding:10px 14px!important;min-height:44px;font-size:13px!important;min-width:138px;display:flex;align-items:center;justify-content:space-between}
+.merchant-compact .mt-tabs{display:none!important;position:static!important;overflow:visible!important;padding:8px!important;margin:0 0 18px!important;background:#fff!important;border:1px solid var(--pc-line)!important;border-radius:12px!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px!important;box-shadow:none!important}
+.merchant-compact .mt-tabs.pc-menu-open{display:grid!important}
+.merchant-compact .mt-tabs::before{display:none}
+.merchant-compact .mt-tabs button{width:100%!important;white-space:normal!important;min-height:46px!important;font-size:13px!important;padding:12px!important}
+.merchant-compact .mt-tabs #refreshMerchant{margin:0!important;border:0!important;padding:12px!important}
+.merchant-compact .mt-shell>[data-merchant-panel]{border:1px solid var(--pc-line);border-radius:15px;padding:22px 18px!important;max-height:none;min-height:0;overflow:visible}
+.merchant-compact .mt-intro{padding:0 0 22px!important}
+.merchant-compact .mt-intro h2{font-size:25px!important;margin-bottom:7px!important}
+.merchant-compact .mo-summary{margin:0 0 20px!important;border-radius:10px}
+.merchant-compact .mo-stat{padding:14px 12px!important}
+.merchant-compact .mo-stat span{font-size:10px!important}
+.merchant-compact .mo-stat strong{font-size:24px!important}
+.merchant-compact .pc-order-filters{border:0;overflow:visible;margin:0 0 20px;display:block;min-height:0}
+.merchant-compact .pc-order-filters button{display:none!important}
+.merchant-compact .pc-order-filters .pc-order-select{display:block!important;width:100%;background:#fff!important;border:1px solid var(--pc-line)!important;min-height:46px!important;padding:11px 12px!important;color:#53675a!important;font-size:14px!important}
+.merchant-compact .mo-empty{padding:32px 16px!important;border-radius:10px!important}
+.merchant-compact .mo-empty h3{font-size:18px!important}
+.merchant-compact .pc-order-bottom{margin-top:22px;padding-top:14px}
+.merchant-compact .pc-order-bottom .merchant-device-settings{padding:0!important}
+.merchant-compact .pc-fold{margin-bottom:14px}
+.merchant-compact .pc-fold>summary{padding:14px!important;font-size:12px!important}
+.merchant-compact .mt-box{padding:16px!important}
+.merchant-compact .mt-metrics,.merchant-compact .mm-metrics{grid-template-columns:1fr!important}
+.merchant-compact .mt-metrics article,.merchant-compact .mm-metrics article{border-right:0!important;border-bottom:1px solid var(--pc-line)!important;padding:16px!important}
+.merchant-compact .mt-metrics article:last-child,.merchant-compact .mm-metrics article:last-child{border-bottom:0!important}
+.merchant-compact .mt-metrics strong,.merchant-compact .mm-metrics strong{font-size:25px!important;margin-top:4px!important}
+.merchant-compact .mm-subnav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible!important;gap:6px!important}
+.merchant-compact .mm-subnav button{white-space:normal!important;text-align:left;min-height:44px!important;padding:10px!important}
+.merchant-compact #inventoryContainer{max-height:440px!important}
+.merchant-compact .billing-filter{grid-template-columns:1fr!important}
+}
+@media(max-width:360px){.merchant-compact #dashboardScreen{padding:14px 12px!important}.merchant-compact .mt-shell>[data-merchant-panel]{padding:20px 14px!important}.merchant-compact .mo-stat{padding:12px 9px!important}.merchant-compact #portalTitle{font-size:18px!important}}
