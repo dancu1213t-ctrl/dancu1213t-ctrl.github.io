@@ -1,0 +1,74 @@
+/* Compact workspace; existing forms, actions and dialogs retain their IDs. */
+body.merchant-compact{background:#f5f6f4!important}
+.merchant-compact .vp-masthead{padding:10px 24px!important}
+.merchant-compact #dashboardScreen{max-width:1600px!important;padding:16px 24px 24px!important}
+.merchant-compact #dashboardScreen>div:first-child{padding:12px 18px!important;margin-bottom:14px!important;border-radius:14px!important;gap:10px!important}
+.merchant-compact #dashboardLogoContainer{height:40px!important;width:40px!important}
+.merchant-compact #portalTitle{font-size:21px!important}
+.merchant-compact .mt-shell{display:grid;grid-template-columns:180px minmax(0,1fr);gap:0 20px;align-items:start;margin-bottom:0!important}
+.merchant-compact .mt-tabs{grid-column:1;grid-row:1 / span 20;display:flex!important;flex-direction:column;align-items:stretch!important;position:sticky!important;top:16px;padding:8px!important;border-radius:14px!important;gap:4px!important;overflow:visible!important;margin:0!important}
+.merchant-compact .mt-tabs button{width:100%;text-align:left;min-height:44px!important;padding:11px 14px!important;font-size:13px!important;white-space:nowrap!important;flex:none!important}
+.merchant-compact .mt-tabs button[aria-selected=true]{background:#fff0e5!important;color:#ac4a0d!important;border-left:3px solid #f27924!important}
+.merchant-compact .mt-tabs #refreshMerchant{margin:8px 0 0!important;border-top:1px solid #e8ebe6!important;border-left:0!important}
+.merchant-compact .mt-shell>[data-merchant-panel],.merchant-compact #merchantMessage{grid-column:2;min-width:0}
+.merchant-compact .mt-shell>[data-merchant-panel]{max-height:calc(100dvh - 170px);overflow:auto;overscroll-behavior:contain;padding:0 4px 16px 0;scrollbar-width:thin;scroll-padding-top:12px}
+.merchant-compact [data-merchant-panel][hidden],.merchant-compact .mo-card[hidden],.merchant-compact [hidden]{display:none!important}
+.merchant-compact #merchantMessage:empty{display:none}
+.merchant-compact .mt-intro{padding:0 0 12px!important}
+.merchant-compact .mt-intro h2{font-size:24px!important;margin:0 0 4px!important;letter-spacing:-.6px!important}
+.merchant-compact .mt-intro>small{display:none}
+.merchant-compact .mt-intro p{margin:0!important;font-size:12px!important}
+.merchant-compact .mt-box{padding:16px!important;margin-bottom:12px!important;border-radius:13px!important}
+.merchant-compact .mt-box h3{padding-bottom:10px!important;margin-bottom:12px!important;font-size:16px!important}
+.merchant-compact .mt-shell p{margin:6px 0 10px;line-height:1.45}
+.merchant-compact .mt-shell label{margin-bottom:10px!important}
+.merchant-compact .mt-shell textarea{min-height:76px!important}
+.merchant-compact .mt-shell input:not([type=checkbox]):not([type=range]),.merchant-compact .mt-shell select{min-height:44px!important;padding:9px 11px!important}
+.merchant-compact .mt-metrics,.merchant-compact .mm-metrics{gap:10px!important;margin:10px 0!important}
+.merchant-compact .mt-metrics article,.merchant-compact .mm-metrics article{padding:13px 16px!important}
+.merchant-compact .mm-table-wrap{max-height:360px;overflow:auto}
+.merchant-compact .mm-table-wrap th{position:sticky;top:0;z-index:1}
+.merchant-compact .mm-table-wrap th,.merchant-compact .mm-table-wrap td{padding:10px 12px!important}
+.merchant-compact .mm-subnav{padding:0 0 10px!important;margin-bottom:8px!important;gap:6px!important}
+.merchant-compact .mm-subnav button{padding:9px 12px!important;min-height:44px!important;font-size:12px!important}
+.merchant-compact .pc-fold{border:1px solid #e2e7e0;border-radius:12px;background:#fff;margin-bottom:12px;min-width:0}
+.merchant-compact .pc-fold>summary{padding:13px 16px;min-height:46px;cursor:pointer;font:650 14px/1.4 system-ui;color:#29382e}
+.merchant-compact .pc-fold[open]>summary{border-bottom:1px solid #edf0eb}
+.merchant-compact .pc-fold>.mt-box{border:0!important;margin:0!important}
+.merchant-compact .pc-fold>div:not(.mt-box){padding:16px!important;position:static!important;border:0!important;box-shadow:none!important}
+.merchant-compact .pc-setting-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}
+.merchant-compact .pc-setting-body>fieldset,.merchant-compact .pc-setting-body>p,.merchant-compact .pc-setting-body>#storeCoordinates,.merchant-compact .pc-setting-body>label:has(textarea),.merchant-compact #storeCoverPreview{grid-column:1/-1}
+.merchant-compact .pc-settings #storeCoverPreview{height:150px!important;min-height:0!important;margin-bottom:8px!important}
+.merchant-compact [data-merchant-panel="inventory"]{display:block!important}
+.merchant-compact [data-merchant-panel="inventory"][hidden]{display:none!important}
+.merchant-compact [data-merchant-panel="inventory"]>.pc-fold>div>.space-y-4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}
+.merchant-compact [data-merchant-panel="inventory"]>.pc-fold>div>.space-y-4>*{margin-top:0!important}
+.merchant-compact #inventoryContainer{max-height:calc(100dvh - 370px)!important;min-height:160px;overflow:auto!important;scrollbar-width:thin}
+.merchant-compact .mt-columns{grid-template-columns:1fr!important;gap:12px!important}
+.merchant-compact .mo-summary{gap:10px!important;margin:8px 0 12px!important}
+.merchant-compact .mo-stat{padding:12px 16px!important}
+.merchant-compact .mo-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr))!important;gap:12px!important;align-items:start}
+.merchant-compact .mo-card{padding:16px!important;border-radius:14px!important}
+.merchant-compact .mo-head h3{font-size:19px!important;margin:4px 0!important}
+.merchant-compact .mo-items{max-height:190px;overflow:auto;scrollbar-width:thin}
+.merchant-compact .mo-item{padding:8px 0!important}
+.merchant-compact .mo-payment{padding:10px 0!important;margin-top:8px!important}
+.merchant-compact .pc-order-filters{display:flex;gap:6px;margin:10px 0 14px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:thin}
+.merchant-compact .pc-order-filters button{flex:0 0 auto;min-height:44px!important;padding:9px 13px!important;background:#fff!important;border:1px solid #e0e5de!important;color:#58675c!important;border-radius:10px!important;font-size:12px!important}
+.merchant-compact .pc-order-filters button[aria-pressed=true]{background:#25372b!important;color:#fff!important;border-color:#25372b!important}
+.merchant-compact footer{margin-top:0!important;padding:12px!important}
+@media(max-width:850px){
+.merchant-compact #dashboardScreen{padding:12px!important}
+.merchant-compact .mt-shell{display:block}
+.merchant-compact .mt-tabs{position:sticky!important;top:0!important;z-index:20;flex-direction:row;flex-wrap:nowrap!important;overflow-x:auto!important;gap:4px!important;margin-bottom:14px!important;padding:5px!important;box-shadow:0 3px 10px #25372b08}
+.merchant-compact .mt-tabs button{width:auto;flex:0 0 auto!important;text-align:center;min-height:44px!important;padding:9px 12px!important;font-size:12px!important}
+.merchant-compact .mt-tabs button[aria-selected=true]{border-left:0!important}
+.merchant-compact .mt-tabs #refreshMerchant{margin:0!important;border-top:0!important}
+.merchant-compact .mt-shell>[data-merchant-panel]{max-height:none;overflow:visible;padding-right:0}
+.merchant-compact #inventoryContainer{max-height:480px!important}
+.merchant-compact .pc-setting-body,.merchant-compact [data-merchant-panel="inventory"]>.pc-fold>div>.space-y-4{grid-template-columns:1fr}
+.merchant-compact .billing-filter{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
+.merchant-compact .billing-filter>*{min-width:0!important}
+.merchant-compact .mo-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.merchant-compact .mo-stat{padding:10px!important}.merchant-compact .mo-stat strong{font-size:22px!important}
+}
