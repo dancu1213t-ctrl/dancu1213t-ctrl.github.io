@@ -308,7 +308,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
    <div hidden><select id="campaignKind"><option value="slide">Home banner</option></select><div id="campaignProductFields"><select id="campaignProduct"></select><input id="campaignPrice" type="number"><input id="campaignWas" type="number"></div><input id="campaignSubtitle"><div id="bannerAppearance"><div id="bannerGradientSample"></div><select id="bannerTheme"><option value="mint">Mint</option></select><select id="bannerMotion"><option value="no">Still</option></select></div></div>
    <label>Banner name<input id="campaignTitle" maxlength="100" required placeholder="Weekend special"></label>
    <label class="banner-upload">Banner image <strong>1600 × 640 px · 5:2</strong><input id="campaignImage" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="bannerImageHelp"></label>
-   <small id="bannerImageHelp">JPG, PNG or WebP · up to 10 MB. Upload a complete banner design in this size. Keep the bottom-left clear for the button.</small>
+   <small id="bannerImageHelp">JPG, PNG or WebP · up to 10 MB. Upload a complete banner design in this size. Keep the bottom-right clear for the button.</small>
    <p id="bannerImageStatus" role="status"></p>
    <div class="mt-pair"><label>Button text<input id="bannerButtonLabel" maxlength="24" value="Shop now" placeholder="Shop now"></label><label>Button goes to<input id="bannerStoreTarget" readonly aria-label="Button goes to your store"></label></div>
    <label>Tags <span class="banner-optional">Optional</span><input id="bannerTags" maxlength="100" placeholder="New arrivals, Weekend special"></label><small>Up to 3 tags, separated by commas. 24 characters each.</small>
@@ -1062,4 +1062,4 @@ window.weeklyPlans={access:{campaigns:false,revenue:false,admin:false},async loa
 <link rel="stylesheet" href="merchant-compact.css?v=refined20261025b">
 <script src="merchant-compact.js?v=banners20261025"></script>
 
-<link rel="stylesheet" href="merchant-banners.css?v=full-image20261025">
+<link rel="stylesheet" href="merchant-banners.css?v=button-right20261026">
