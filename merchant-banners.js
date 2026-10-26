@@ -6,7 +6,22 @@ function paint(){const name=storeName();$('bannerStoreTarget').value=name;$('ban
 async function prepare(file){if(prepared.has(file))return prepared.get(file);const work=(async()=>{if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>10485760)throw Error('Choose a JPG, PNG or WebP under 10 MB.');const url=URL.createObjectURL(file);try{const img=new Image();img.src=url;await img.decode();const w=img.naturalWidth,h=img.naturalHeight;if(w<800||h<320||Math.abs(w/h-2.5)>.005)throw Error('Use 1600 x 640 px (5:2). This image is '+w+' x '+h+' px. Resize your Canva design and upload again.');const canvas=document.createElement('canvas');canvas.width=1600;canvas.height=640;const ctx=canvas.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,1600,640);const scale=Math.min(1600/w,640/h),width=w*scale,height=h*scale;ctx.drawImage(img,(1600-width)/2,(640-height)/2,width,height);const data=canvas.toDataURL('image/webp',.9);if(data.length>2800000)throw Error('This image is too large after optimization. Export a smaller JPG.');return data;}finally{URL.revokeObjectURL(url);}})();prepared.set(file,work);try{return await work;}catch(e){prepared.delete(file);throw e;}}
 function reset(){version++;saved='';$('bannerButtonLabel').value='Shop now';$('bannerTags').value='';$('bannerImageStatus').textContent='';paint();}
 function load(c){version++;saved=c.image||'';$('bannerButtonLabel').value=c.button_label||'Shop now';$('bannerTags').value=(c.banner_tags||[]).join(', ');$('bannerImageStatus').textContent='';paint();}
-window.SwiftBannerEditor={read,prepare,load,reset};
+
+async function write(payload){
+ if(!payload.id)throw Error('Banner reference missing. Reopen Banners and try again.');
+ const auth=await supabaseClient.auth.getSession();if(auth.error||!auth.data?.session)throw Error('Your merchant session expired. Sign in again; your banner has not been cleared.');
+ if(auth.data.session.expires_at&&auth.data.session.expires_at*1000<Date.now()+60000){const renewed=await supabaseClient.auth.refreshSession();if(renewed.error||!renewed.data?.session)throw Error('Your merchant session expired. Sign in again.');}
+ const transient=e=>e?.status===408||e?.status===429||e?.status>=500||/failed to fetch|fetch failed|network|timeout|timed out|load failed|abort/i.test(e?.message||'');
+ for(let attempt=0;attempt<2;attempt++){
+  let result;try{result=await supabaseClient.from('merchant_campaigns').upsert(payload).select('id,category').single().abortSignal(AbortSignal.timeout(15000));}
+  catch(e){if(attempt===0&&transient(e)){await new Promise(r=>setTimeout(r,500));continue;}throw Error('Connection interrupted. Your banner is still in this form. Try Save again.');}
+  if(result.error){if(attempt===0&&transient(result.error)){await new Promise(r=>setTimeout(r,500));continue;}if(transient(result.error))throw Error('Connection interrupted. Your banner is still in this form. Try Save again.');return result;}
+  if(result.data?.id!==payload.id||result.data?.category!==payload.category)throw Error('Save could not be confirmed. Your banner is kept here; try Save again.');
+  return result;
+ }
+}
+
+window.SwiftBannerEditor={read,prepare,load,reset,write};
 function start(){if(!$('campaignForm'))return;$('campaignImage').addEventListener('change',async()=>{const token=++version,file=$('campaignImage').files[0];if(!file)return;const status=$('bannerImageStatus');status.textContent='Checking your image...';try{const next=await prepare(file);if(token!==version)return;saved=next;status.textContent='Ready: 1600 x 640 px. No cropping.';paint();}catch(e){if(token!==version)return;status.textContent=e.message;$('campaignImage').value='';saved=$('campaignImage').dataset.saved||'';paint();}});for(const id of ['bannerButtonLabel','bannerTags'])$(id).addEventListener('input',paint);new MutationObserver(paint).observe(document.querySelector('[data-merchant-panel="campaigns"]'),{attributes:true,attributeFilter:['hidden']});paint();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
