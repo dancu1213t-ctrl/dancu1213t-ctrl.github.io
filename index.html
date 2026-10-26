@@ -308,14 +308,14 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
    <div hidden><select id="campaignKind"><option value="slide">Home banner</option></select><div id="campaignProductFields"><select id="campaignProduct"></select><input id="campaignPrice" type="number"><input id="campaignWas" type="number"></div><input id="campaignSubtitle"><div id="bannerAppearance"><div id="bannerGradientSample"></div><select id="bannerTheme"><option value="mint">Mint</option></select><select id="bannerMotion"><option value="no">Still</option></select></div></div>
    <label>Banner name<input id="campaignTitle" maxlength="100" required placeholder="Weekend special"></label>
    <label class="banner-upload">Banner image <strong>1600 × 640 px · 5:2</strong><input id="campaignImage" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="bannerImageHelp"></label>
-   <small id="bannerImageHelp">JPG, PNG or WebP · up to 10 MB. Use this size in Canva. Your full image stays visible.</small>
+   <small id="bannerImageHelp">JPG, PNG or WebP · up to 10 MB. Upload a complete banner design in this size. Keep the bottom-left clear for the button.</small>
    <p id="bannerImageStatus" role="status"></p>
    <div class="mt-pair"><label>Button text<input id="bannerButtonLabel" maxlength="24" value="Shop now" placeholder="Shop now"></label><label>Button goes to<input id="bannerStoreTarget" readonly aria-label="Button goes to your store"></label></div>
    <label>Tags <span class="banner-optional">Optional</span><input id="bannerTags" maxlength="100" placeholder="New arrivals, Weekend special"></label><small>Up to 3 tags, separated by commas. 24 characters each.</small>
    <details class="banner-schedule"><summary>Schedule</summary><div class="mt-pair"><label>Starts<input id="campaignStarts" type="datetime-local" required></label><label>Ends <span class="banner-optional">Optional</span><input id="campaignEnds" type="datetime-local"></label></div></details>
    <label>Status<select id="campaignStatus"><option value="published">Published</option><option value="draft">Draft</option><option value="paused">Paused</option></select></label>
    <div class="mt-actions"><button id="saveCampaign" type="submit">Save banner</button><button id="resetCampaign" type="button" class="mt-secondary">New banner</button></div>
-  </form><div class="banner-side"><div class="mt-box"><h3>Customer preview</h3><div class="banner-upload-preview"><div class="banner-preview-art"><img id="bannerUploadPreview" hidden alt="Your complete banner design"><span id="bannerUploadPlaceholder">1600 × 640 px</span></div><div class="banner-preview-footer"><div><strong id="bannerPreviewStore">Your store</strong><div id="bannerPreviewTags"></div></div><span id="bannerPreviewButton">Shop now →</span></div></div><small>The button opens your store. Tags appear below your artwork.</small></div><div class="mt-box"><h3>Your banners</h3><div id="campaignList"></div></div></div></div>
+  </form><div class="banner-side"><div class="mt-box"><h3>Customer preview</h3><div class="banner-upload-preview"><div class="banner-preview-art"><img id="bannerUploadPreview" hidden alt="Your complete banner design"><span id="bannerUploadPlaceholder">1600 × 640 px</span></div><div class="banner-preview-footer"><div><strong id="bannerPreviewStore">Your store</strong><div id="bannerPreviewTags"></div></div><span id="bannerPreviewButton">Shop now →</span></div></div><small>Full banner image. Button and tags appear over your design.</small></div><div class="mt-box"><h3>Your banners</h3><div id="campaignList"></div></div></div></div>
  </section>
  <section data-merchant-panel="revenue" hidden>
   <div class="mt-intro"><small>YOUR SALES, IN ONE PLACE</small><h2>Revenue overview</h2><p>Completed item sales in BZD. Not profit or payouts.</p></div>
@@ -1062,4 +1062,4 @@ window.weeklyPlans={access:{campaigns:false,revenue:false,admin:false},async loa
 <link rel="stylesheet" href="merchant-compact.css?v=refined20261025b">
 <script src="merchant-compact.js?v=banners20261025"></script>
 
-<link rel="stylesheet" href="merchant-banners.css?v=20261026b">
+<link rel="stylesheet" href="merchant-banners.css?v=full-image20261025">
