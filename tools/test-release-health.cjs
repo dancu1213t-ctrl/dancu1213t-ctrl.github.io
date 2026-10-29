@@ -1,0 +1,9 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+(async()=>{const listeners={},timers=[],nodes=[];let reloads=0,allow=false;
+class Node{constructor(){this.hidden=false;this.nodes={};}setAttribute(){}querySelector(key){return this.nodes[key]||=(new Node());}}
+const document={hidden:false,readyState:'complete',documentElement:{dataset:{}},body:{append:n=>nodes.push(n)},createElement:()=>new Node(),addEventListener:(e,f)=>listeners[e]=f};
+const window={addEventListener:(e,f)=>listeners[e]=f};const sandbox={document,window,navigator:{onLine:true},location:{reload(){reloads++;}},setTimeout:f=>timers.push(f),setInterval:()=>{},confirm:()=>allow,fetch:async()=>({ok:true,json:async()=>({version:'next-release'})}),AbortSignal:{timeout:()=>({})},PerformanceObserver:class{observe(){}},console};
+vm.runInNewContext(fs.readFileSync(process.argv[2]||'release-health.js','utf8'),sandbox);
+for(let i=0;i<40;i++)listeners.error();assert.equal(window.SwiftAppHealth.snapshot().errorCount,40);assert.equal(window.SwiftAppHealth.snapshot().errors.length,20);
+for(const timer of timers)await timer();assert.equal(reloads,0,'Update checks must never reload automatically');const banner=nodes.at(-1);assert.ok(banner);assert.equal(banner.hidden,false);banner.querySelector('[data-refresh]').onclick();assert.equal(reloads,0,'Cancel update must preserve current page');allow=true;banner.querySelector('[data-refresh]').onclick();assert.equal(reloads,1,'Explicit approved update should reload once');
+sandbox.navigator.onLine=false;listeners.offline();assert.match(banner.querySelector('span').textContent,/offline/i);console.log('PASS: updates never reload automatically, cancellation preserves the page, offline notice works, error counters remain bounded and accurate.');})().catch(e=>{console.error(e);process.exit(1)});

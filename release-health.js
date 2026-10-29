@@ -1,6 +1,6 @@
 /* Safe release notices: never reload an active session automatically. No personal data is collected. */
 (()=>{'use strict';
-const BUILD='reliability20261028a';let checking=false,lastCheck=0,available='',dismissed='',banner,dirty=false;
+const BUILD='reliability20261028b';let checking=false,lastCheck=0,available='',dismissed='',banner,dirty=false;
 const diagnostics={build:BUILD,online:navigator.onLine,errors:[],errorCount:0,performance:{}};
 window.SwiftAppHealth={snapshot:()=>JSON.parse(JSON.stringify(diagnostics)),setBusy(value){document.documentElement.dataset.swiftOperationBusy=value?'true':'false';}};
 function show(text,update=false){if(!banner){banner=document.createElement('aside');banner.className='swift-release-notice';banner.setAttribute('role','status');banner.innerHTML='<span></span><button type="button" data-refresh>Update</button><button type="button" data-dismiss aria-label="Dismiss notice">×</button>';document.body.append(banner);banner.querySelector('[data-dismiss]').onclick=()=>{dismissed=available;banner.hidden=true;};banner.querySelector('[data-refresh]').onclick=()=>{if(document.documentElement.dataset.swiftOperationBusy==='true'){show('Finish your current action before updating.',true);return;}if(!confirm('Update SwiftShop now? Finish any unsaved work first. Your account and saved cart will stay.'))return;location.reload();};}banner.querySelector('span').textContent=text;banner.querySelector('[data-refresh]').hidden=!update;banner.hidden=false;}
