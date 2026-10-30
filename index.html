@@ -454,6 +454,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
   }
 
   async function initDashboard() {
+    await window.swiftLoadMerchantRegistry?.();
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboardScreen").style.display = "block";
     document.getElementById("portalTitle").innerText = `SwiftShop: ${vendorData[activeCategory]?.name||activeCategory}`;
@@ -912,7 +913,7 @@ const merchantTools = (() => {
     if(workerError)throw workerError;
     if(workerKind==='admin'&&preferred){const store=check(await supabaseClient.from('stores').select('category').eq('category',preferred).limit(1));if(!store?.length)throw new Error('Store not found.');activeCategory=preferred;localStorage.setItem('portalCat',preferred);return preferred;}
     const rows=check(await supabaseClient.from('merchant_members').select('category').eq('user_id',data.user.id));
-    const selected=rows?.find(r=>r.category===preferred)?.category || (!preferred?rows?.[0]?.category:null);
+    const selected=rows?.find(r=>r.category===preferred)?.category || rows?.[0]?.category;
     if(!selected)throw new Error('This account has not been assigned to that store. Ask SwiftShop to set up merchant access.');
     activeCategory=selected;localStorage.setItem('portalCat',selected);return selected;
   }
@@ -920,7 +921,7 @@ const merchantTools = (() => {
     const b=document.querySelector('[onclick="handlePortalLogin()"]');b.disabled=true;
     try{
       const preferred=$('loginCategory').value;
-      if(!preferred)throw new Error('Select your store first.');
+      // Verified membership selects the owner store automatically.
       check(await supabaseClient.auth.signInWithPassword({email:$('merchantEmail').value.trim(),password:$('loginPassword').value}));
       await sessionCategory(preferred);$('loginPassword').value='';await initDashboard();await load();
     }catch(e){$('merchantLoginMessage').textContent=e.message;await supabaseClient.auth.signOut();}
@@ -1069,3 +1070,5 @@ window.weeklyPlans={access:{campaigns:false,revenue:false,admin:false},async loa
 <script src="merchant-compact.js?v=banners20261025"></script>
 
 <link rel="stylesheet" href="merchant-banners.css?v=button-right20261026">
+
+<style>.region-merchant-link{display:inline-block;color:#353d30;margin:14px 0;padding:10px 0;font:600 14px Arial}</style><script src="merchant-regions.js?v=20261030"></script>
