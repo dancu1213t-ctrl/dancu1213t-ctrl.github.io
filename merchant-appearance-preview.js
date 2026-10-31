@@ -11,6 +11,7 @@ const tags=make('div',null,'appearance-store-tags'),description=make('p',null,'a
 const edit=make('button','Edit store details','appearance-edit-details');edit.type='button';content.append(identity,tabs,tags,description,details,edit);card.append(cover,content);preview.append(card,make('p','Edits appear here. Save store appearance to publish.','appearance-preview-help'));layout.append(preview);
 let dirty=false,logoSource='';
 const focusField=id=>{const field=$(id);if(!field)return;for(let d=field.closest('details');d;d=d.parentElement?.closest('details'))d.open=true;field.scrollIntoView?.({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});field.focus({preventScroll:true});};coverEdit.onclick=()=>focusField('storeCoverFile');edit.onclick=()=>focusField('storePhone');
+$('dashboardLogoContainer')?.parentElement?.classList.add('portal-store-identity');$('portalTitle')?.parentElement?.classList.add('portal-store-heading');
 const logoFallback=$('dashboardLogoContainer')?make('span',null,'portal-logo-fallback'):null;if(logoFallback)$('dashboardLogoContainer').append(logoFallback);
 function update(){
  const category=typeof activeCategory!=='undefined'?activeCategory:'',vendor=typeof vendorData!=='undefined'?vendorData[category]:null,title=vendor?.name||category||'Your store',src=vendor?.logo||'';name.textContent=title;initial.textContent=title.trim().charAt(0);if(logoFallback)logoFallback.textContent=initial.textContent;
@@ -18,6 +19,7 @@ function update(){
  const background=source.style.backgroundImage||'';cover.style.backgroundImage=background;cover.classList.toggle('has-cover',!!background);coverHint.hidden=!!background;
  const show=(node,value,prefix='')=>{node.hidden=!value;node.textContent=value?prefix+value:'';};show(description,$('storeDescription')?.value.trim());show(address,$('storeAddress')?.value.trim());show(phone,$('storePhone')?.value.trim(),'Phone · ');
  const start=$('storeOpensAt')?.value,end=$('storeClosesAt')?.value;const time=value=>{if(!/^\d\d:\d\d$/.test(value||''))return '';const [h,m]=value.split(':').map(Number);return (h%12||12)+(m?':'+String(m).padStart(2,'0'):'')+(h<12?' AM':' PM');};show(hours,start&&end?time(start)+' – '+time(end)+' · Belize time':'');
+ details.hidden=address.hidden&&phone.hidden&&hours.hidden;
  tags.replaceChildren(...[...panel.querySelectorAll('#storeTagPicker input:checked')].slice(0,3).map(i=>make('span',i.value)));tags.hidden=!tags.children.length;
  const status=$('statusTextLabel')?.textContent?.trim()||'';show(openState,/open/i.test(status)?'Open':/closed/i.test(status)?'Closed':'');openState.classList.toggle('is-closed',/closed/i.test(status));
  state.textContent=dirty?'Unsaved preview':/^Saved for /.test($('storeCoverStatus')?.textContent||'')?'Saved':'Preview';state.classList.toggle('is-dirty',dirty);
