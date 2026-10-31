@@ -108,148 +108,7 @@ button,input,select{touch-action:manipulation}button{transition:background .15s 
       
       <div class="space-y-5">
         <div>
-          <label class="block text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2.5">1. Select Store</label>
-          <div class="max-h-[45vh] sm:max-h-64 overflow-y-auto custom-scrollbar pr-1 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-            
-            <button type="button" onclick="selectStoreCard('Aroma', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/i7i6bbl.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Aroma</span>
-            </button>
-             <button type="button" onclick="selectStoreCard('Doppex', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/QFlV0uE.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Doppex</span>
-            </button>
-             <button type="button" onclick="selectStoreCard('Level Up', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/KGS0bEt.png" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Level Up BZE</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Urban', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/sdwXPEa.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Urban Cafe</span>
-            </button>
-<button type="button" onclick="selectStoreCard('Better Life Pharmacy', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/ADJUoBf.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Better Life Pharmacy</span>
-            </button>
-<button type="button" onclick="selectStoreCard('DeLaFuentePharmacy', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group" title="Phillip De La Fuente's Pharmacy">
-<img src="https://i.imgur.com/bBLftd5.png" alt="" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-white p-0.5 border border-zinc-100">
-<span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 w-full leading-tight">Phillip De La Fuente's Pharmacy</span></button>
-
-            <button type="button" onclick="selectStoreCard('Brew', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/dxhMWyb.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Brew&Browse</span>
-            </button>
-
-              <button type="button" onclick="selectStoreCard('HomeSweetBakes', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/Bd6NkHK.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Home Sweet Bakes</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Maria', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/zKm0iej.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Maria Cafe</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Leo Meatpies', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/aggMVYd.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Leo's Bakehouse</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Shaken', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/ojrOPux.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Shaken&Served</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Dumpling', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/7pIzEES.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Dumpling King</span>
-            </button>
-
-              <button type="button" onclick="selectStoreCard('Pocket Mobile', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/mJT39kx.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Pocket Mobile</span>
-            </button>
-      
-            <button type="button" onclick="selectStoreCard('Salsas', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/g5rhQkp.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Salsas y Sabores</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Burger But', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/kEb6w8N.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Burga Hut</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('TFC', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/sDzNncE.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">TFC</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Guerrero', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/U93eRx4.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Guerrero</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Cosmetics', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/4HuDzQg.png" class="w-8 h-8 sm:w-9 sm:h-9 object-contain mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Bree's</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Faye', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/0cSlDIx.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">The Faye CO</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Sister', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/RQpdN14.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Sister's CO</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('AddToCart', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/ijxrW5d.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Add to Cart</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Neeyas Backyard', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <img src="https://i.imgur.com/DJb7os5.jpeg" class="w-8 h-8 sm:w-9 sm:h-9 object-cover mb-1.5 rounded-lg bg-zinc-50 p-1 border border-zinc-100">
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Neeya's Backyaad</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Vegetables', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">🥦</div>
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Vegetables</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Lunch', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">🍱</div>
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Lunch</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Electronics', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">💻</div>
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Electronics</span>
-            </button>
-            <button type="button" onclick="selectStoreCard('Breakfast', this)" class="store-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:bg-zinc-50/80 flex flex-col items-center text-center transition group">
-              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-zinc-100 text-zinc-700 rounded-lg flex items-center justify-center font-semibold mb-1.5 text-xs sm:text-sm">🥞</div>
-              <span class="text-[11px] sm:text-xs font-medium text-zinc-700 group-hover:text-zinc-900 truncate w-full">Breakfast</span>
-            </button>
-
-          </div>
-          <!-- Hidden Native Select to keep original JS logic intact -->
-        <select id="loginCategory" class="hidden">
-  <option value="">Select Your Store / Category</option>
-  <option value="Aroma">Aroma</option>
-  <option value="Guerrero">Guerrero</option>
-   <option value="Level Up">Level Up</option>
-           <option value="Doppex">Doppex</option>
-          <option value="HomeSweetBakes">Home Sweet Bakes</option>
-  <option value="AddToCart">AddToCart</option>
-  <option value="Cosmetics">Cosmetics</option>
-  <option value="Leo Meatpies">Leo Meatpies</option>
-  <option value="Pocket Mobile">Pocket Mobile</option>
-  <option value="Neeyas Backyard">Neeyas Backyard</option>
-  <option value="Burger But">Burger But</option>
-  <option value="Vegetables">Vegetables</option>
-  <option value="Faye">Faye</option>
-  <option value="Maria">Maria</option>
-  <option value="Shaken">Shaken</option>
-  <option value="Sister">Sister</option>
-  <option value="Brew">Brew</option>
-  <option value="Dumpling">Dumpling</option>
-  <option value="Salsas">Salsas</option>
-  <option value="TFC">TFC</option>
-  <option value="Lunch">Lunch</option>
-  <option value="Electronics">Electronics</option>
-  <option value="Breakfast">Breakfast</option>
-  <option value="Urban">Urban</option>
-<option value="Better Life Pharmacy">Better Life Pharmacy</option>
-<option value="DeLaFuentePharmacy">Phillip De La Fuente&#39;s Pharmacy</option>
-</select>
+<label for="merchantDistrict">District / service area</label><select id="merchantDistrict" class="w-full px-3 py-2 rounded-xl border border-zinc-300"><option value="orange-walk">Orange Walk</option><option value="belize-city">Belize City</option></select><label for="loginCategory">Store</label><select id="loginCategory" class="w-full px-3 py-2 rounded-xl border border-zinc-300"><option value="">My assigned store</option></select>
         </div>
 
         <div>
@@ -909,12 +768,7 @@ const merchantTools = (() => {
   async function sessionCategory(preferred){
     const {data,error}=await supabaseClient.auth.getUser();
     if(error||!data.user)throw new Error('Please sign in with your merchant email and password.');
-    const {data:workerKind,error:workerError}=await supabaseClient.rpc('swift_worker_kind');
-    if(workerError)throw workerError;
-    if(workerKind==='admin'&&preferred){const store=check(await supabaseClient.from('stores').select('category').eq('category',preferred).limit(1));if(!store?.length)throw new Error('Store not found.');activeCategory=preferred;localStorage.setItem('portalCat',preferred);return preferred;}
-    const rows=check(await supabaseClient.from('merchant_members').select('category').eq('user_id',data.user.id));
-    const selected=rows?.find(r=>r.category===preferred)?.category || rows?.[0]?.category;
-    if(!selected)throw new Error('This account has not been assigned to that store. Ask SwiftShop to set up merchant access.');
+    const selected=await window.swiftResolveMerchantStore(preferred);
     activeCategory=selected;localStorage.setItem('portalCat',selected);return selected;
   }
   async function login(){
@@ -1071,4 +925,4 @@ window.weeklyPlans={access:{campaigns:false,revenue:false,admin:false},async loa
 
 <link rel="stylesheet" href="merchant-banners.css?v=button-right20261026">
 
-<style>.region-merchant-link{display:inline-block;color:#353d30;margin:14px 0;padding:10px 0;font:600 14px Arial}</style><script src="merchant-regions.js?v=20261030setup2"></script>
+<style>.region-merchant-link{display:inline-block;color:#353d30;margin:14px 0;padding:10px 0;font:600 14px Arial}</style><script src="merchant-regions.js?v=repair20261030?v=20261030setup2"></script>
