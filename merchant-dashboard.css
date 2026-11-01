@@ -56,3 +56,11 @@ html body.merchant-compact #dashboardScreen .merchant-name-editor [role=status]:
  html body.merchant-compact #dashboardScreen .mo-stat{padding:14px 10px!important}
 }
 @media(prefers-reduced-motion:reduce){body.merchant-compact *{scroll-behavior:auto!important}}
+
+/* Explicit final hooks for the legacy shell. */
+html body.merchant-compact #dashboardScreen #pcWorkspaceNav{gap:8px!important}
+html body.merchant-compact #dashboardScreen #pcWorkspaceNav button[aria-selected=true]{background:#202820!important;color:#fff!important;border:0!important;border-radius:11px!important}
+html body.merchant-compact #dashboardScreen #portalTitle{white-space:normal!important;text-overflow:clip!important;overflow:visible!important;overflow-wrap:anywhere!important}
+html body.merchant-compact #dashboardScreen .portal-store-heading{min-width:0!important;flex:1!important}
+html body.merchant-compact #dashboardScreen .portal-store-identity{min-width:0!important;flex:1!important}
+@media(max-width:760px){html body.merchant-compact #dashboardScreen #portalTitle{font-size:19px!important;line-height:1.3!important}html body.merchant-compact #dashboardScreen .logout-btn{flex-shrink:0!important}}
