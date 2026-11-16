@@ -1,1 +1,13 @@
 .commerce-merchant-fields{border:1px solid #e5e7e1;border-radius:13px;background:white;margin:16px 0;min-width:0}.commerce-merchant-fields[hidden]{display:none!important}.commerce-merchant-fields summary{font-size:14px;font-weight:650;padding:16px;cursor:pointer}.commerce-fields{padding:0 16px 16px;display:grid;gap:14px}.commerce-fields label{display:grid;gap:7px;margin:0!important;min-width:0}.commerce-fields input:not([type=checkbox]),.commerce-fields select,.commerce-fields textarea{width:100%;min-width:0;min-height:44px;font:inherit;font-size:16px;border:1px solid #dfe3db;border-radius:9px;padding:10px;background:white}.commerce-fields small,.commerce-fields p{font-size:11px;line-height:1.5;color:#798374;margin:0}.commerce-pair{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px}.commerce-fields .commerce-check{display:flex;align-items:center;gap:10px}.commerce-check input{width:18px!important;height:18px!important;min-height:0!important}#storeEntrancePreview{width:100%;max-height:310px;object-fit:contain;background:#f7f8f5;border:1px solid #eee;border-radius:10px}#storeEntrancePreview[hidden]{display:none!important}#storeEntranceRemove{justify-self:start;background:white;border:1px solid #e3e7de;padding:10px 14px;border-radius:9px;min-height:40px}@media(max-width:480px){.commerce-pair{grid-template-columns:1fr}}
+
+.commerce-merchant-fields{align-self:start}
+.commerce-merchant-fields [hidden]{display:none!important}
+.commerce-pair.coffee-cup-sizes{grid-template-columns:minmax(0,1fr)}
+.coffee-addon-editor{border-top:1px solid #e7e9e3;padding-top:18px;margin-top:10px}
+.coffee-addon-editor h4{margin:0 0 6px;font-size:14px}
+.coffee-addon-editor p{font-size:12px;line-height:1.6;color:#717a70;margin:0 0 14px}
+.coffee-addon-row{display:grid;grid-template-columns:minmax(0,1fr) 105px auto;gap:8px;align-items:center;margin:10px 0}
+.coffee-addon-row input{min-width:0!important;min-height:42px!important;padding:10px!important;font-size:14px!important}
+.coffee-addon-row button,#catalogAddonAdd{width:auto!important;min-height:40px!important;padding:8px 12px!important;font-size:12px!important}
+.coffee-addon-row button{background:#f4f4f1!important;color:#5d635c!important}
+@media(max-width:480px){.coffee-addon-row{grid-template-columns:minmax(0,1fr) 90px}.coffee-addon-row button{grid-column:1/-1;justify-self:end}}
