@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2MyDoor | Orange Walk groceries</title><meta name="google-maps-key" content="">
+<style>
+:root{--green:#124335;--deep:#0b3227;--ink:#172b22;--muted:#52645a;--paper:#fbfaf6;--line:#e3e6dc;--lime:#dbf37c;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 'Segoe UI',sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #548c58;outline-offset:3px}button:disabled{opacity:.48;cursor:default}h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.1}h1,h2{letter-spacing:-.055em}h1{font-size:clamp(3rem,6.5vw,6.3rem)}h2{font-size:clamp(1.95rem,4vw,3.15rem)}h3{font-size:1.12rem}small,.muted{color:var(--muted)}small{font-size:.85rem}.wrap{width:min(1230px,calc(100% - 56px));margin:auto}.top{background:var(--deep);color:white;text-align:center;padding:7px 12px;font-size:.85rem}.top b{color:var(--lime)}header{background:var(--paper);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line)}.nav{min-height:74px;display:flex;align-items:center;gap:22px}.brand{font-size:1.72rem;font-weight:900;letter-spacing:-.09em;color:var(--green);white-space:nowrap}.brand span{background:var(--lime);border-radius:8px;padding:1px 6px;margin-right:3px}.plain{background:none;border:0;color:inherit;padding:6px}.nav .search{margin-left:auto;width:min(33%,350px)}input,select,textarea{border:1px solid #cdd6cc;padding:11px 12px;border-radius:10px;background:white;color:var(--ink);width:100%}.btn{border:0;padding:11px 17px;border-radius:10px;background:var(--green);color:white;font-weight:700;white-space:nowrap}.btn.light{background:var(--lime);color:var(--deep)}.btn.outline{background:white;color:var(--green);border:1px solid var(--line)}.badge{background:var(--lime);color:var(--deep);border-radius:20px;padding:1px 7px;margin-left:5px}.hero{margin-top:24px;min-height:450px;border-radius:24px;overflow:hidden;background:var(--deep);color:white;position:relative;display:flex;align-items:center;isolation:isolate}.hero:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#0b3227 32%,transparent 88%),var(--hero,radial-gradient(ellipse at 85% 40%,#477b45,transparent 58%)) right center/auto 125% no-repeat;z-index:-1}.hero-inner{padding:45px clamp(24px,5vw,72px);max-width:725px}.hero em{color:var(--lime);font-style:normal}.hero p{max-width:360px;margin:17px 0 23px;color:#ecf3e5}.eyebrow{font-size:.8rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:13px}.hero .eyebrow{color:var(--lime)}.hero.no-art section{margin:34px 0 42px}.heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}.heading p{margin-top:7px}.stores,.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.store,.card,.box{background:white;border:1px solid var(--line);border-radius:15px}.store{display:flex;text-align:left;color:var(--ink);padding:13px;gap:12px;align-items:center;min-width:0}.store:hover,.card:hover{border-color:#78a077}.store span.icon{font-size:25px;width:48px;height:48px;display:grid;place-items:center;border-radius:10px;flex:none}.store strong,.store small{display:block}.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}.chip{border:1px solid var(--line);background:white;border-radius:24px;padding:8px 13px;white-space:nowrap;color:var(--ink)}.chip.active{background:var(--green);color:white;border-color:var(--green)}.card{overflow:hidden;min-width:0;display:flex;flex-direction:column;position:relative}.product{border:0;background:none;text-align:left;color:inherit;padding:0;width:100%;display:block}.picture{display:grid;place-items:center;height:155px;position:relative}.picture img{width:107px;height:107px;object-fit:contain;filter:drop-shadow(0 9px 9px #31472c25)}.sale{position:absolute;top:10px;left:10px;background:#fee6d1;color:#743716;border-radius:7px;padding:4px 7px;font-weight:800;font-size:.78rem}.product-info{display:block;padding:13px 13px 3px}.product-info strong{display:block;font-size:1.07rem}.product-info small{display:block}.buy{margin-top:auto;padding:8px 13px 13px;display:flex;align-items:center;justify-content:space-between;gap:6px}.price{font-weight:850;color:var(--green)}del{font-size:.75rem;color:var(--muted);margin-left:3px}.add,.step button{border:0;border-radius:8px;background:#e9f3dd;color:var(--green);font-size:1.25rem;font-weight:800;min-width:34px;min-height:34px}.step{display:flex;gap:8px;align-items:center}.full{width:100%}.notice{background:#eaf2df;border-radius:14px;padding:16px 20px;margin-top:20px}.subhead{background:#e9f1df;border-radius:20px;padding:27px;margin-top:24px}.subhead h1,.tracking h1{font-size:clamp(2.35rem,5vw,4.2rem)}.subhead p{margin-top:8px}.back{margin-bottom:12px}.empty{padding:26px;background:white;border:1px dashed #bbcbbb;border-radius:12px}.box{padding:20px}.box h2{font-size:1.55rem;margin-bottom:14px}.layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,1fr);gap:16px;align-items:start}.tracking h1{margin:15px 0}.tracking{margin-top:25px}.form{display:grid;gap:14px}.form label{display:grid;gap:5px;font-weight:650}.receipt-row,.line,.status-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.receipt-row strong,.line>:last-child{margin-left:auto}.receipt-row img{width:39px;height:39px;object-fit:contain}.total{font-size:1.12rem;border-bottom:0}.status-row i{background:#eaf2df;border-radius:50%;font-style:normal;font-weight:800;width:32px;height:32px;display:grid;place-items:center}.status-row.done i{background:var(--green);color:white}.map{margin-top:12px;position:relative;overflow:hidden;height:245px;background:#dfead5;border:1px solid #d2dfc8;border-radius:12px}.map svg{display:block;width:100%;height:100%;object-fit:cover}.map .marker{position:absolute;transform:translate(-50%,-100%);background:#fff;color:#143d31;border:1px solid #d3dfd1;border-radius:7px;padding:4px 8px;box-shadow:0 2px 9px #0b32274a;font-size:.8rem;white-space:nowrap}.map .marker:after{content:'';position:absolute;left:calc(50% - 4px);bottom:-5px;width:8px;height:8px;background:#fff;transform:rotate(45deg)}.basket{display:flex;align-items:end;min-height:63px;gap:1px;flex-wrap:wrap;padding:8px 12px;background:#edf2e6;border-radius:12px;margin-bottom:7px}.basket img{width:46px;height:46px;object-fit:contain}.mapnote{margin-top:6px}.drawer{width:min(470px,100%);max-height:100dvh;height:100dvh;max-width:100%;margin:0 0 0 auto;border:0;padding:0;background:var(--paper);color:var(--ink)}.drawer::backdrop{background:#09281aaa}.drawer-inner{min-height:100%;display:flex;flex-direction:column;padding:22px;gap:10px}.drawer header{position:static;display:flex;align-items:center;justify-content:space-between;padding-bottom:12px}.drawer header h2{font-size:2rem}.drawer .drawer-end{margin-top:auto}.cart-row{display:grid;grid-template-columns:50px 1fr auto;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--line)}.cart-row img{width:46px;height:46px;border-radius:8px}.cart-row small{display:block}.remove{font-size:.81rem;text-decoration:underline;color:var(--muted)}footer{border-top:1px solid var(--line);padding:21px 0;margin-top:42px;color:var(--muted)}footer .wrap{display:flex;justify-content:space-between;gap:14px}.toast{position:fixed;z-index:4;bottom:18px;left:50%;transform:translateX(-50%);background:var(--deep);color:white;padding:10px 18px;border-radius:10px;box-shadow:0 3px 16px #122f2455;white-space:nowrap}.flash{animation:flash 1.4s ease}@keyframes flash{0%,45%{box-shadow:0 0 0 4px #8ab245}100%{box-shadow:none}}[hidden]{display:none!important}@media(max-width:920px){.stores,.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.nav{gap:12px}.nav .location{display:none}.hero:before{background-size:auto 100%}}@media(max-width:650px){.wrap{width:calc(100% - 26px)}.nav{flex-wrap:wrap;gap:6px 10px;padding:8px 0}.nav .search{order:5;width:100%;margin:0}.nav .cart{margin-left:auto}.nav .nav-shop{display:none}.hero{min-height:365px;margin-top:14px}.hero:before{background:linear-gradient(90deg,#0b3227 12%,#0b3227bb 65%,#0b322744),var(--hero,none) 68% center/cover no-repeat}.hero-inner{padding:27px 21px}.stores,.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.store{padding:9px;gap:6px}.store span.icon{width:34px;height:38px;font-size:21px}.picture{height:117px}.picture img{width:84px;height:84px}.layout{grid-template-columns:1fr}.buy,.product-info{padding-left:8px;padding-right:8px}footer .wrap{flex-direction:column}.cart-row{grid-template-columns:45px 1fr auto}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+:root{--green:#243b31;--deep:#202c27;--ink:#202622;--muted:#59635d;--paper:#f6f7f6;--line:#dce1de;--lime:#e8ece9;--white:#fff}
+body{font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+h1,h2{letter-spacing:-.035em}h2{font-size:clamp(1.5rem,3vw,2.15rem)}
+.top{background:#202c27;color:#f5f6f5}.top b{color:inherit}
+header{background:#fff}.nav{min-height:68px}.brand{font-family:inherit;letter-spacing:-.06em;font-weight:800}.brand span{background:none;padding:0;margin:0;border-radius:0}.btn{border-radius:6px}.btn.light{background:var(--green);color:white}.badge{border-radius:6px;background:#e5ebe7}.cart .badge{background:#fff;color:var(--green)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.46fr);background:#fff;color:var(--ink);min-height:0;border:1px solid var(--line);border-radius:10px;gap:20px;padding:clamp(23px,5vw,56px);align-items:center}.hero:before{content:none}.hero-inner{padding:0;max-width:none}.hero h1{font-size:clamp(2.25rem,5vw,4.25rem);line-height:1.03}.hero p{color:var(--muted);max-width:460px;margin:13px 0 20px}.hero .eyebrow{color:var(--green);letter-spacing:.08em;margin-bottom:9px}.delivery-details{border-left:1px solid var(--line);padding:10px 0 10px clamp(18px,3vw,36px);display:grid;gap:14px}.delivery-details dl{margin:0;display:grid;gap:12px}.delivery-details dt{color:var(--muted);font-size:.85rem}.delivery-details dd{margin:1px 0 0;font-weight:650}
+section{margin:27px 0 33px}.heading{align-items:start;margin-bottom:13px}.heading p{margin-top:5px}.store,.card,.box,.subhead,.empty{border-radius:8px}.store{min-height:68px}.store span.icon{font-size:.73rem;width:38px;height:38px;border-radius:5px;font-weight:800;letter-spacing:.02em;background:#edf0ee;color:#35483e}.store strong{line-height:1.2}.chip{border-radius:6px}.chip.active{background:#2b3d34}.card-layout{width:100%}.picture{height:72px;background:#edf0ee;padding:12px 13px;place-items:end start}.picture img{width:56px;height:45px;filter:none}.sale{top:9px;left:auto;right:9px;background:white;color:#38463f;border:1px solid #dce1de;border-radius:4px;padding:2px 5px}.add,.step button{border-radius:5px;background:#eef1ef}.subhead{background:#fff;border:1px solid var(--line);padding:20px}.subhead h1,.tracking h1{font-size:clamp(1.95rem,4.5vw,3.3rem)}.status-row i{background:#edf0ee}.basket{background:#edf0ee;border-radius:6px}.basket img{width:54px;height:46px}.map{border-radius:7px;filter:saturate(.55)}.map .marker{border-radius:5px}
+@media(max-width:650px){.hero{grid-template-columns:1fr;gap:15px}.delivery-details{border-left:0;border-top:1px solid var(--line);padding:13px 0 0;gap:6px}.delivery-details dl{grid-template-columns:1fr 1fr;gap:8px}.picture{height:62px;padding:7px 8px}.picture img{width:49px;height:39px}.sale{font-size:.7rem;right:5px;top:6px}.store span.icon{width:27px;height:30px;font-size:.65rem}}
+
+:root{--green:#124335;--deep:#0b3227;--ink:#162c23;--muted:#52645a;--paper:#fbfaf6;--line:#dee5da;--lime:#dbf37c}
+.top{background:var(--lime);color:var(--deep);font-weight:600}
+header{background:var(--paper)}.brand{color:var(--green)}.brand span{background:var(--lime);padding:1px 6px;margin-right:3px;border-radius:5px}.cart .badge{background:var(--lime)}
+.hero{background:var(--deep);color:white;border-color:var(--deep);border-radius:14px;grid-template-columns:minmax(0,1.4fr) minmax(250px,.75fr);gap:clamp(16px,5vw,65px)}.hero h1{font-size:clamp(2.6rem,6vw,5.25rem);letter-spacing:-.06em}.hero h1 span,.hero .eyebrow{color:var(--lime)}.hero p{color:#e3eadf}.hero .btn{background:var(--lime);color:var(--deep)}
+.delivery-details{background:#164638;border:1px solid #406756;border-radius:10px;padding:clamp(15px,3vw,27px);color:white}.delivery-details dt{color:#d1e2d5}.delivery-details dl{gap:15px}.delivery-details .days{margin-top:6px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.days span{text-align:center;padding:6px 2px;border:1px solid #698b71;border-radius:5px;color:var(--lime)}
+.store span.icon{color:var(--deep)}.store{border-radius:9px}.store:hover{background:#f9fcf4}.chip.active{background:var(--green)}.picture{height:83px;border-bottom:1px solid #263c2712;place-items:center start}.picture img{width:66px;height:53px}.sale{background:#fff9ef;color:#75391d;border-color:#e9cdb8}.add,.step button{background:#e9f3dd}.subhead{background:#e9f1df}.basket,.status-row i{background:#eaf2df}.map{filter:none}
+@media(max-width:650px){.hero{grid-template-columns:1fr;gap:21px}.hero h1{font-size:clamp(2.5rem,11vw,3.6rem)}.delivery-details{padding:13px}.delivery-details dl{grid-template-columns:1fr 1fr;gap:7px 12px}.delivery-details dl>div:first-child{grid-column:1/-1}.days span{padding:4px 2px}.picture{height:68px}.picture img{width:50px;height:41px}}
+
+.nav .location{display:block;margin-left:auto;font-weight:700;color:var(--green);max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nav .search{margin-left:0}.top{padding:5px 10px;font-size:.78rem}.bottom-nav{display:none}.screen{margin:25px 0 35px}.screen-title{margin:0 0 18px}.screen-title h1{font-size:clamp(2rem,5vw,3.3rem);letter-spacing:-.055em}.screen-title p{color:var(--muted);margin:4px 0 0}.hero-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:25px 0 13px}.hero-heading h1{font-size:clamp(2rem,5vw,3.6rem)}.hero-heading p{color:var(--muted);margin-top:4px}
+.carousel{position:relative}.slides{display:flex;overflow:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:15px;overscroll-behavior-x:contain}.slides::-webkit-scrollbar{display:none}.banner{flex:0 0 100%;scroll-snap-align:start;min-height:206px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(105px,.8fr);align-items:center;padding:22px clamp(17px,5vw,54px);gap:4px;overflow:hidden;isolation:isolate}.banner h2{font-size:clamp(1.85rem,5vw,3.6rem);line-height:1.02}.banner p{margin:7px 0 12px}.banner .btn{padding:8px 13px}.banner.dark{background:#113d31;color:#fff}.banner.dark .btn{background:var(--lime);color:var(--deep)}.banner.fresh{background:#e4efd7}.banner.bread{background:#f7e3d1}.banner.pantry{background:#e7ecf6}.banner-art{position:relative;display:flex;justify-content:center;align-items:center;height:100%;min-width:0}.banner-art:before{content:'';position:absolute;z-index:-1;width:min(82%,240px);aspect-ratio:1;border-radius:50%;background:#ffffff33}.banner-art img{width:55%;max-width:155px;object-fit:contain;filter:drop-shadow(0 8px 6px #16322440);transform:rotate(-12deg);margin-right:-15%}.banner-art img+img{width:46%;transform:rotate(12deg) translateY(30%);margin:0}.slide-controls{display:flex;align-items:center;justify-content:center;gap:7px;padding-top:8px}.slide-dot{border:0;padding:0;background:#a7b5ab;width:9px;height:9px;border-radius:20px}.slide-dot[aria-current=true]{width:22px;background:var(--green)}.slide-arrow{background:none;border:0;color:var(--green);height:27px;min-width:30px;font-size:1.2rem}.heading .plain{color:var(--green);font-weight:750;white-space:nowrap}
+.featured-stores,.directory{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.store-tile{min-width:0;text-align:left;border:1px solid var(--line);background:#fff;border-radius:11px;overflow:hidden;padding:0;color:var(--ink);display:grid;grid-template-rows:94px auto}.store-tile:hover{border-color:#7b9d80}.store-tile .store-cover{display:grid;place-items:center;height:94px}.store-cover img{width:86px;height:77px;object-fit:contain;filter:drop-shadow(0 5px 5px #243a312f)}.store-tile .store-text{padding:10px 12px;display:block}.store-text strong,.store-text small{display:block}.store-text small{margin-top:3px}.directory{grid-template-columns:repeat(3,minmax(0,1fr))}
+.picture{height:130px;place-items:center}.picture img{width:100px;height:100px;filter:drop-shadow(0 6px 5px #31472c30)}.sale{left:8px;right:auto}.card,.box{border-radius:11px}.basket img,.receipt-row img,.cart-row img{object-fit:contain}.cart-row{grid-template-columns:58px minmax(0,1fr) auto}.cart-row img{width:49px;height:49px}.cart-row .step{justify-content:flex-end}.cart-row .row-price{text-align:right}.cart-row .remove{padding-left:0}.location-line{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0 13px;border-bottom:1px solid var(--line)}.location-line small{display:block}.locations{max-width:650px}.google-map{width:100%;height:235px;border:1px solid var(--line);border-radius:10px;display:block;background:#e7ede5}.maps-link{display:inline-block;margin-top:6px;color:var(--green);font-size:.87rem}.cart-total .btn{margin-top:12px}.checkout-steps{display:flex;gap:8px;margin-bottom:12px;color:var(--muted);font-size:.85rem}.checkout-steps b{color:var(--green)}.tracking .layout{margin-bottom:15px}
+@media(max-width:720px){.wrap{width:calc(100% - 28px)}body{padding-bottom:68px}.nav{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;min-height:0;padding:8px 0}.nav .search{grid-column:1/-1;width:100%;order:0;padding:7px 10px}.nav .location{display:block;justify-self:end;margin:0;max-width:100%;font-size:.85rem}.nav .cart,.nav .nav-shop{display:none}.bottom-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border-top:1px solid var(--line);position:fixed;bottom:0;left:0;right:0;z-index:2;padding:4px 8px max(4px,env(safe-area-inset-bottom));gap:4px}.bottom-nav button{border:0;border-radius:7px;color:var(--green);background:none;min-height:45px;padding:4px;font-weight:700;font-size:.83rem}.bottom-nav button[aria-current=page]{background:#eaf2df}.toast{bottom:68px}.banner{min-height:170px}.banner p{font-size:.86rem;line-height:1.3}.hero-heading{margin-top:16px}.featured-stores{gap:6px}.featured-stores .store-tile{grid-template-rows:61px auto}.featured-stores .store-cover{height:61px}.featured-stores .store-cover img{width:57px;height:53px}.featured-stores .store-text{padding:7px}.featured-stores strong{font-size:.82rem;line-height:1.2}.featured-stores small{display:none}.directory{grid-template-columns:repeat(2,minmax(0,1fr))}.picture{height:106px}.picture img{width:82px;height:82px}.section-title{font-size:1.4rem}.box{padding:14px}.screen{margin-top:16px}footer{margin-top:24px}.layout{grid-template-columns:1fr}}
+@media(max-width:355px){.banner{grid-template-columns:minmax(0,1fr) 90px;padding:15px}.featured-stores strong{font-size:.75rem}.cart-row{grid-template-columns:40px minmax(0,1fr) auto}.cart-row img{width:37px}}
+
+.pin-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:5px}.pin-meta .maps-link{margin:0}.coordinates summary{cursor:pointer;color:var(--green);font-weight:650}.coordinates .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.pin-hint{margin:0 0 7px}
+
+.budget{border:1px solid var(--line);border-radius:11px;background:#fff;padding:13px 15px;margin:12px 0;color:var(--ink)}.budget h2{font-size:1.15rem;margin:0;letter-spacing:-.025em}.budget-head{display:flex;align-items:baseline;justify-content:space-between;gap:9px;flex-wrap:wrap}.budget-head strong{font-variant-numeric:tabular-nums;color:var(--green)}.budget.over .budget-head strong{color:#8a3826}.budget-meter{overflow:hidden;border-radius:10px;height:7px;background:#e7eee6;margin:8px 0 5px}.budget-fill{height:100%;width:0;border-radius:inherit;background:#588652;transition:width .28s ease}.budget.over .budget-fill{background:#ac5037}.budget-edit{display:flex;align-items:end;gap:7px;margin-top:10px}.budget-edit label{flex:1;min-width:0;font-size:.85rem;font-weight:700}.budget-edit input{display:block;margin-top:3px}.budget-edit .btn{padding:11px 12px}.budget-compact{margin:0 0 13px}.budget a{color:var(--green);font-size:.85rem}.budget-caption{display:flex;justify-content:space-between;gap:5px;flex-wrap:wrap}.cart-total .budget{padding:0;border:0}.cart-total .budget-edit .btn{margin-top:0}@media(prefers-reduced-motion:reduce){.budget-fill{transition:none}}
+
+
+.dropoff-card{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#f7f9f5}.dropoff-card small{display:block;margin-top:3px}.dropoff-card a{text-decoration:none}.dropoff-actions{display:flex;gap:7px;flex-wrap:wrap}.dropoff-actions .btn,.dropoff-card>.btn{padding:7px 10px;font-size:.88rem}.coordinates label{margin-top:6px}.tracking .dropoff-card{margin-top:12px}
+.google-map{display:block;width:100%;min-height:300px;border:1px solid var(--line);border-radius:10px;background:#eef2eb}.tracking .google-map{margin-top:13px}@media(max-width:650px){.google-map{min-height:280px}}
+
+.google-picker{height:325px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#e8eee7}.google-picker .google-map,.native-picker{position:absolute;inset:0;width:100%;height:100%;min-height:0;border:0;border-radius:0}.picker-pin{position:absolute;left:50%;top:50%;width:24px;height:24px;border:3px solid #fff;border-radius:50% 50% 50% 0;background:#124335;box-shadow:0 2px 6px #14291b80;transform:translate(-50%,-87%) rotate(-45deg);pointer-events:none}.picker-pin:after{position:absolute;content:'';width:5px;height:5px;border-radius:50%;background:white;top:6px;left:6px}@media(max-width:650px){.google-picker{height:280px}}
+
+/* Product cards size their price and controls to the card, including in narrow grids. */
+.grid{gap:14px}
+.card{container-type:inline-size}
+.product-info{padding:12px 13px 5px}
+.product-info strong,.product-info small{overflow-wrap:anywhere}
+.product-info small{margin-top:3px}
+.buy{padding:7px 13px 13px;gap:8px}
+.buy>div:first-child{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 6px;min-width:0}
+.buy .price,.buy del{white-space:nowrap}
+.buy del{margin-left:0}
+.buy .step{flex-shrink:0;gap:6px}
+.buy .step span{min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
+.buy .step button,.buy .add{width:36px;height:36px;padding:0}
+@container (max-width: 235px){
+ .product-info{padding:10px 10px 4px}
+ .buy{padding:6px 10px 10px;display:grid;grid-template-columns:minmax(0,1fr)}
+ .buy .step,.buy .add{justify-self:end}
+}
+@media(max-width:650px){
+ .grid{gap:10px}
+ .buy .step button,.buy .add{width:40px;height:40px}
+}
+@media(max-width:340px){
+ .grid{gap:8px}
+ .buy .step button,.buy .add{width:36px;height:36px}
+ .buy .step{gap:4px}
+}
+.pin-confirm{display:flex;align-items:center;justify-content:space-between;gap:10px}.pin-confirm small{flex:1}.pin-confirm .btn{padding:7px 10px;font-size:.88rem}.picker-pin{background:#56695d}.google-picker:has(+.pin-confirm) .picker-pin{box-shadow:0 2px 6px #14291b80}
+
+.fleet-card{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#f1f6ec}.fleet-head{display:flex;align-items:start;justify-content:space-between;gap:8px}.fleet-head strong{display:block}.fleet-head small,.fleet-status{display:block}.fleet-tag{background:#e0ecd9;color:var(--deep);border-radius:6px;padding:3px 7px;font-size:.77rem;white-space:nowrap}.fleet-route{height:40px;position:relative;margin:5px 14px 0;display:flex;align-items:center}.fleet-track,.fleet-fill{position:absolute;left:0;height:4px;border-radius:10px}.fleet-track{width:100%;background:#c9d8c7}.fleet-fill{width:0;background:#5e925c;transition:width .65s linear}.fleet-stop{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid #6b896f;left:0;transform:translateX(-50%)}.fleet-stop.end{left:100%}.fleet-truck{position:absolute;left:0;transform:translateX(-50%);display:grid;place-items:center;width:29px;height:27px;border:1px solid #6e9373;border-radius:6px;background:#fff;transition:left .65s linear}.fleet-truck svg{width:18px;height:18px;stroke:var(--green);fill:none;stroke-width:1.8}.fleet-labels{display:flex;justify-content:space-between;gap:8px;font-size:.79rem;color:var(--muted)}.fleet-labels span:last-child{text-align:right}.fleet-status{margin-top:8px;font-size:.88rem;font-weight:700}.fleet-note{font-size:.77rem}.notice .fleet-note{display:block;margin-top:5px}
+@media(prefers-reduced-motion:reduce){.fleet-fill,.fleet-truck{transition:none}}
+
+.map-crosshair{position:absolute;left:50%;top:50%;width:19px;height:19px;border:2px solid #193e2f;border-radius:50%;background:#ffffff9c;box-shadow:0 0 0 2px #fff;transform:translate(-50%,-50%);pointer-events:none}.map-crosshair:after{content:'';position:absolute;inset:5px;border-radius:50%;background:#193e2f}.google-picker .picker-pin{background:#124335}.google-picker [hidden]{display:none!important}
+.maps-setup{margin-top:12px;padding:11px 13px}.maps-setup summary{cursor:pointer;font-size:.9rem;font-weight:700;color:var(--green)}.maps-setup form{margin:10px 0 0}.maps-setup .maps-link{margin:0;align-self:center}
+
+.tracking-map-preview{position:relative;overflow:hidden;margin-top:13px;border-radius:10px}.tracking-map-preview .google-map{margin:0;pointer-events:none}.tracking-marker{position:absolute;top:50%;left:50%;width:27px;height:27px;background:#b92f38;border:3px solid white;border-radius:50% 50% 50% 0;transform-origin:bottom left;transform:translate(0,-100%) rotate(-45deg);box-shadow:0 2px 7px #14291b80;pointer-events:none}.tracking-marker:after{content:'';position:absolute;top:6px;left:6px;width:8px;height:8px;border-radius:50%;background:white}.tracking-map-caption{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:8px 0;color:var(--green)}.tracking-map-caption .btn{margin-left:auto;padding:5px 10px;font-size:.86rem}
+.tracking-native-map{position:absolute;inset:0;opacity:0;pointer-events:none}.native-tracking-active .tracking-native-map{opacity:1}.native-tracking-active .tracking-marker{display:none}
+
+.tracking .tracking-layout{grid-template-columns:minmax(0,1.35fr) minmax(270px,1fr);gap:20px;margin:20px 0}
+.tracking-layout>.box{min-width:0;padding:clamp(14px,2vw,22px)}
+.tracking-map-caption{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:11px 0}
+.tracking-map-caption strong,.tracking-map-caption small{display:block}.tracking-map-caption small{margin-top:2px}
+.tracking-map-caption .btn{margin-left:0;white-space:normal;text-align:center}
+.tracking-main .mapnote{margin:0;padding-top:10px;border-top:1px solid var(--line);overflow-wrap:anywhere}
+.tracking-basket .basket{gap:5px;padding:8px 10px;align-items:center;min-height:52px;margin:0 0 8px}
+.tracking-basket .basket img{width:39px;height:39px}
+.tracking-basket .receipt-row{gap:8px;padding:8px 0}
+.tracking-basket .receipt-row img{width:34px;height:34px;flex:none}
+.tracking-basket .receipt-row span{overflow-wrap:anywhere}
+.tracking-basket .receipt-row strong{white-space:nowrap}
+@media(max-width:800px){.tracking .tracking-layout{grid-template-columns:minmax(0,1fr);gap:16px}}
+@media(max-width:410px){.tracking-map-caption{grid-template-columns:minmax(0,1fr)}.tracking-map-caption .btn{justify-self:start}.tracking-basket .basket img{width:35px;height:35px}}
+</style></head>
+<body>
+<div class="top"><b>Delivery days</b> &nbsp; Tuesday, Thursday &amp; Saturday</div>
+<header><div class="wrap nav"><button class="plain brand" data-action="home" aria-label="2MyDoor home"><span>2</span>MyDoor</button><button class="plain nav-shop" data-action="browse">Shop</button><button class="plain nav-shop" data-action="stores">Stores</button><button class="plain location" data-action="location" id="location-button">Set delivery location</button><input class="search" id="search" type="search" placeholder="Search groceries" aria-label="Search groceries or stores"><button class="btn cart" data-action="cart">Basket <span class="badge" id="count">0</span></button></div></header>
+<main class="wrap" id="main"></main>
+<nav class="bottom-nav" aria-label="Mobile navigation"><button data-action="home">Home</button><button data-action="stores">Stores</button><button data-action="location">Location</button><button data-action="cart">Basket <span id="mobile-count"></span></button></nav><footer><div class="wrap"><strong>2MyDoor · Orange Walk, Belize</strong><small>Demo marketplace · All prices in Belize dollars (BZD)</small></div></footer>
+<div id="toast" class="toast" role="status" hidden></div>
+<script>
+const stores = [
+ ['market','Town Market Produce','Fruit & vegetables','TM','#e3f1d8'],
+ ['pantry','Cane Country Grocer','Pantry & household','CG','#f9ead8'],
+ ['bakery','Sugar City Bakery','Bread & pastries','SB','#fae1d6'],
+ ['farm','Northern Farm & Dairy','Meat, eggs & dairy','NF','#e5edf8'],
+ ['spice','Cane Road Spice Shop','Spices & seasonings','CR','#f5ebd4'],
+ ['drinks','River Bend Drinks','Juices & refreshments','RB','#e2eff1'],
+ ['homegoods','Everyday Home Goods','Cleaning & essentials','EH','#ece7f3']
+];
+const inventory = {
+ market:[
+ ['Hass Avocado','Each',250,325,'Produce'],['Vine Tomatoes','1 lb',350,0,'Produce'],['Fresh Limes','Bag of 6',300,400,'Produce'],['Ripe Plantains','Bunch of 3',375,0,'Produce'],
+ ['Pineapple','Each',525,0,'Produce'],['Sweet Papaya','Each',475,0,'Produce'],['Cucumber','Each',175,0,'Produce'],['Carrots','1 lb',275,0,'Produce'],
+ ['Green Cabbage','Each',350,0,'Produce'],['Yellow Onions','1 lb',225,0,'Produce'],['Watermelon','Each',1000,1200,'Produce'],['Sweet Corn','Pack of 3',425,0,'Produce']],
+ pantry:[
+ ['Long Grain Rice','2 lb',425,0,'Pantry'],['Red Kidney Beans','1 lb',475,525,'Pantry'],['Coconut Milk','400 mL',385,0,'Pantry'],['Vegetable Oil','1 L',950,0,'Pantry'],
+ ['All-Purpose Flour','2 lb',395,0,'Pantry'],['Spaghetti','500 g',375,0,'Pantry'],['Black Tea','20 bags',485,0,'Drinks'],['Orange Juice','1 L',625,725,'Drinks'],
+ ['Sparkling Water','Can, 330 mL',225,0,'Drinks'],['Dish Soap','500 mL',625,0,'Household'],['Bath Soap','Single bar',265,0,'Household'],['Paper Towels','Single roll',350,0,'Household']],
+ bakery:[
+ ['Coconut Bread','Loaf',625,725,'Bakery'],['Butter Croissants','Pack of 4',825,0,'Bakery'],['Fresh Baguette','Each',475,0,'Bakery'],['Flour Tortillas','Pack of 12',550,0,'Bakery'],
+ ['Cinnamon Rolls','Pack of 4',850,950,'Bakery'],['Banana Muffins','Pack of 4',675,0,'Bakery'],['Oat Cookies','Pack of 6',575,0,'Bakery'],['Soft Dinner Rolls','Pack of 6',550,0,'Bakery']],
+ farm:[
+ ['Farm Eggs','Dozen',750,850,'Meat & Dairy'],['Whole Milk','1 L',550,0,'Meat & Dairy'],['Cheddar Cheese','250 g',895,0,'Meat & Dairy'],['Chicken Thighs','2 lb',1350,1495,'Meat & Dairy'],
+ ['Ground Beef','1 lb',1050,0,'Meat & Dairy'],['Salted Butter','250 g',925,0,'Meat & Dairy'],['Plain Yogurt','500 g',695,795,'Meat & Dairy'],['Smoked Sausage','1 lb',1095,0,'Meat & Dairy']],
+ spice:[['Ground Annatto','60 g',450,0,'Pantry'],['Black Pepper','50 g',525,0,'Pantry'],['Cinnamon Sticks','40 g',575,650,'Pantry'],['Garlic Powder','60 g',425,0,'Pantry']],
+ drinks:[['Tamarind Juice','500 mL',375,0,'Drinks'],['Coconut Water','500 mL',450,0,'Drinks'],['Pineapple Punch','1 L',625,700,'Drinks'],['Ginger Beer','330 mL',350,0,'Drinks']],
+ homegoods:[['Laundry Detergent','1 kg',1195,0,'Household'],['Kitchen Sponges','Pack of 3',495,0,'Household'],['Trash Bags','Roll of 15',675,750,'Household'],['Floor Cleaner','1 L',795,0,'Household']]
+};
+const artwork={
+ market:['🥑','🍅','🍋','🍌','🍍','🥭','🥒','🥕','🥬','🧅','🍉','🌽'],
+ pantry:['🍚','🫘','🥥','🫗','🌾','🍝','🍵','🧃','🥤','🧴','🧼','🧻'],
+ bakery:['🍞','🥐','🥖','🫓','🥮','🧁','🍪','🥯'],
+ farm:['🥚','🥛','🧀','🍗','🥩','🧈','🥣','🌭'],
+ spice:['🍛','🧂','🫚','🧄'],
+ drinks:['🧃','🥥','🍹','🥤'],
+ homegoods:['🫧','🧽','🗑️','🧴']
+};
+const products = Object.entries(inventory).flatMap(([store, rows]) => rows.map(([name,unit,price,was,category],i) => ({id:store+i,store,name,unit,price,was,category,art:artwork[store][i]})));
+const byId = Object.fromEntries(products.map(p=>[p.id,p]));
+const storeById = Object.fromEntries(stores.map(s=>[s[0],s]));
+const zones = {
+ 'Orange Walk Town':[18.081,-88.563],
+ 'Trial Farm':[18.101241,-88.565841],
+ 'San Jose':[18.1958,-88.5712],
+ 'Yo Creek':[18.090978,-88.646075],
+ 'San Lazaro':[18.038,-88.663],
+ 'Trinidad':[18.024,-88.687],
+ 'August Pine Ridge':[17.973,-88.725],
+ 'San Felipe Village':[17.872996,-88.773342]
+};
+const radians=angle=>angle*Math.PI/180;
+function distanceFromTown(zone){
+ const [lat,lng]=zones[zone], [originLat,originLng]=zones['Orange Walk Town'];
+ const a=Math.sin(radians(lat-originLat)/2)**2+Math.cos(radians(lat))*Math.cos(radians(originLat))*Math.sin(radians(lng-originLng)/2)**2;
+ return 6371*2*Math.asin(Math.sqrt(a));
+}
+function deliveryFee(zone,speed='scheduled'){
+ const km=distanceFromTown(zone);
+ const tiers=[[2,500],[6,650],[12,850],[18,1050],[25,1300],[Infinity,1600]];
+ return tiers.find(([limit])=>km<=limit)[1]+(speed==='same'?500:0);
+}
+function validPin(pin){
+ return Array.isArray(pin)&&pin.length===2&&pin.every(Number.isFinite)&&Math.abs(pin[0])<=90&&Math.abs(pin[1])<=180;
+}
+function readPin(form){
+ const lat=form.elements.latitude.value.trim(), lng=form.elements.longitude.value.trim();
+ if(!lat||!lng)return null;
+ const pin=[Number(lat),Number(lng)];
+ return validPin(pin)?pin:null;
+}
+const main = document.querySelector('#main'), search = document.querySelector('#search'), toast = document.querySelector('#toast');
+const money = cents => 'BZ$'+(cents/100).toFixed(2);
+const safe = value => String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function read(key,fallback){try{return JSON.parse(localStorage.getItem('2mydoor-'+key)) ?? fallback}catch{return fallback}}
+function write(key,value){try{localStorage.setItem('2mydoor-'+key,JSON.stringify(value))}catch{}}
+let cart = Object.fromEntries(Object.entries(read('cart',{})).filter(([id,n])=>byId[id] && Number.isInteger(n) && n>0 && n<=99));
+let orders=read('orders',{}), category='All items', toastTimer, acceptanceTimer, fleetTimer;
+let saved=read('delivery',null);
+let budget=read('budget',0), budgetDisplay=null, budgetProgress=0, budgetFrame=0;
+function budgetPanel(mode){
+ if(!budget&&mode!=='cart')return '';
+ return '<div class="budget '+(mode==='shop'?'budget-compact':'')+'" data-budget="'+mode+'"><div class="budget-head"><h2>Shopping budget</h2><strong data-budget-number aria-hidden="true"></strong></div>'+(budget?'<div class="budget-meter" aria-hidden="true"><div class="budget-fill"></div></div><div class="budget-caption"><small data-budget-status role="status"></small>'+(mode==='shop'?'<a href="#cart">Edit budget</a>':'')+'</div>':'<small>Set a spending limit in Belize dollars.</small>')+(mode==='cart'?'<form class="budget-edit" id="budget-form"><label>Budget (BZ$)<input name="amount" type="number" min="0.01" max="100000" step="0.01" required inputmode="decimal" placeholder="50.00" value="'+(budget?(budget/100).toFixed(2):'')+'"></label><button class="btn" type="submit">'+(budget?'Update':'Set budget')+'</button>'+(budget?button('clear-budget','Clear','btn outline'):'')+'</form>':'')+'</div>';
+}
+function updateBudget(){
+ if(budgetFrame){cancelAnimationFrame(budgetFrame);budgetFrame=0}
+ const panel=document.querySelector('[data-budget]');
+ if(!panel||!budget)return;
+ const mode=panel.dataset.budget;
+ const items=subtotal(currentItems());
+ const estimatedFee=mode==='checkout'&&saved?deliveryFee(saved.zone,draft.speed):0;
+ const spent=items+estimatedFee, remaining=budget-spent;
+ const status=panel.querySelector('[data-budget-status]'), number=panel.querySelector('[data-budget-number]'), fill=panel.querySelector('.budget-fill');
+ const progress=Math.min(100,spent/budget*100);
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const from=budgetDisplay??remaining;
+ const format=value=>money(Math.abs(value))+(value<0?' over':' left');
+ panel.classList.toggle('over',remaining<0);
+ status.textContent=format(remaining)+' of '+money(budget)+' · '+(mode==='checkout'?'Includes estimated delivery':'Items only');
+ fill.style.width=(reduced?progress:budgetProgress)+'%';
+ number.textContent=format(reduced?remaining:from);
+ if(reduced){budgetDisplay=remaining;budgetProgress=progress;return}
+ let started=null;
+ budgetFrame=requestAnimationFrame(function draw(time){
+  started??=time;
+  const t=Math.min((time-started)/280,1);
+  const eased=1-(1-t)**3;
+  const value=Math.round(from+(remaining-from)*eased);
+  fill.style.width=progress+'%';
+  number.textContent=format(value);
+  budgetDisplay=value;
+  if(t<1)budgetFrame=requestAnimationFrame(draw);
+  else{budgetProgress=progress;budgetFrame=0}
+ });
+}
+let draft={zone:saved?.zone||'Orange Walk Town',speed:'scheduled',date:'',name:'',address:saved?.address||''};
+let locationReturn='home', slideIndex=0, slideFrame=0;
+function updateNav(){
+ const count=quantity(currentItems());
+ document.querySelector('#count').textContent=count;
+ document.querySelector('#mobile-count').textContent=count?'('+count+')':'';
+ document.querySelector('#location-button').textContent=saved?saved.zone:'Set delivery location';
+ const [page]=route(), selected=page==='store'?'stores':page==='order'||page==='checkout'||page==='quote'?'cart':page||'home';
+ document.querySelectorAll('.bottom-nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.action===selected?'page':'false'));
+}
+const thumbs=new Map();
+function thumb(product){
+ const art=product.art||byId[product.id]?.art||product.name.slice(0,2);
+ if(!thumbs.has(art)){
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=144;
+  const ctx=canvas.getContext('2d');
+  ctx.font='99px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(art,72,74);
+  thumbs.set(art,canvas.toDataURL('image/png'));
+ }
+ return thumbs.get(art);
+}
+function img(p){return '<img src="'+thumb(p)+'" alt="">' }
+const currentItems=()=>Object.entries(cart).map(([id,qty])=>({...byId[id],qty}));
+const subtotal=items=>items.reduce((sum,p)=>sum+p.qty*p.price,0);
+const quantity=items=>items.reduce((sum,p)=>sum+p.qty,0);
+function change(id,qty){
+ if(!byId[id])return;
+ if(qty>0)cart[id]=Math.min(qty,99);else delete cart[id];
+ write('cart',cart);
+ updateNav();
+ if(route()[0]==='cart'){
+  const focused=document.activeElement?.dataset.action;
+  main.innerHTML=cartPage();
+  const controls=Array.from(main.querySelectorAll('[data-id="'+id+'"]'));
+  (controls.find(control=>control.dataset.action===focused)||controls[0]||main.querySelector('[data-action="stores"]'))?.focus({preventScroll:true});
+ }
+ for(const control of main.querySelectorAll('[data-product-buy]')){
+  if(control.dataset.productBuy===id){
+   const focused=document.activeElement?.dataset.action;
+   control.innerHTML=buyContent(byId[id]);
+   if(focused && ['add','plus','minus'].includes(focused))control.querySelector('[data-action="'+focused+'"],[data-action="plus"]')?.focus({preventScroll:true});
+  }
+ }
+ updateBudget();
+}
+function announce(message){clearTimeout(toastTimer);toast.textContent=message;toast.hidden=false;toastTimer=setTimeout(()=>toast.hidden=true,1800)}
+const button=(action,label,classes='btn',id='')=>'<button type="button" class="'+classes+'" data-action="'+action+'" data-id="'+id+'">'+label+'</button>';
+function go(route){
+ const target='#'+route;
+ if(location.hash===target)render(true);else location.hash=target;
+}
+const route=()=>location.hash.slice(1).split('/');
+function step(p,qty){return '<div class="step">'+button('minus','−','',p.id)+'<span aria-label="Quantity">'+qty+'</span>'+button('plus','+','',p.id)+'</div>'}
+function buyContent(p){return '<div><span class="price">'+money(p.price)+'</span>'+(p.was?'<del>'+money(p.was)+'</del>':'')+'</div>'+(cart[p.id]?step(p,cart[p.id]):'<button type="button" class="add" data-action="add" data-id="'+p.id+'" aria-label="Add '+safe(p.name)+' to cart">+</button>')}
+function card(p){
+ const store=storeById[p.store];
+ return '<article class="card" id="product-'+p.id+'"><button class="product" data-action="product" data-id="'+p.id+'" type="button" aria-label="'+safe(p.name)+', '+money(p.price)+', view '+store[1]+'"><span class="picture" style="background:'+store[4]+'">'+img(p)+(p.was?'<span class="sale">Save '+money(p.was-p.price)+'</span>':'')+'</span><span class="product-info"><strong>'+p.name+'</strong><small>'+p.unit+' · '+store[1]+'</small></span></button><div class="buy" data-product-buy="'+p.id+'">'+buyContent(p)+'</div></article>';
+}
+const categories=['All items','Produce','Pantry','Bakery','Meat & Dairy','Drinks','Household','Deals'];
+function listing(store){
+ const q=search.value.trim().toLowerCase();
+ let list=products.filter(p=>(!store||p.store===store)&&(!q||[p.name,p.category,storeById[p.store][1]].some(val=>val.toLowerCase().includes(q)))&&(category==='All items'||(category==='Deals'?p.was:p.category===category)));
+ if(!store && !q && category==='All items')list=[products[0],products[12],products[24],products[32],...list.filter(p=>!['market0','pantry0','bakery0','farm0'].includes(p.id))];
+ const shown=store?categories.filter(cat=>cat==='All items'||cat==='Deals'||products.some(p=>p.store===store&&p.category===cat)):categories;
+ return '<div class="chips" aria-label="Product categories">'+shown.map(cat=>'<button type="button" class="chip '+(cat===category?'active':'')+'" data-action="category" data-id="'+safe(cat)+'" aria-pressed="'+(cat===category)+'">'+cat+'</button>').join('')+'</div><p class="muted" style="margin:0 0 10px">'+list.length+' '+(list.length===1?'item':'items')+'</p>'+(list.length?'<div class="grid">'+list.map(card).join('')+'</div>':'<div class="empty">No groceries match this search. Try another search or category.</div>');
+}
+const slides=[
+ ['dark','From local stores to your door','Shop groceries around Orange Walk.','Browse stores','stores','market0','bakery0'],
+ ['fresh','Fresh from the market','Fruit, vegetables and market staples.','Shop produce','market','market4','market1'],
+ ['bread','Fresh from the bakery','Bread, tortillas and pastries.','Shop bakery','bakery','bakery1','bakery2'],
+ ['pantry','Stock up on staples','Rice, beans, drinks and more.','Shop groceries','pantry','pantry0','pantry7']
+];
+function storeTile(store){
+ const [id,name,description,,color]=store;
+ return '<button class="store-tile" data-action="store" data-id="'+id+'"><span class="store-cover" style="background:'+color+'">'+img(products.find(p=>p.store===id))+'</span><span class="store-text"><strong>'+name+'</strong><small>'+description+'</small></span></button>';
+}
+function carousel(){
+ return '<div class="carousel" aria-label="Featured shopping offers"><div class="slides" id="slides" tabindex="0">'+slides.map(([tone,title,copy,label,target,a,b])=>'<div class="banner '+tone+'"><div><h2>'+title+'</h2><p>'+copy+'</p>'+button(target==='stores'?'stores':'store',label,'btn',target)+'</div><div class="banner-art" aria-hidden="true">'+img(byId[a])+img(byId[b])+'</div></div>').join('')+'</div><div class="slide-controls">'+'<button type="button" class="slide-arrow" data-action="slide-prev" aria-label="Previous banner">‹</button>'+slides.map((_,index)=>'<button type="button" class="slide-dot" data-action="slide" data-id="'+index+'" aria-label="Banner '+(index+1)+'" aria-current="'+(index===slideIndex)+'"></button>').join('')+'<button type="button" class="slide-arrow" data-action="slide-next" aria-label="Next banner">›</button>'+'</div></div>';
+}
+function slideTo(index,smooth=true){
+ const track=document.querySelector('#slides');
+ if(!track)return;
+ slideIndex=(index+slides.length)%slides.length;
+ track.scrollTo({left:slideIndex*track.clientWidth,behavior:smooth&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'auto'});
+ document.querySelectorAll('.slide-dot').forEach((b,i)=>b.setAttribute('aria-current',i===slideIndex?'true':'false'));
+}
+function home(){
+ return '<div class="hero-heading"><div><h1>Shop Orange Walk</h1><p>Groceries and essentials delivered to your door.</p></div></div>'+carousel()+'<section><div class="heading"><h2 class="section-title">Local stores</h2>'+button('stores','View all stores →','plain')+'</div><div class="featured-stores">'+stores.slice(0,3).map(storeTile).join('')+'</div></section>';
+}
+function directory(){
+ return '<section class="screen"><div class="screen-title"><h1>All stores</h1><p>7 shops serving Orange Walk and nearby villages.</p></div><div class="directory">'+stores.map(storeTile).join('')+'</div></section>';
+}
+function searchPage(){
+ return '<section class="screen"><div class="screen-title"><h1>Browse groceries</h1></div>'+budgetPanel('shop')+'<div id="listing">'+listing()+'</div></section>';
+}
+function shop(store){
+ const [,name,description]=storeById[store];
+ return '<div class="subhead">'+button('home','All stores','btn outline back')+'<h1>'+name+'</h1><p>'+description+' · Orange Walk</p></div><section id="browse"><div class="heading"><div><h2>Shop this store</h2><p class="muted">Discounts are marked on eligible items.</p></div></div>'+budgetPanel('shop')+'<div id="listing">'+listing(store)+'</div></section>';
+}
+function cartPage(){
+ const items=currentItems();
+ const title='<div class="screen-title"><h1>Your basket</h1><p>'+quantity(items)+' '+(quantity(items)===1?'item':'items')+'</p></div>';
+ if(!items.length)return '<section class="screen">'+title+'<div class="layout"><div class="box"><p style="margin-bottom:12px">Your basket is empty.</p>'+button('stores','Browse stores')+'</div><aside class="box cart-total">'+budgetPanel('cart')+'</aside></div></section>';
+ return '<section class="screen">'+title+'<div class="layout"><div class="box"><h2>Basket items</h2>'+items.map(p=>'<div class="cart-row">'+img(p)+'<div><strong>'+p.name+'</strong><small>'+storeById[p.store][1]+' · '+money(p.price)+' each</small>'+button('remove','Remove','plain remove',p.id)+'</div><div>'+step(p,p.qty)+'<small class="row-price">'+money(p.qty*p.price)+'</small></div></div>').join('')+'</div><aside class="box cart-total"><h2>Summary</h2><div class="line total"><span>Items subtotal</span><strong>'+money(subtotal(items))+'</strong></div><small>Delivery fee shown at checkout.</small>'+budgetPanel('cart')+button('checkout','Continue to checkout','btn full')+'</aside></div></section>';
+}
+const calendar=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Belize',year:'numeric',month:'2-digit',day:'2-digit'});
+function today(now=new Date()){const parts=Object.fromEntries(calendar.formatToParts(now).map(x=>[x.type,x.value]));return parts.year+'-'+parts.month+'-'+parts.day}
+const dateObject=date=>new Date(date+'T12:00:00Z');
+const dayLabel=date=>new Intl.DateTimeFormat('en-BZ',{timeZone:'UTC',weekday:'long',month:'short',day:'numeric',year:'numeric'}).format(dateObject(date));
+const belizeClock=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Belize',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+function localMinutes(now=new Date()){
+ const [hours,minutes]=belizeClock.format(now).split(':').map(Number);
+ return hours*60+minutes;
+}
+const sharedRoutes={
+ 'Orange Walk Town':'town',
+ 'Trial Farm':'north',
+ 'San Jose':'north',
+ 'Yo Creek':'west',
+ 'San Lazaro':'west',
+ 'Trinidad':'west',
+ 'August Pine Ridge':'west',
+ 'San Felipe Village':'west'
+};
+const routeDays={2:['town','north'],4:['town','west'],6:['town','north','west']};
+const sharedRouteCapacity=4;
+function sameDayAvailable(zone,now=new Date()){
+ if(!zone||localMinutes(now)>=17*60)return false;
+ const day=today(now), weekday=dateObject(day).getUTCDay(), corridor=sharedRoutes[zone];
+ if(!routeDays[weekday]?.includes(corridor))return false;
+ const booked=Object.values(orders).filter(order=>order.speed==='same'&&order.date===day&&sharedRoutes[order.zone]===corridor).length;
+ return booked<sharedRouteCapacity;
+}
+function courierRange(zone){
+ const km=distanceFromTown(zone);
+ return km<=6?[1500,2000]:km<=12?[2200,2800]:km<=18?[2700,3400]:km<=25?[3200,3900]:[3800,4500];
+}
+function courierQuote(){
+ if(!saved)return locationPage();
+ const [low,high]=courierRange(saved.zone);
+ const requested=read('courier-quote',null);
+ const confirmed=requested?.zone===saved.zone&&requested.address===saved.address&&JSON.stringify(requested.pin)===JSON.stringify(saved.pin)&&requested.date===today();
+ return '<section class="screen locations"><div class="checkout-steps"><a href="#checkout">Checkout</a><span aria-hidden="true">/</span><b>Courier quote</b></div><div class="screen-title"><h1>Dedicated courier quote</h1><p>'+safe(saved.zone)+'</p></div><div class="box form"><div><h2>Estimated fee</h2><p><strong>'+money(low)+'–'+money(high)+'</strong></p><small>Demo estimate for a dedicated trip. The exact fee and arrival time would be confirmed before booking.</small></div>'+(confirmed?'<p role="status"><strong>Demo quote request saved.</strong></p>':button('request-courier','Request demo quote','btn'))+button('checkout','Back to checkout','btn outline')+'</div></section>';
+}
+function deliveryWindow(zone,speed,now=new Date()){
+ const km=distanceFromTown(zone);
+ let start,end;
+ if(speed==='same'){
+  const dispatch=Math.max(8*60,Math.ceil(localMinutes(now)/15)*15);
+  start=dispatch+(km<=6?60:km<=18?90:120);
+  end=start+60;
+ }else{
+  [start,end]=km<=6?[9*60,12*60]:km<=18?[11*60,15*60]:[13*60,17*60];
+ }
+ const clock=mins=>{
+  const hour=Math.floor(mins/60);
+  return (hour%12||12)+':'+String(mins%60).padStart(2,'0')+' '+(hour<12?'AM':'PM');
+ };
+ return clock(start)+'–'+clock(end);
+}
+function scheduledDates(day=today()){
+ const dates=[], cursor=dateObject(day);
+ while(dates.length<9){
+  cursor.setUTCDate(cursor.getUTCDate()+1);
+  if([2,4,6].includes(cursor.getUTCDay()))dates.push(cursor.toISOString().slice(0,10));
+ }
+ return dates;
+}
+function totals(items,fee){
+ return '<div class="line"><span>Items subtotal</span><strong>'+money(subtotal(items))+'</strong></div><div class="line"><span>Estimated delivery</span><strong>'+money(fee)+'</strong></div><div class="line total"><strong>Estimated total</strong><strong>'+money(subtotal(items)+fee)+'</strong></div><small>Items use listed store prices. Delivery is a demo estimate.</small>';
+}
+function receipt(items){
+ return items.map(p=>'<div class="receipt-row">'+img(p)+'<span>'+p.qty+' × '+safe(p.name)+'</span><strong>'+money(p.qty*p.price)+'</strong></div>').join('');
+}
+function mapsQuery(zone,address='',pin=null){
+ return encodeURIComponent(validPin(pin)?pin.join(','):[address,zone,'Belize'].filter(Boolean).join(', '));
+}
+const defaultMapZoom=16;
+let pickerCenter=null, pickerZoom=defaultMapZoom, gpsPreview=null, nativePicker=null, nativeMarker=null, mapsLoad=null, sessionMapKey="", mapsConnection="";
+function googleMapUrl(zone,address='',pin=null,zoom=validPin(pin)?17:14){
+ const q=mapsQuery(zone,address,pin);
+ return 'https://www.google.com/maps?output=embed&q='+q+'&z='+zoom+(validPin(pin)?'&ll='+q+'&iwloc=near':'');
+}
+function pickerMapUrl([lat,lng],zoom){
+ return 'https://www.google.com/maps?output=embed&ll='+encodeURIComponent(lat+','+lng)+'&z='+zoom;
+}
+function trackingPin(order){
+ if(validPin(order.pin))return order.pin;
+ const address=order.address?.trim().toLowerCase();
+ if(address&&saved?.zone===order.zone&&saved.address?.trim().toLowerCase()===address&&validPin(saved.pin))return saved.pin;
+ return null;
+}
+function trackingDropoff(order){
+ const pin=trackingPin(order), center=pin||zones[order.zone];
+ const url=pin?'https://www.google.com/maps?output=embed&q='+encodeURIComponent(pin.join(','))+'&ll='+encodeURIComponent(pin.join(','))+'&z=18':pickerMapUrl(center,14);
+ const canUseSavedPin=!pin&&saved?.zone===order.zone&&validPin(saved.pin);
+ const repair=canUseSavedPin?button('use-saved-order-pin','Use my saved pin','btn outline',order.id):button('add-order-pin','Add delivery pin','btn outline',order.id);
+ return '<div class="tracking-dropoff"><div class="tracking-map-preview" id="tracking-map-preview"><iframe class="google-map" title="Google Maps · '+(pin?'Saved drop-off in ':'Village center for ')+safe(order.zone)+'" src="'+safe(url)+'" loading="lazy" tabindex="-1"></iframe>'+(pin?'<span class="tracking-marker" aria-hidden="true"></span><div class="tracking-native-map" aria-label="Google Maps view of the saved delivery pin"></div>':'')+'</div><div class="tracking-map-caption"><div><strong>'+(pin?'Saved delivery pin':'Village center')+'</strong>'+(pin?'':'<small>No exact pin is attached to this order.</small>')+'</div>'+(pin?'':repair)+'</div></div>';
+}
+function initTrackingMap(order){
+ const pin=trackingPin(order), key=currentMapsKey();
+ if(!pin||!key)return;
+ const preview=document.querySelector('#tracking-map-preview');
+ const canvas=preview.querySelector('.tracking-native-map');
+ loadGooglePicker(key).then(maps=>{
+  if(!preview.isConnected)return;
+  const center={lat:pin[0],lng:pin[1]};
+  const native=new maps.Map(canvas,{center,zoom:18,mapId:'DEMO_MAP_ID',disableDefaultUI:true,gestureHandling:'none',keyboardShortcuts:false});
+  new maps.marker.AdvancedMarkerElement({map:native,position:center,title:'Saved delivery pin'});
+  maps.event.addListenerOnce(native,'tilesloaded',()=>{
+   if(preview.isConnected)preview.classList.add('native-tracking-active');
+  });
+ }).catch(()=>{});
+}
+function locationPage(){
+ const [page,id]=route(), order=page==='location'?orders[id]:null;
+ const zone=order?.zone||saved?.zone||draft.zone;
+ const pin=order?(trackingPin(order)||[]):validPin(saved?.pin)?saved.pin:[];
+ const address=order?order.address:saved?.address||draft.address;
+ return '<section class="screen locations"><div class="screen-title"><h1>'+(order?'Add delivery pin':'Delivery location')+'</h1><p>'+(order?'Set the exact drop-off for this demo order.':'Choose your village and place a pin at your drop-off.')+'</p></div><form class="box form" id="location-form"><label>Town or village<select name="zone">'+(order?[zone]:Object.keys(zones)).map(z=>'<option'+(z===zone?' selected':'')+'>'+z+'</option>').join('')+'</select></label><div class="dropoff-card"><div><strong>Find your drop-off</strong><small id="pin-status" role="status"></small></div><button type="button" class="btn outline" data-action="current-location">Use my location</button></div><div class="google-picker" id="google-picker"><iframe class="google-map" id="delivery-google-map" title="Google Maps · '+safe(zone)+'" src="'+safe(pickerMapUrl(pin.length?pin:zones[zone],defaultMapZoom))+'" allowfullscreen></iframe><div id="native-picker" class="native-picker" hidden></div><span id="map-crosshair" class="map-crosshair" aria-hidden="true" hidden></span></div><div class="pin-confirm"><small id="pin-help">Explore the map freely. Use your current location or enter a landmark to save a drop-off.</small><button type="button" class="btn outline" data-action="set-pin">Pin on map</button></div><input type="hidden" name="latitude" value="'+(pin[0]??'')+'"><input type="hidden" name="longitude" value="'+(pin[1]??'')+'"><label>Street address or landmark <small>Optional if you set a pin</small><input name="address" autocomplete="street-address" maxlength="160" value="'+safe(address)+'" placeholder="House number, street or nearby landmark"></label><button class="btn full" type="submit">'+(order?'Save order pin':'Save delivery location')+'</button></form><details class="box maps-setup" id="maps-setup"><summary>Manual pin setup</summary><form id="maps-setup-form" class="form"><small>Connect a Google Maps demo key to choose an exact point on the map. The key is stored for this browser tab.</small><label>Google Maps demo key<input type="password" name="key" autocomplete="off" spellcheck="false" required></label><div class="dropoff-actions"><button class="btn" type="submit">Connect Google Maps</button><a class="maps-link" href="https://developers.google.com/maps/documentation/javascript/demo-key" target="_blank" rel="noopener">Get a free demo key</a></div><small id="maps-connection" role="status"></small></form></details></section>';
+}
+function refreshPinUI(form){
+ const pin=readPin(form);
+ document.querySelector('#pin-status').textContent=gpsPreview?'Location found. Tap Set pin here to confirm.':pin?'Delivery pin set':'No delivery pin set.';
+ form.querySelector('[data-action="set-pin"]').textContent=nativePicker||gpsPreview?'Set pin here':'Pin on map';
+ const preview=document.querySelector('#delivery-google-map');
+ const url=pickerMapUrl(pickerCenter,pickerZoom);
+ if(!nativePicker&&preview.getAttribute('src')!==url)preview.setAttribute('src',url);
+ preview.title='Google Maps · '+form.elements.zone.value;
+}
+function confirmPin(form){
+ if(!nativePicker&&!gpsPreview){
+  const settings=document.querySelector('#maps-setup');
+  if(settings){settings.open=true;settings.querySelector('input')?.focus()}
+  return;
+ }
+ const center=nativePicker?.getCenter();
+ const point=center?[center.lat(),center.lng()]:gpsPreview;
+ if(!validPin(point))return;
+ form.elements.address.setCustomValidity('');
+ form.elements.latitude.value=point[0].toFixed(6);
+ form.elements.longitude.value=point[1].toFixed(6);
+ gpsPreview=null;
+ if(nativeMarker)nativeMarker.position={lat:point[0],lng:point[1]};
+ refreshPinUI(form);
+}
+function currentMapsKey(){
+ if(sessionMapKey)return sessionMapKey;
+ try{sessionMapKey=window.sessionStorage.getItem('2mydoor-maps-key')||''}catch{}
+ return sessionMapKey||document.querySelector('meta[name="google-maps-key"]')?.content?.trim()||'';
+}
+function showMapsConnection(message){
+ mapsConnection=message;
+ const status=document.querySelector('#maps-connection');
+ if(status)status.textContent=message;
+}
+function restoreEmbeddedMap(){
+ const form=document.querySelector('#location-form');
+ if(!form)return;
+ nativeMarker=null;nativePicker=null;
+ document.querySelector('#native-picker').hidden=true;
+ document.querySelector('#delivery-google-map').hidden=false;
+ document.querySelector('#map-crosshair').hidden=true;
+ document.querySelector('#pin-help').textContent='Explore the map freely. Use your current location or enter a landmark to save a drop-off.';
+ refreshPinUI(form);
+}
+function loadGooglePicker(key){
+ if(mapsLoad)return mapsLoad;
+ mapsLoad=new Promise((resolve,reject)=>{
+  const callback='init2MyDoorGoogleMaps';
+  const script=document.createElement('script');
+  window.gm_authFailure=()=>{
+   restoreEmbeddedMap();
+   document.querySelector('#tracking-map-preview')?.classList.remove('native-tracking-active');
+   showMapsConnection('Google rejected this key. Check your demo key and try again.');
+   reject(Error('Google Maps authorization failed'));
+  };
+  window[callback]=()=>{delete window[callback];resolve(window.google.maps)};
+  script.onerror=()=>{delete window[callback];mapsLoad=null;reject(Error('Google Maps failed to load'))};
+  script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&loading=async&libraries=maps,marker&callback='+callback;
+  script.async=true;
+  document.head.append(script);
+ });
+ return mapsLoad;
+}
+function initLocation(){
+ const form=document.querySelector('#location-form');
+ if(!form)return;
+ pickerCenter=readPin(form)||zones[form.elements.zone.value];
+ pickerZoom=defaultMapZoom;
+ gpsPreview=null;
+ refreshPinUI(form);
+ const key=currentMapsKey();
+ if(!key)return;
+ showMapsConnection(mapsConnection||'Connecting to Google Maps…');
+ loadGooglePicker(key).then(maps=>{
+  if(!form.isConnected)return;
+  const container=document.querySelector('#native-picker');
+  const center={lat:pickerCenter[0],lng:pickerCenter[1]};
+  container.hidden=false;
+  nativePicker=new maps.Map(container,{center,zoom:pickerZoom,mapId:'DEMO_MAP_ID',gestureHandling:'greedy',streetViewControl:false,mapTypeControl:false,fullscreenControl:false});
+  nativeMarker=new maps.marker.AdvancedMarkerElement({map:nativePicker});
+  nativePicker.addListener('click',event=>{if(event.latLng)nativePicker?.panTo(event.latLng)});
+  const confirmed=readPin(form);
+  if(confirmed)nativeMarker.position={lat:confirmed[0],lng:confirmed[1]};
+  document.querySelector('#delivery-google-map').hidden=true;
+  document.querySelector('#map-crosshair').hidden=false;
+  document.querySelector('#pin-help').textContent='Move the map freely. Tap Set pin here only when the crosshair is at your drop-off.';
+  showMapsConnection('Connected. Manual pinning is ready.');
+  const settings=document.querySelector('#maps-setup');
+  if(settings)settings.open=false;
+  refreshPinUI(form);
+ }).catch(()=>{
+  if(!form.isConnected)return;
+  restoreEmbeddedMap();
+  if(!mapsConnection.includes('rejected'))showMapsConnection('Couldn’t connect to Google Maps. Check your key and connection.');
+ });
+}
+function checkout(){
+ const items=currentItems();
+ if(!items.length)return cartPage();
+ if(!saved)return locationPage();
+ const sameDay=sameDayAvailable(saved.zone);
+ if(draft.speed==='same'&&!sameDay){draft.speed='scheduled';draft.date=''}
+ return '<section class="screen"><div class="checkout-steps"><a href="#cart">Basket</a><span aria-hidden="true">/</span><b>Checkout</b></div><div class="screen-title"><h1>Checkout</h1></div><div class="layout"><form class="box form" id="checkout"><h2>Delivery details</h2><div class="location-line"><div><strong>'+safe(saved.zone)+'</strong><small>'+safe(saved.address||(validPin(saved.pin)?'Map pin saved':''))+'</small></div>'+button('location','Change','btn outline')+'</div><label>Name<input name="name" autocomplete="name" maxlength="80" required value="'+safe(draft.name)+'"></label><label>Delivery service<select name="speed"><option value="scheduled">Scheduled delivery</option>'+(sameDay?'<option value="same"'+(draft.speed==='same'?' selected':'')+'>Shared same-day delivery</option>':'')+'</select></label><label>Arrival date<select name="date" required></select></label><div class="notice" id="arrival-estimate" role="status" style="margin-top:0"></div>'+(!sameDay?'<div><small>Shared same-day delivery is unavailable for this location today.</small><br><a class="maps-link" href="#quote">Request a dedicated courier quote</a></div>':'')+'<button class="btn full" type="submit">Place demo order</button></form><aside class="box"><h2>Order summary</h2>'+receipt(items)+'<div id="totals"></div>'+budgetPanel('checkout')+'</aside></div></section>';
+}
+function checkoutUpdate(){
+ const form=document.querySelector('#checkout');
+ if(!form||!saved)return;
+ const dates=draft.speed==='same'?[today()]:scheduledDates();
+ draft.date=dates.includes(draft.date)?draft.date:dates[0];
+ form.elements.date.innerHTML=dates.map(d=>'<option value="'+d+'"'+(d===draft.date?' selected':'')+'>'+dayLabel(d)+'</option>').join('');
+ document.querySelector('#totals').innerHTML=totals(currentItems(),deliveryFee(saved.zone,draft.speed));
+ document.querySelector('#arrival-estimate').innerHTML='<strong>Estimated arrival</strong><br>'+dayLabel(draft.date)+' · '+deliveryWindow(saved.zone,draft.speed)+' Belize time<small class="fleet-note">Demo truck '+truckName(saved.zone,draft.speed)+'</small>';
+ updateBudget();
+}
+function truckName(zone,speed){
+ if(speed==='same')return {town:'2MD-01',north:'2MD-02',west:'2MD-03'}[sharedRoutes[zone]]||'2MD-01';
+ return '2MD-04';
+}
+function deliveryTruckState(order,now=Date.now()){
+ if(now<order.sent+10000)return {progress:0,status:'Waiting for order acceptance'};
+ if(order.speed!=='same'){
+  const date=dayLabel(order.date);
+  return {progress:0,status:'Departure scheduled for '+date};
+ }
+ const elapsed=now-order.sent-10000;
+ const progress=Math.min(100,Math.floor(elapsed/300));
+ return {progress,status:progress===100?'Demo delivery complete':progress>=78?'Approaching your drop-off':'Truck en route'};
+}
+function deliveryTruck(order){
+ const state=deliveryTruckState(order);
+ return '<div class="fleet-card" aria-label="Demo truck tracking"><div class="fleet-head"><div><strong>Truck '+truckName(order.zone,order.speed)+'</strong><small>'+(order.speed==='same'?'Shared same-day route':'Scheduled delivery route')+'</small></div><span class="fleet-tag">Demo</span></div><div class="fleet-route" aria-hidden="true"><span class="fleet-track"></span><span class="fleet-fill" id="fleet-fill" style="width:'+state.progress+'%"></span><span class="fleet-stop"></span><span class="fleet-stop end"></span><span class="fleet-truck" id="fleet-truck" style="left:'+state.progress+'%"><svg viewBox="0 0 24 24"><path d="M2 5h13v12H2zM15 9h4l3 4v4h-7"/><circle cx="6" cy="18" r="2" fill="white"/><circle cx="18" cy="18" r="2" fill="white"/></svg></span></div><div class="fleet-labels"><span>Orange Walk</span><span>'+safe(order.zone)+'</span></div><span class="fleet-status" id="fleet-status" role="status">'+state.status+'</span><small class="fleet-note">Simulated truck activity</small></div>';
+}
+function watchDeliveryTruck(order){
+ const update=()=>{
+  const fill=document.querySelector('#fleet-fill'), icon=document.querySelector('#fleet-truck'), status=document.querySelector('#fleet-status');
+  if(!fill||!icon||!status)return;
+  const state=deliveryTruckState(order);
+  fill.style.width=state.progress+'%';
+  icon.style.left=state.progress+'%';
+  if(status.textContent!==state.status)status.textContent=state.status;
+  if(state.progress===100||(order.speed!=='same'&&Date.now()>=order.sent+10000))clearInterval(fleetTimer);
+ };
+ fleetTimer=setInterval(update,650);
+ update();
+}
+function tracking(order){
+ const accepted=Date.now()>=order.sent+10000;
+ if(!accepted)acceptanceTimer=setTimeout(()=>{const status=document.querySelector('#acceptance');if(status){status.classList.add('done');status.innerHTML='<i aria-hidden="true">✓</i><div><strong>Order Accepted</strong><br><small>Your demo order is confirmed.</small></div>'}},Math.max(0,order.sent+10000-Date.now()));
+ return '<section class="tracking"><span class="eyebrow">Demo order '+safe(order.id)+'</span><h1>Your order will arrive</h1><p><strong>'+dayLabel(order.date)+'</strong> · '+(order.speed==='same'?'Shared same-day delivery':'Scheduled delivery')+'</p>'+(order.window?'<p class="muted">Estimated arrival '+safe(order.window)+' Belize time</p>':'')+'<div class="layout tracking-layout"><div class="box tracking-main"><h2>Order tracking</h2><div class="status-row done"><i aria-hidden="true">✓</i><div><strong>Order Sent</strong><br><small>Order details received.</small></div></div><div id="acceptance" class="status-row '+(accepted?'done':'')+'" role="status"><i aria-hidden="true">'+(accepted?'✓':'…')+'</i><div><strong>Order Accepted</strong><br><small>'+(accepted?'Your demo order is confirmed.':'Waiting for confirmation…')+'</small></div></div>'+deliveryTruck(order)+trackingDropoff(order)+'<p class="mapnote"><strong>Drop-off:</strong> '+(order.address?safe(order.address)+', ':'')+safe(order.zone)+'</p></div><aside class="box tracking-basket"><h2>Your grocery basket</h2><div class="basket" aria-label="Grocery basket">'+order.items.map(img).join('')+'</div>'+receipt(order.items)+totals(order.items,order.fee)+'</aside></div></section>'+button('home','Continue shopping','btn outline');
+}
+function render(scroll){
+ clearTimeout(acceptanceTimer);
+ clearInterval(fleetTimer);
+ nativePicker=null;nativeMarker=null;gpsPreview=null;
+ const [page,id,product]=route();
+ if(page==='store'&&storeById[id])main.innerHTML=shop(id);
+ else if(page==='stores')main.innerHTML=directory();
+ else if(page==='browse')main.innerHTML=searchPage();
+ else if(page==='cart')main.innerHTML=cartPage();
+ else if(page==='location')main.innerHTML=locationPage();
+ else if(page==='checkout'){main.innerHTML=checkout();checkoutUpdate()}
+ else if(page==='quote')main.innerHTML=courierQuote();
+ else if(page==='order'&&orders[id]){main.innerHTML=tracking(orders[id]);watchDeliveryTruck(orders[id]);initTrackingMap(orders[id])}
+ else{
+  main.innerHTML=home();
+  const track=document.querySelector('#slides');
+  slideTo(slideIndex,false);
+  track.addEventListener('keydown',event=>{
+   if(event.target!==track || !['ArrowLeft','ArrowRight'].includes(event.key))return;
+   event.preventDefault();
+   slideTo(slideIndex+(event.key==='ArrowRight'?1:-1));
+  });
+  track.addEventListener('scroll',()=>{
+   if(slideFrame)return;
+   slideFrame=requestAnimationFrame(()=>{
+    slideFrame=0;
+    if(!track.isConnected || !track.clientWidth)return;
+    slideIndex=Math.round(track.scrollLeft/track.clientWidth);
+    document.querySelectorAll('.slide-dot').forEach((dot,i)=>dot.setAttribute('aria-current',i===slideIndex?'true':'false'));
+   });
+  },{passive:true});
+ }
+ initLocation();
+ updateNav();
+ updateBudget();
+ if(scroll)window.scrollTo(0,0);
+ const target=product?document.getElementById('product-'+product):null;
+ if(target){target.style.scrollMarginTop='135px';target.scrollIntoView({block:'nearest'});target.classList.add('flash')}
+}
+function refreshListing(){
+ const [page,id]=route();
+ const area=document.querySelector('#listing');
+ if(area)area.innerHTML=listing(page==='store'&&storeById[id]?id:null);
+}
+document.addEventListener('click',event=>{
+ const target=event.target.closest('[data-action]');
+ if(!target)return;
+ const {action,id}=target.dataset;
+ if(['home','browse','stores','store','product'].includes(action)){
+  search.value='';category='All items';
+  if(action==='store')go('store/'+id);
+  else if(action==='product'){
+   if(route()[0]==='store'&&route()[1]===byId[id].store){
+    document.querySelector('#product-'+id+' .buy button')?.focus();
+   }else go('store/'+byId[id].store+'/'+id);
+  }else go(action);
+ }
+ if(action==='category'){category=id;refreshListing();Array.from(main.querySelectorAll('.chip')).find(b=>b.dataset.id===id)?.focus({preventScroll:true})}
+ if(action==='set-pin')confirmPin(target.closest('form'));
+ if(action==='current-location'){
+  const form=target.closest('form');
+  const status=document.querySelector('#pin-status');
+  if(!window.navigator.geolocation){status.textContent='Location is unavailable here. Open Google Maps or enter a landmark.';return}
+  const zone=form.elements.zone.value;
+  status.textContent='Getting your location…';
+  target.disabled=true;
+  window.navigator.geolocation.getCurrentPosition(({coords})=>{
+   if(!form.isConnected)return;
+   target.disabled=false;
+   if(form.elements.zone.value!==zone)return;
+   pickerZoom=18;
+   gpsPreview=[coords.latitude,coords.longitude];
+   pickerCenter=gpsPreview;
+   nativePicker?.setCenter({lat:coords.latitude,lng:coords.longitude});
+   nativePicker?.setZoom(pickerZoom);
+   refreshPinUI(form);
+  },()=>{
+   if(!form.isConnected)return;
+   target.disabled=false;
+   if(form.elements.zone.value!==zone)return;
+   status.textContent='Couldn’t get your location. Open Google Maps or enter a landmark.';
+  },{enableHighAccuracy:true,timeout:9000,maximumAge:30000});
+ }
+ if(action==='cart')go('cart');
+ if(action==='clear-budget'){budget=0;budgetDisplay=null;budgetProgress=0;write('budget',0);render(false);document.querySelector('#budget-form input')?.focus();announce('Budget cleared')}
+ if(action==='checkout'){locationReturn='checkout';go('checkout')}
+ if(action==='request-courier'&&saved){write('courier-quote',{...saved,date:today()});render(false)}
+ if(action==='add-order-pin'&&orders[id])go('location/'+id);
+ if(action==='use-saved-order-pin'){
+  const order=orders[id];
+  if(order&&saved?.zone===order.zone&&validPin(saved.pin)){
+   orders[id]={...order,pin:[...saved.pin]};
+   write('orders',orders);
+   render(false);
+   announce('Saved delivery pin added to this order');
+  }
+ }
+ if(action==='location'){
+  const active=location.hash.slice(1);
+  if(active!=='location')locationReturn=active||'home';
+  go('location');
+ }
+ if(action==='slide')slideTo(Number(id));
+ if(action==='slide-next')slideTo(slideIndex+1);
+ if(action==='slide-prev')slideTo(slideIndex-1);
+ if(action==='add'||action==='plus'||action==='minus'||action==='remove'){
+  const qty=cart[id]||0;
+  change(id,action==='remove'?0:qty+(action==='minus'?-1:1));
+  if(action==='add')announce(byId[id].name+' added to basket');
+ }
+});
+search.addEventListener('input',()=>{
+ category='All items';
+ if(!document.querySelector('#listing'))go('browse');else refreshListing();
+});
+document.addEventListener('input',event=>{
+ if(event.target.name==='address'&&event.target.closest('#location-form'))event.target.setCustomValidity('');
+ const form=event.target.closest('#checkout');
+ if(!form)return;
+ const {name,value}=event.target;
+ draft[name]=value;
+ if(name==='speed'||name==='date')checkoutUpdate();
+});
+document.addEventListener('change',event=>{
+ const form=event.target.closest('#location-form');
+ if(!form)return;
+ form.elements.address.setCustomValidity('');
+ if(event.target.name==='zone'){
+  form.elements.latitude.value='';
+  form.elements.longitude.value='';
+  gpsPreview=null;
+  pickerCenter=zones[event.target.value];
+  pickerZoom=defaultMapZoom;
+  if(nativeMarker)nativeMarker.position=null;
+  nativePicker?.setCenter({lat:pickerCenter[0],lng:pickerCenter[1]});
+  nativePicker?.setZoom(pickerZoom);
+  refreshPinUI(form);
+ }
+});
+document.addEventListener('submit',event=>{
+ const form=event.target;
+ if(form.id==='maps-setup-form'){
+  event.preventDefault();
+  const key=form.elements.key.value.trim();
+  if(!key)return;
+  if(nativePicker&&key===sessionMapKey){showMapsConnection('Manual pinning is already connected.');return}
+  const previouslyLoaded=Boolean(window.google?.maps?.Map);
+  sessionMapKey=key;
+  try{window.sessionStorage.setItem('2mydoor-maps-key',key)}catch{}
+  form.elements.key.value='';
+  if(previouslyLoaded){showMapsConnection('Key saved. Refresh this tab to connect with the new key.');return}
+  mapsLoad=null;
+  showMapsConnection('Connecting to Google Maps…');
+  initLocation();
+  return;
+ }
+ if(form.id==='budget-form'){
+  event.preventDefault();
+  const amount=Math.round(Number(form.elements.amount.value)*100);
+  if(!Number.isFinite(amount)||amount<1||amount>10000000)return;
+  budget=amount;
+  write('budget',budget);
+  render(false);
+  document.querySelector('#budget-form input')?.focus();
+  announce('Shopping budget saved');
+  return;
+ }
+ if(form.id==='location-form'){
+  event.preventDefault();
+  const address=form.elements.address.value.trim(), zone=form.elements.zone.value;
+  const pin=readPin(form);
+  const [page,orderId]=route(), order=page==='location'?orders[orderId]:null;
+  if(order){
+   if(!pin){announce('Set a delivery pin before saving this order.');return}
+   orders[orderId]={...order,pin};
+   write('orders',orders);
+   go('order/'+orderId);
+   announce('Order pin saved');
+   return;
+  }
+  if(!address&&!pin){
+   form.elements.address.setCustomValidity('Set a map pin or enter a landmark.');
+   form.elements.address.reportValidity();
+   return;
+  }
+  saved={zone,address,pin};
+  write('delivery',saved);
+  draft={...draft,zone,address};
+  updateNav();
+  const destination=route()[0]==='checkout'?'checkout':locationReturn;
+  go(destination);
+  announce('Delivery location saved');
+  return;
+ }
+ if(form.id!=='checkout')return;
+ event.preventDefault();
+ const items=currentItems(), name=form.elements.name.value.trim();
+ if(!items.length||!saved)return;
+ if(!name){form.elements.name.value='';form.elements.name.reportValidity();return}
+ if(draft.speed==='same'&&!sameDayAvailable(saved.zone)){
+  draft.speed='scheduled';draft.date='';render(false);announce('Today’s shared route is unavailable. Choose a scheduled date or request a courier quote.');return;
+ }
+ const date=draft.speed==='same'?today():draft.date;
+ if(draft.speed==='scheduled'&&!scheduledDates().includes(date)){checkoutUpdate();announce('Please confirm your updated delivery date');return}
+ const id=Date.now().toString(36).toUpperCase();
+ orders[id]={...draft,...saved,name,date,id,items,window:deliveryWindow(saved.zone,draft.speed),fee:deliveryFee(saved.zone,draft.speed),sent:Date.now()};
+ write('orders',orders);
+ cart={};write('cart',cart);updateNav();
+ draft={...draft,name:'',date:''};
+ go('order/'+id);
+});
+window.addEventListener('hashchange',()=>render(true));
+render(false);
+</script>
+</body></html>
